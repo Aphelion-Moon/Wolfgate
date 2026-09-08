@@ -1,2 +1,9 @@
 Order: -1
-Entries: []
+Entries:
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Changelog diffirentiation between upstreams.
+  id: 100000
+  time: '2026-09-08T22:13:24.0000000+00:00'
+  url: https://github.com/Aphelion-Moon/Wolfgate/pull/5

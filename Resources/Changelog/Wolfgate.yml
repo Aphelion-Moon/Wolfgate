@@ -7,3 +7,10 @@ Entries:
   id: 100000
   time: '2026-09-08T22:13:24.0000000+00:00'
   url: https://github.com/Aphelion-Moon/Wolfgate/pull/5
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Symphony integration.
+  id: 100001
+  time: '2026-09-08T22:16:11.0000000+00:00'
+  url: https://github.com/Aphelion-Moon/Wolfgate/pull/4

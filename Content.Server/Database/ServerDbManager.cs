@@ -386,6 +386,19 @@ namespace Content.Server.Database
 
         #endregion
 
+        #region Symphony
+
+        /// <summary>
+        /// Finds or mints the one-time ticket the Symphony panel turns into a Discord link for this player.
+        /// </summary>
+        /// <returns>
+        /// <c>linked</c> when the player already holds a live Discord link, in which case nothing is minted;
+        /// otherwise the ticket to hand them. Both false and null when this database engine has no panel bridge.
+        /// </returns>
+        Task<(bool linked, Guid? ticket)> GetOrMintDiscordLinkTicketAsync(NetUserId userId);
+
+        #endregion
+
         #region Wayfarer Safety Deposit Box
 
         Task<WayfarerSafetyDepositBox> PurchaseSafetyDepositBox(Guid ownerUserId, int characterIndex, string ownerName, string boxSize, CancellationToken cancel = default);
@@ -1178,6 +1191,16 @@ namespace Content.Server.Database
             DbWriteOpsMetric.Inc();
             return RunDbCommand(() => _db.SendNotification(notification));
         }
+
+        #region Symphony
+
+        public Task<(bool linked, Guid? ticket)> GetOrMintDiscordLinkTicketAsync(NetUserId userId)
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.GetOrMintDiscordLinkTicketAsync(userId));
+        }
+
+        #endregion
 
         #region Wayfarer Safety Deposit Box
 

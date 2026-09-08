@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using Content.Shared.CCVar;
 using Content.Shared.GameTicking;
+using Content.Shared.Symphony;
 using Robust.Server.ServerStatus;
 using Robust.Shared.Configuration;
 
@@ -50,6 +51,7 @@ namespace Content.Server.GameTicking
                 jObject["soft_max_players"] = _cfg.GetCVar(CCVars.SoftMaxPlayers);
                 jObject["panic_bunker"] = _cfg.GetCVar(CCVars.PanicBunkerEnabled);
                 jObject["run_level"] = (int) _runLevel;
+                jObject["symphony_module"] = SharedSymphony.ModuleVersion; // Symphony: the panel checks this against its own build
                 if (preset != null)
                     jObject["preset"] = Loc.GetString(preset.ModeTitle);
                 if (_runLevel >= GameRunLevel.InRound)

@@ -543,6 +543,12 @@ namespace Content.Server.Database
             return Task.CompletedTask;
         }
 
+        public override Task<(bool linked, Guid? ticket)> GetOrMintDiscordLinkTicketAsync(NetUserId userId)
+        {
+            // The Symphony panel only bridges Postgres servers.
+            return Task.FromResult<(bool linked, Guid? ticket)>((false, null));
+        }
+
         protected override DateTime NormalizeDatabaseTime(DateTime time)
         {
             DebugTools.Assert(time.Kind == DateTimeKind.Unspecified);

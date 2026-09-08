@@ -1,0 +1,48 @@
+name: Discord PR Notifications
+
+# Posts an embed to Discord when a pull request is opened, reopened, marked ready
+# for review, merged, or closed.
+#
+# Setup: add a repository secret named PR_DISCORD_WEBHOOK containing a Discord
+# webhook URL (Discord channel > Edit Channel > Integrations > Webhooks).
+# If the secret is missing the job logs a skip and exits successfully.
+#
+# Test by hand: Actions > "Discord PR Notifications" > Run workflow, give it an
+# existing PR number, and it will post that PR as if it had just been opened
+# (or merged/closed, depending on its state).
+#
+# pull_request_target is used so PRs from forks also fire. This job never checks
+# out or runs code from the PR head; it only reads the event payload. Keep it
+# that way when editing.
+
+on:
+  pull_request_target:
+    types: [opened, reopened, ready_for_review, closed]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "Pull request number to post (for testing the webhook)"
+        required: true
+        type: number
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout notify script (base branch only)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: Tools/actions_discord_pr_notify.py
+          sparse-checkout-cone-mode: false
+
+      - name: Post to Discord
+        run: python3 Tools/actions_discord_pr_notify.py
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.PR_DISCORD_WEBHOOK }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ inputs.pr_number }}

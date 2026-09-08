@@ -6,7 +6,8 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Wolfgate: built-in token instead of bot PAT
-  CHANGELOG_DIR: Resources/Changelog/Monolith.yml # Mono
+  CHANGELOG_DIR: Resources/Changelog/Wolfgate.yml # Wolfgate: our changes. Monolith.yml fills itself from upstream merges.
+  CHANGELOG_START_ID: 100000 # Wolfgate: keep our ids above Monolith's so the client's read marker follows this file.
   PR_NUMBER: ${{ github.event.number }}
 
 jobs:

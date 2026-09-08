@@ -55,7 +55,7 @@ async function main() {
     const entry = {
         author: author,
         changes: entries,
-        id: getHighestCLNumber() + 1,
+        id: getNextCLNumber(), // Wolfgate
         time: time,
         url: `https://github.com/${process.env.GITHUB_REPOSITORY}/pull/${process.env.PR_NUMBER}`,
     };
@@ -131,22 +131,35 @@ function getHighestCLNumber() {
     return Math.max(...clNumbers, 0);
 }
 
+// Wolfgate: id for a new entry. One above the highest in the file, but never below CHANGELOG_START_ID,
+// so a fresh changelog can start above the upstream one's ids.
+function getNextCLNumber() {
+    const startId = parseInt(process.env.CHANGELOG_START_ID || "1", 10);
+    return Math.max(getHighestCLNumber() + 1, startId);
+}
+
 function writeChangelog(entry) {
     let data = { Entries: [] };
 
     // Create a new changelogs file if it does not exist
     if (fs.existsSync(`../../${process.env.CHANGELOG_DIR}`)) {
         const file = fs.readFileSync(`../../${process.env.CHANGELOG_DIR}`, "utf8");
-        data = yaml.load(file);
+        data = yaml.load(file) || data; // Wolfgate: an empty file counts as no entries
+        data.Entries = data.Entries || [];
     }
 
     data.Entries.push(entry);
 
+    // Wolfgate: keep the top-level keys other than Entries (Order, Name, AdminOnly) instead of dropping them.
+    const { Entries, ...header } = data;
+    const headerText = Object.keys(header).length > 0 ? yaml.dump(header, { indent: 2 }) : "";
+
     // Write updated changelogs file
     fs.writeFileSync(
         `../../${process.env.CHANGELOG_DIR}`,
-        "Entries:\n" +
-            yaml.dump(data.Entries, { indent: 2 }).replace(/^---/, "")
+        headerText +
+            "Entries:\n" +
+            yaml.dump(Entries, { indent: 2 }).replace(/^---/, "")
     );
 }
 

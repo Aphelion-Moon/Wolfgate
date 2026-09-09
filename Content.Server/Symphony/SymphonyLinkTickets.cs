@@ -1,14 +1,19 @@
-﻿using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
+using Content.Shared.CCVar;
 using Npgsql;
+using Robust.Shared.Configuration;
 using Robust.Shared.Network;
 
-namespace Content.Server.Database;
+namespace Content.Server.Symphony;
 
-/// The Symphony panel keeps its Discord link tickets in discord_links, a table it creates in our database itself.
-/// The table is not part of the EF model, so it is queried with plain parameterised commands.
-
-public sealed partial class ServerDbPostgres
+/// <summary>
+/// The Symphony panel's one-time Discord link tickets, kept in discord_links, a table the panel creates in this
+/// server's own PostgreSQL database. It is not part of the EF model, so it is queried on a connection of its own;
+/// a whitelist refusal is rare enough that opening one per ticket costs nothing worth a pool, and it keeps the
+/// database layer upstream owns untouched.
+/// </summary>
+public static class SymphonyLinkTickets
 {
     private const string LinkedSql =
         "SELECT EXISTS (SELECT 1 FROM discord_links WHERE user_id = @user AND valid = TRUE AND discord_id IS NOT NULL)";
@@ -27,11 +32,28 @@ public sealed partial class ServerDbPostgres
     // Keyed on the user id: two attempts from one player queue behind each other, and nobody else waits.
     private const string LockSql = "SELECT pg_advisory_xact_lock(hashtextextended(@user, 0))";
 
-    public override async Task<(bool linked, Guid? ticket)> GetOrMintDiscordLinkTicketAsync(NetUserId userId)
+    /// <summary>
+    /// Finds or mints the player's ticket. Returns linked when they already hold a live link, and then mints nothing;
+    /// otherwise the ticket to hand them. Both false and null when this server is not on PostgreSQL, where the panel
+    /// has no bridge.
+    /// </summary>
+    public static async Task<(bool linked, Guid? ticket)> GetOrMintAsync(IConfigurationManager cfg, NetUserId userId)
     {
-        await using var db = await GetDbImpl();
-        await db.PgDbContext.Database.OpenConnectionAsync();
-        var connection = (NpgsqlConnection) db.PgDbContext.Database.GetDbConnection();
+        if (!string.Equals(cfg.GetCVar(CCVars.DatabaseEngine), "postgres", StringComparison.OrdinalIgnoreCase))
+            return (false, null);
+
+        // The same database the game itself uses, from the same cvars.
+        var connectionString = new NpgsqlConnectionStringBuilder
+        {
+            Host = cfg.GetCVar(CCVars.DatabasePgHost),
+            Port = cfg.GetCVar(CCVars.DatabasePgPort),
+            Database = cfg.GetCVar(CCVars.DatabasePgDatabase),
+            Username = cfg.GetCVar(CCVars.DatabasePgUsername),
+            Password = cfg.GetCVar(CCVars.DatabasePgPassword),
+        }.ConnectionString;
+
+        await using var connection = new NpgsqlConnection(connectionString);
+        await connection.OpenAsync();
 
         // One attempt per player at a time. A launcher retry racing the first refusal would mint twice, and the
         // panel burns only the token the player was shown. The lock lives with the transaction, so an early

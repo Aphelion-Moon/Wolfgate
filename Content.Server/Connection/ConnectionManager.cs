@@ -249,10 +249,6 @@ namespace Content.Server.Connection
             var wasInGame = EntitySystem.TryGet<GameTicker>(out var ticker) &&
                             ticker.PlayerGameStatuses.ContainsKey(userId); // Frontier: remove status.JoinedGame check, TryGetValue<ContainsKey
 
-            // Symphony: the allowance covers a whitelist switched on mid-round, not an entry taken away mid-round.
-            // A player who got in past a running whitelist is checked against it again, so a revoke holds on Reconnect.
-            var whitelistRecheck = _whitelistPassed.Contains(userId);
-
             if (_cfg.GetCVar(CCVars.PanicBunkerEnabled) && adminData == null && !wasInGame) // Frontier: allow users who joined before panic bunker was enforced to reconnect
             {
                 var showReason = _cfg.GetCVar(CCVars.PanicBunkerShowReason);
@@ -327,7 +323,7 @@ namespace Content.Server.Connection
             }
 
             // Checks for whitelist IF it's enabled AND the user isn't an admin. Admins are always allowed.
-            if (_cfg.GetCVar(CCVars.WhitelistEnabled) && (!wasInGame || whitelistRecheck) && adminData is null) // Frontier: allow users who joined before panic bunker was enforced to reconnect
+            if (_cfg.GetCVar(CCVars.WhitelistEnabled) && (!wasInGame || _whitelistPassed.Contains(userId)) && adminData is null) // Frontier: allow users who joined before panic bunker was enforced to reconnect. Symphony: not one who passed a running whitelist, so a revoke holds
             {
                 if (_whitelists is null)
                 {
@@ -348,10 +344,7 @@ namespace Content.Server.Connection
                     if (!whitelistStatus.isWhitelisted)
                     {
                         // Not whitelisted.
-                        var reason = Loc.GetString("whitelist-fail-prefix", ("msg", whitelistStatus.denyMessage!));
-                        if (whitelistStatus.missingManualWhitelist)
-                            reason = await AppendDiscordLinkTicket(reason, userId, e.AuthType); // Symphony: offer the Discord link that gets them whitelisted
-                        return (ConnectionDenyReason.Whitelist, reason, null);
+                        return (ConnectionDenyReason.Whitelist, await SymphonyWhitelistRefusal(whitelist, e, whitelistStatus.denyMessage!), null); // Symphony: with the Discord link that gets them whitelisted
                     }
 
                     // Whitelisted, don't check any more.

@@ -47,15 +47,10 @@ public sealed partial class ConnectionManager
         return playerCount >= whitelist.MinimumPlayers && playerCount <= whitelist.MaximumPlayers;
     }
 
-    /// <summary>
-    /// Checks the player against a whitelist. <c>missingManualWhitelist</c> is set when a manual whitelist entry
-    /// would have let them in, so a refusal can tell them how to get one.
-    /// </summary>
-    public async Task<(bool isWhitelisted, string? denyMessage, bool missingManualWhitelist)> IsWhitelisted(PlayerConnectionWhitelistPrototype whitelist, NetUserData data, ISawmill sawmill)
+    public async Task<(bool isWhitelisted, string? denyMessage)> IsWhitelisted(PlayerConnectionWhitelistPrototype whitelist, NetUserData data, ISawmill sawmill)
     {
         var cacheRemarks = await _db.GetAllAdminRemarks(data.UserId);
         var cachePlaytime = await _db.GetPlayTimes(data.UserId);
-        var missingManualWhitelist = false;
 
         foreach (var condition in whitelist.Conditions)
         {
@@ -70,7 +65,6 @@ public sealed partial class ConnectionManager
                 case ConditionManualWhitelistMembership:
                     matched = await CheckConditionManualWhitelist(data);
                     denyMessage = Loc.GetString("whitelist-manual");
-                    missingManualWhitelist |= !matched && condition.Action == ConditionAction.Allow; // Symphony
                     break;
                 case ConditionManualBlacklistMembership:
                     matched = await CheckConditionManualBlacklist(data);
@@ -104,14 +98,14 @@ public sealed partial class ConnectionManager
                     if (matched)
                     {
                         sawmill.Verbose($"User {data.UserName} passed whitelist condition {condition.GetType().Name} and it's a breaking condition");
-                        return (true, denyMessage, false);
+                        return (true, denyMessage);
                     }
                     break;
                 case ConditionAction.Deny:
                     if (matched)
                     {
                         sawmill.Verbose($"User {data.UserName} failed whitelist condition {condition.GetType().Name}");
-                        return (false, denyMessage, missingManualWhitelist);
+                        return (false, denyMessage);
                     }
                     break;
                 default:
@@ -120,7 +114,7 @@ public sealed partial class ConnectionManager
             }
         }
         sawmill.Verbose($"User {data.UserName} passed all whitelist conditions");
-        return (true, null, false);
+        return (true, null);
     }
 
     #region Condition Checking

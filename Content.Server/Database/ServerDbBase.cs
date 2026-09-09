@@ -2041,13 +2041,6 @@ INSERT INTO player_round (players_id, rounds_id) VALUES ({players[player]}, {id}
 
         public abstract Task SendNotification(DatabaseNotification notification);
 
-        /// <summary>
-        /// Finds or mints the Symphony panel's one-time Discord link ticket for a player.
-        /// Returns linked when they already hold a live link (nothing is minted then), otherwise the ticket.
-        /// Both false and null when this engine has no panel bridge.
-        /// </summary>
-        public abstract Task<(bool linked, Guid? ticket)> GetOrMintDiscordLinkTicketAsync(NetUserId userId);
-
         // SQLite returns DateTime as Kind=Unspecified, Npgsql actually knows for sure it's Kind=Utc.
         // Normalize DateTimes here so they're always Utc. Thanks.
         protected abstract DateTime NormalizeDatabaseTime(DateTime time);

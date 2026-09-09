@@ -12,6 +12,7 @@ using Content.Shared.Database;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
 using Robust.Shared.Console;
+using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._WF.Administration.Commands;
@@ -33,7 +34,7 @@ public sealed partial class SpawnOutfitCommand : LocalizedEntityCommands
 
     public override void Execute(IConsoleShell shell, string argStr, string[] args)
     {
-        if (args.Length is < 2 or > 3)
+        if (args.Length is < 2 or > 4)
         {
             shell.WriteError(Loc.GetString("cmd-spawnoutfit-invalid-args"));
             shell.WriteLine(Help);
@@ -61,9 +62,16 @@ public sealed partial class SpawnOutfitCommand : LocalizedEntityCommands
         }
 
         var control = false;
-        if (args.Length == 3 && !bool.TryParse(args[2], out control))
+        if (args.Length >= 3 && !bool.TryParse(args[2], out control))
         {
             shell.WriteError(Loc.GetString("cmd-spawnoutfit-invalid-control"));
+            return;
+        }
+
+        var body = SpawnOutfitBody.Random;
+        if (args.Length == 4 && !Enum.TryParse(args[3], true, out body))
+        {
+            shell.WriteError(Loc.GetString("cmd-spawnoutfit-invalid-body"));
             return;
         }
 
@@ -74,21 +82,29 @@ public sealed partial class SpawnOutfitCommand : LocalizedEntityCommands
             return;
         }
 
-        // Use the admin's own character when they take control, otherwise a random one.
-        HumanoidCharacterProfile? profile = null;
-        if (control)
-            profile = _preferences.GetPreferencesOrNull(player.UserId)?.SelectedCharacter as HumanoidCharacterProfile;
-        profile ??= HumanoidCharacterProfile.RandomWithSpecies();
-
-        var mob = _stationSpawning.SpawnPlayerMob(targetXform.Coordinates, null, profile, null);
+        var mob = _stationSpawning.SpawnPlayerMob(targetXform.Coordinates, null, GetProfile(body, player), null);
         SetOutfitCommand.SetOutfit(mob, gear.ID, EntityManager);
 
         if (control)
             _mind.ControlMob(player.UserId, mob);
 
         _adminLogger.Add(LogType.EntitySpawn, LogImpact.Medium,
-            $"{player.Name} spawned {EntityManager.ToPrettyString(mob):mob} wearing {gear.ID} at {EntityManager.ToPrettyString(target.Value):target}{(control ? " and took control" : "")}");
+            $"{player.Name} spawned {EntityManager.ToPrettyString(mob):mob} ({body} body) wearing {gear.ID} at {EntityManager.ToPrettyString(target.Value):target}{(control ? " and took control" : "")}");
         shell.WriteLine(Loc.GetString("cmd-spawnoutfit-success", ("mob", EntityManager.ToPrettyString(mob)), ("gear", gear.ID)));
+    }
+
+    /// <summary>
+    /// Picks the character profile for the requested body. Falls back to the stock default if the admin has no humanoid character.
+    /// </summary>
+    private HumanoidCharacterProfile GetProfile(SpawnOutfitBody body, ICommonSession player)
+    {
+        return body switch
+        {
+            SpawnOutfitBody.Own => _preferences.GetPreferencesOrNull(player.UserId)?.SelectedCharacter as HumanoidCharacterProfile
+                                   ?? HumanoidCharacterProfile.DefaultWithSpecies(),
+            SpawnOutfitBody.Default => HumanoidCharacterProfile.DefaultWithSpecies(),
+            _ => HumanoidCharacterProfile.RandomWithSpecies(),
+        };
     }
 
     public override CompletionResult GetCompletion(IConsoleShell shell, string[] args)
@@ -104,6 +120,8 @@ public sealed partial class SpawnOutfitCommand : LocalizedEntityCommands
                 return CompletionResult.FromHintOptions(gears, Loc.GetString("cmd-spawnoutfit-hint-gear"));
             case 3:
                 return CompletionResult.FromHintOptions(new[] { "true", "false" }, Loc.GetString("cmd-spawnoutfit-hint-control"));
+            case 4:
+                return CompletionResult.FromHintOptions(Enum.GetNames<SpawnOutfitBody>(), Loc.GetString("cmd-spawnoutfit-hint-body"));
             default:
                 return CompletionResult.Empty;
         }

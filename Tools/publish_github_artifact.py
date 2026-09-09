@@ -12,6 +12,7 @@ Environment (all set by .github/workflows/publish.yml):
   ARTIFACT_ID         output of actions/upload-artifact
   GITHUB_REPOSITORY   owner/repo
   GITHUB_SHA          commit being published (part of the version name)
+  VERSION_SUFFIX      appended to the version: the test merge numbers and the panel's request id, if any
 Optional overrides: ROBUST_CDN_URL, FORK_ID, VERSION.
 
 Standard library only, so it runs on a bare runner.
@@ -97,7 +98,7 @@ def version_on_cdn(version):
 
 
 def main():
-    version = os.environ.get("VERSION") or f"{datetime.now(timezone.utc):%Y%m%d-%H%M%S}-{GITHUB_SHA[:7]}"
+    version = os.environ.get("VERSION") or f"{datetime.now(timezone.utc):%Y%m%d-%H%M%S}-{GITHUB_SHA[:7]}{os.environ.get('VERSION_SUFFIX', '')}"
     engine = get_engine_version()
     log(f"Publishing {version} (engine {engine}) to {ROBUST_CDN_URL}fork/{FORK_ID}")
 

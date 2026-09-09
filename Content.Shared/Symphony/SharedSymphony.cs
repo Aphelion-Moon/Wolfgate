@@ -10,9 +10,10 @@ public static class SharedSymphony
     /// <summary>
     /// Reported as symphony_module in /status. The panel compares it with the version it was written against.
     /// Version 2 added /symphony/roles, the catalogue of whitelisted jobs, ghost roles and companies, and
-    /// /symphony/roles/refresh, which makes the game re-read a player's rows for them.
+    /// /symphony/roles/refresh, which makes the game re-read a player's rows for them. Version 3 added
+    /// symphony_test_merges in /status: what a test merge build carries, from the stamp the workflow wrote.
     /// </summary>
-    public const int ModuleVersion = 2;
+    public const int ModuleVersion = 3;
 
     /// <summary>
     /// Key of the one-time Discord link URL in a whitelist refusal's structured properties.

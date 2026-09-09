@@ -6,6 +6,18 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      test_merges:
+        description: 'Pull requests to merge on top of the branch before building, comma-separated numbers. Empty builds the branch as it is.'
+        required: false
+        default: ''
+      request_id:
+        description: 'Set by the SSymphony panel so it can find this run again. Leave empty when running by hand.'
+        required: false
+        default: ''
+
+# The panel finds its run by this name; a plain push keeps the workflow's own.
+run-name: ${{ inputs.request_id != '' && format('Publish {0}{1}', inputs.test_merges != '' && 'test merge ' || '', inputs.request_id) || 'Publish' }}
 
 # One publish at a time and never cancelled part-way: a killed run could leave a half-registered version.
 concurrency:
@@ -15,6 +27,7 @@ concurrency:
 permissions:
   contents: read
   actions: read   # to resolve the build artifact's download URL for the CDN
+  pull-requests: read   # to name the pull requests being test merged
 
 jobs:
   build:
@@ -24,6 +37,19 @@ jobs:
     - uses: actions/checkout@v4.2.2
       with:
         submodules: 'recursive'
+        # A test merge needs the history a merge base lives in; a plain build does not.
+        fetch-depth: ${{ inputs.test_merges != '' && 0 || 1 }}
+
+    # Merges the requested pull requests with a merge commit each, skipping any that conflict, and stamps the
+    # build with what merged (Resources/Symphony/testmerges.json, read by the Symphony hook). The merged
+    # numbers also go into the version, so the CDN and the panel can name the set.
+    - name: Test merge pull requests
+      id: testmerge
+      if: ${{ inputs.test_merges != '' }}
+      run: python3 Tools/test_merge.py "${{ inputs.test_merges }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4.1.0
@@ -62,6 +88,7 @@ jobs:
         PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
         ARTIFACT_ID: ${{ steps.artifact.outputs.artifact-id }}
         GITHUB_REPOSITORY: ${{ github.repository }}
+        VERSION_SUFFIX: ${{ steps.testmerge.outputs.suffix }}${{ inputs.request_id != '' && format('-{0}', inputs.request_id) || '' }}
 
     - name: Publish changelog (Discord)
       continue-on-error: true

@@ -1,25 +1,19 @@
 <BoxContainer xmlns="https://spacestation14.io"
               Orientation="Vertical"
               HorizontalExpand="True"
-              VerticalExpand="True">
-    <!-- "Slot" selection -->
-    <Label Name="CategoryName" />
-    <BoxContainer Name="SlotSelectorContainer" HorizontalExpand="True">
-        <OptionButton Name="SlotSelector" HorizontalExpand="True" StyleClasses="OpenBoth" />
-        <Button Name="AddButton" Text="{Loc 'marking-slot-add'}" StyleClasses="OpenBoth" />
-        <Button Name="RemoveButton" Text="{Loc 'marking-slot-remove'}" StyleClasses="OpenLeft" />
+              VerticalExpand="True"
+              SeparationOverride="6">
+    <!-- WOLFGATE: compact layout with a shorter list; control names unchanged. -->
+    <Label Name="CategoryName" StyleClasses="CreatorFieldLabel" />
+    <BoxContainer Name="SlotSelectorContainer" HorizontalExpand="True" SeparationOverride="4">
+        <OptionButton Name="SlotSelector" HorizontalExpand="True" />
+        <Button Name="AddButton" Text="{Loc 'marking-slot-add'}" />
+        <Button Name="RemoveButton" Text="{Loc 'marking-slot-remove'}" />
     </BoxContainer>
     <LineEdit Name="Search" PlaceHolder="{Loc 'markings-search'}" HorizontalExpand="True" />
 
-    <!-- Item list -->
-    <BoxContainer Name="MarkingSelectorContainer" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True">
-        <ScrollContainer MinHeight="500" VerticalExpand="True" HorizontalExpand="True">
-            <ItemList Name="MarkingList" VerticalExpand="True" />
-        </ScrollContainer>
-
-        <!-- Color sliders -->
-        <ScrollContainer MinHeight="200" HorizontalExpand="True">
-            <BoxContainer Name="ColorSelectorContainer" HorizontalExpand="True" />
-        </ScrollContainer>
+    <BoxContainer Name="MarkingSelectorContainer" Orientation="Vertical" HorizontalExpand="True" VerticalExpand="True" SeparationOverride="6">
+        <ItemList Name="MarkingList" VerticalExpand="True" MinHeight="240" />
+        <BoxContainer Name="ColorSelectorContainer" Orientation="Vertical" HorizontalExpand="True" />
     </BoxContainer>
 </BoxContainer>

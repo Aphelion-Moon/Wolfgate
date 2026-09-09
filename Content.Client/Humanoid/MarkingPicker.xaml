@@ -1,37 +1,39 @@
 <Control xmlns="https://spacestation14.io">
-    <!-- Primary container -->
-    <BoxContainer Orientation="Vertical" HorizontalExpand="True">
-        <!-- Marking lists -->
-        <BoxContainer Orientation="Horizontal" SeparationOverride="5" HorizontalExpand="True">
-            <!-- Unused markings -->
-            <BoxContainer Orientation="Vertical" HorizontalExpand="True">
-                <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
-                    <Label Text="{Loc 'markings-unused'}" HorizontalAlignment="Stretch" HorizontalExpand="True" />
-                    <Label Name="CMarkingPoints" Text="uwu" HorizontalAlignment="Right" />
+    <!-- WOLFGATE: available/applied cards side by side with the colour editor below; control names unchanged. -->
+    <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="8">
+        <BoxContainer Orientation="Horizontal" SeparationOverride="8" HorizontalExpand="True">
+            <!-- Available markings -->
+            <PanelContainer StyleClasses="CreatorCard" HorizontalExpand="True">
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="6">
+                    <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                        <Label Text="{Loc 'wf-creator-markings-available'}" StyleClasses="CreatorHeading" HorizontalExpand="True" />
+                        <Label Name="CMarkingPoints" Text="" StyleClasses="CreatorFieldLabel" VAlign="Center" />
+                    </BoxContainer>
+                    <OptionButton Name="CMarkingCategoryButton" HorizontalExpand="True" />
+                    <LineEdit Name="CMarkingSearch" PlaceHolder="{Loc 'markings-search'}" />
+                    <ItemList Name="CMarkingsUnused" VerticalExpand="True" MinSize="260 280" />
+                    <Button Name="CMarkingAdd" Text="{Loc 'markings-add'}" StyleClasses="CreatorPrimary" />
                 </BoxContainer>
-
-                <OptionButton Name="CMarkingCategoryButton" StyleClasses="OpenLeft" />
-                <LineEdit Name="CMarkingSearch" PlaceHolder="{Loc 'markings-search'}" />
-
-                <ItemList Name="CMarkingsUnused" VerticalExpand="True" MinSize="300 250" />
-                <Button Name="CMarkingAdd" Text="{Loc 'markings-add'}" StyleClasses="OpenRight" />
-            </BoxContainer>
-
-            <!-- Used markings -->
-            <BoxContainer Orientation="Vertical" HorizontalExpand="True">
-                <Label Text="{Loc 'markings-used'}" />
-
-                <ItemList Name="CMarkingsUsed" VerticalExpand="True" MinSize="300 250" />
-
-                <BoxContainer Orientation="Horizontal">
-                    <Button Name="CMarkingRankUp" Text="{Loc 'markings-rank-up'}" StyleClasses="OpenBoth" HorizontalExpand="True" />
-                    <Button Name="CMarkingRankDown" Text="{Loc 'markings-rank-down'}" StyleClasses="OpenBoth" HorizontalExpand="True" />
+            </PanelContainer>
+            <!-- Applied markings -->
+            <PanelContainer StyleClasses="CreatorCard" HorizontalExpand="True">
+                <BoxContainer Orientation="Vertical" HorizontalExpand="True" SeparationOverride="6">
+                    <Label Text="{Loc 'wf-creator-markings-applied'}" StyleClasses="CreatorHeading" />
+                    <ItemList Name="CMarkingsUsed" VerticalExpand="True" MinSize="260 280" />
+                    <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                        <Button Name="CMarkingRankUp" Text="{Loc 'markings-rank-up'}" HorizontalExpand="True" />
+                        <Button Name="CMarkingRankDown" Text="{Loc 'markings-rank-down'}" HorizontalExpand="True" />
+                    </BoxContainer>
+                    <Button Name="CMarkingRemove" Text="{Loc 'markings-remove'}" StyleClasses="Caution" />
                 </BoxContainer>
-                <Button Name="CMarkingRemove" Text="{Loc 'markings-remove'}" StyleClasses="OpenRight" />
-            </BoxContainer>
+            </PanelContainer>
         </BoxContainer>
-
-        <!-- Colors -->
-        <BoxContainer Name="CMarkingColors" Orientation="Vertical" Visible="False" />
+        <!-- Colours of the selected applied marking -->
+        <PanelContainer StyleClasses="CreatorCard" HorizontalExpand="True" Name="CMarkingColorsCard" Visible="False">
+            <BoxContainer Orientation="Vertical" SeparationOverride="6">
+                <Label Text="{Loc 'wf-creator-markings-colours'}" StyleClasses="CreatorHeading" />
+                <BoxContainer Name="CMarkingColors" Orientation="Vertical" />
+            </BoxContainer>
+        </PanelContainer>
     </BoxContainer>
 </Control>

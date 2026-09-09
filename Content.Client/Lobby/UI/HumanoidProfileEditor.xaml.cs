@@ -9,6 +9,7 @@ using Content.Client.Players.PlayTimeTracking;
 using Content.Client.Sprite;
 using Content.Client.UserInterface.Systems.Guidebook;
 using Content.Client.UserInterface.Controls;
+using Content.Client._WF.UserInterface.Controls; // WOLFGATE
 using Content.Shared._Mono.Company;
 using Content.Shared.CCVar;
 using Content.Shared.Clothing;
@@ -97,7 +98,7 @@ namespace Content.Client.Lobby.UI
 
         private Direction _previewRotation = Direction.North;
 
-        private ColorSelectorSliders _rgbSkinColorSelector;
+        private WolfgateColorPicker _rgbSkinColorSelector; // WOLFGATE: swatches + sliders
 
         private bool _isDirty;
 
@@ -236,7 +237,7 @@ namespace Content.Client.Lobby.UI
                 OnSkinColorOnValueChanged();
             };
 
-            RgbSkinColorContainer.AddChild(_rgbSkinColorSelector = new ColorSelectorSliders());
+            RgbSkinColorContainer.AddChild(_rgbSkinColorSelector = new WolfgateColorPicker()); // WOLFGATE
             _rgbSkinColorSelector.SelectorType = ColorSelectorSliders.ColorSelectorType.Hsv; // defaults color selector to HSV
             _rgbSkinColorSelector.OnColorChanged += _ =>
             {
@@ -1989,6 +1990,7 @@ namespace Content.Client.Lobby.UI
                 facialHairMarking,
                 Profile.Species,
                 1);
+            HairCard.Visible = HairStylePicker.Visible || FacialHairPicker.Visible; // WOLFGATE: no hair card for species without hair
         }
 
         private void UpdateCMarkingsHair()
@@ -2081,6 +2083,10 @@ namespace Content.Client.Lobby.UI
         private void SetPreviewRotation(Direction direction)
         {
             SpriteView.OverrideDirection = (Direction) ((int) direction % 4 * 2);
+            // WOLFGATE: the picker tiles face the same way as the preview pawn
+            HairStylePicker.PreviewDirection = SpriteView.OverrideDirection.Value;
+            FacialHairPicker.PreviewDirection = SpriteView.OverrideDirection.Value;
+            Markings.PreviewDirection = SpriteView.OverrideDirection.Value;
         }
 
         private void RandomizeEverything()

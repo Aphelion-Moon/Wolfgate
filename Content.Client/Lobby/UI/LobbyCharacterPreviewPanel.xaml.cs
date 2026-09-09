@@ -30,7 +30,7 @@ public sealed partial class LobbyCharacterPreviewPanel : Control
 
     public void SetSummaryText(string value)
     {
-        Summary.Text = value;
+        Summary.SetMessage(FormattedMessage.FromUnformatted(value)); // WOLFGATE: rich text so the hero card wraps
     }
 
     // Frontier: show bank balance on character selection.
@@ -73,8 +73,8 @@ public sealed partial class LobbyCharacterPreviewPanel : Control
         var spriteView = new SpriteView
         {
             OverrideDirection = Direction.South,
-            Scale = new Vector2(4f, 4f),
-            MaxSize = new Vector2(112, 112),
+            Scale = new Vector2(6f, 6f), // WOLFGATE: hero-sized preview
+            MaxSize = new Vector2(192, 192), // WOLFGATE
             Stretch = SpriteView.StretchMode.Fill,
         };
         spriteView.SetEntity(uid);

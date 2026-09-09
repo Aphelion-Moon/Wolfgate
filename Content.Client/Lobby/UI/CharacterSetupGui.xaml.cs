@@ -11,6 +11,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.XAML;
 using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
+using Content.Client._WF.Stylesheets; // WOLFGATE
 
 namespace Content.Client.Lobby.UI
 {
@@ -36,15 +37,8 @@ namespace Content.Client.Lobby.UI
             RobustXamlLoader.Load(this);
             IoCManager.InjectDependencies(this);
 
-            var panelTex = _resourceCache.GetTexture("/Textures/Interface/Nano/button.svg.96dpi.png");
-            var back = new StyleBoxTexture
-            {
-                Texture = panelTex,
-                Modulate = new Color(37, 37, 42)
-            };
-            back.SetPatchMargin(StyleBox.Margin.All, 10);
-
-            BackgroundPanel.PanelOverride = back;
+            // WOLFGATE: skinned backdrop for the creator shell
+            BackgroundPanel.StyleClasses.Add(StyleWolfgate.StyleClassCreatorBackdrop);
 
             _createNewCharacterButton = new Button
             {

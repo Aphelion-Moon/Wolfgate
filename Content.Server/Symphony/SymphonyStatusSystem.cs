@@ -10,9 +10,9 @@ namespace Content.Server.Symphony;
 /// Reports the Symphony hook version in /status, so the SSymphony panel can check the build it is talking to.
 /// A system of its own rather than a line in the game ticker's status shell, so upstream's file stays untouched.
 /// </summary>
-public sealed class SymphonyStatusSystem : EntitySystem
+public sealed partial class SymphonyStatusSystem : EntitySystem
 {
-    [Dependency] private readonly IStatusHost _statusHost = default!;
+    [Dependency] private IStatusHost _statusHost = default!;
 
     public override void Initialize()
     {

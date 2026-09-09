@@ -13,6 +13,7 @@ Environment (all set by .github/workflows/publish.yml):
   GITHUB_REPOSITORY   owner/repo
   GITHUB_SHA          commit being published (part of the version name)
   VERSION_SUFFIX      appended to the version: the test merge numbers and the panel's request id, if any
+  FORK_ID             the CDN fork id to publish under; empty or unset is the fork itself
 Optional overrides: ROBUST_CDN_URL, FORK_ID, VERSION.
 
 Standard library only, so it runs on a bare runner.
@@ -30,8 +31,9 @@ from datetime import datetime, timezone
 # CONFIGURATION PARAMETERS
 # Forks should change these to publish to their own infrastructure.
 #
-ROBUST_CDN_URL = os.environ.get("ROBUST_CDN_URL", "https://wolfgatecdn.a13.info/")
-FORK_ID = os.environ.get("FORK_ID", "wolfgate")
+ROBUST_CDN_URL = os.environ.get("ROBUST_CDN_URL") or "https://wolfgatecdn.a13.info/"
+# Empty means the fork itself: the workflow passes its fork_id input through as is.
+FORK_ID = os.environ.get("FORK_ID") or "wolfgate"
 
 GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
 PUBLISH_TOKEN = os.environ["PUBLISH_TOKEN"]

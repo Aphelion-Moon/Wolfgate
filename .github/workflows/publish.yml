@@ -15,6 +15,10 @@ on:
         description: 'Set by the SSymphony panel so it can find this run again. Leave empty when running by hand.'
         required: false
         default: ''
+      fork_id:
+        description: 'CDN fork id to publish under. Empty is the fork itself; a test server tracks an id of its own, such as wolfgate-test.'
+        required: false
+        default: ''
 
 # The panel finds its run by this name; a plain push keeps the workflow's own.
 run-name: ${{ inputs.request_id != '' && format('Publish {0}{1}', inputs.test_merges != '' && 'test merge ' || '', inputs.request_id) || 'Publish' }}
@@ -38,7 +42,7 @@ jobs:
       with:
         submodules: 'recursive'
         # A test merge needs the history a merge base lives in; a plain build does not.
-        fetch-depth: ${{ inputs.test_merges != '' && 0 || 1 }}
+        fetch-depth: ${{ inputs.test_merges == '' && 1 || 0 }}
 
     # Merges the requested pull requests with a merge commit each, skipping any that conflict, and stamps the
     # build with what merged (Resources/Symphony/testmerges.json, read by the Symphony hook). The merged
@@ -89,8 +93,11 @@ jobs:
         ARTIFACT_ID: ${{ steps.artifact.outputs.artifact-id }}
         GITHUB_REPOSITORY: ${{ github.repository }}
         VERSION_SUFFIX: ${{ steps.testmerge.outputs.suffix }}${{ inputs.request_id != '' && format('-{0}', inputs.request_id) || '' }}
+        FORK_ID: ${{ inputs.fork_id }}
 
+    # A test merge or test fork build is not a release of main, so its changelog entries are not announced.
     - name: Publish changelog (Discord)
+      if: ${{ inputs.test_merges == '' && inputs.fork_id == '' }}
       continue-on-error: true
       run: Tools/actions_changelogs_since_last_run.py
       env:

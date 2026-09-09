@@ -1,0 +1,40 @@
+<DefaultWindow xmlns="https://spacestation14.io"
+               Title="{Loc 'wf-vessel-spawn-title'}"
+               MinSize="600 400"
+               SetSize="720 600">
+    <BoxContainer Orientation="Vertical" Margin="4">
+        <BoxContainer Orientation="Horizontal" Margin="0 0 0 4">
+            <LineEdit Name="SearchBar"
+                      PlaceHolder="{Loc 'wf-vessel-spawn-search'}"
+                      HorizontalExpand="True"
+                      Margin="0 0 4 0" />
+            <OptionButton Name="SizeFilter"
+                          Prefix="{Loc 'wf-vessel-spawn-size-label'}"
+                          StyleClasses="ButtonSquare"
+                          MinWidth="140"
+                          Margin="0 0 4 0" />
+            <OptionButton Name="OwnerSelect"
+                          Prefix="{Loc 'wf-vessel-spawn-owner-label'}"
+                          StyleClasses="ButtonSquare"
+                          MinWidth="180" />
+        </BoxContainer>
+        <Label Text="{Loc 'wf-vessel-spawn-info'}"
+               StyleClasses="LabelSubText"
+               Margin="0 0 0 4" />
+        <ScrollContainer HorizontalExpand="True"
+                         VerticalExpand="True"
+                         HScrollEnabled="False">
+            <BoxContainer Name="Vessels"
+                          Orientation="Vertical"
+                          HorizontalExpand="True"
+                          VerticalExpand="True"
+                          SeparationOverride="2">
+                <!-- Vessel rows get added here by code -->
+            </BoxContainer>
+        </ScrollContainer>
+        <Label Name="CountLabel"
+               StyleClasses="LabelSubText"
+               HorizontalAlignment="Right"
+               Margin="0 4 0 0" />
+    </BoxContainer>
+</DefaultWindow>

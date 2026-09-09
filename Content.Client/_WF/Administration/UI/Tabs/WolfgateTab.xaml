@@ -1,0 +1,13 @@
+<Control
+    xmlns="https://spacestation14.io"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cc="clr-namespace:Content.Client.Administration.UI.CustomControls"
+    xmlns:vessel="clr-namespace:Content.Client._WF.Administration.UI.VesselSpawn"
+    Margin="4"
+    MinSize="50 50">
+    <BoxContainer Orientation="Vertical">
+        <GridContainer Columns="3">
+            <cc:UICommandButton Command="spawnvessel" Text="{Loc wf-admin-tab-spawn-vessel}" WindowType="{x:Type vessel:VesselSpawnWindow}" />
+        </GridContainer>
+    </BoxContainer>
+</Control>

@@ -21,3 +21,10 @@ Entries:
   id: 100002
   time: '2026-09-09T02:46:23.0000000+00:00'
   url: https://github.com/Aphelion-Moon/Wolfgate/pull/8
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: PR's can now be test merged before full merge.
+  id: 100003
+  time: '2026-09-09T03:33:29.0000000+00:00'
+  url: https://github.com/Aphelion-Moon/Wolfgate/pull/10

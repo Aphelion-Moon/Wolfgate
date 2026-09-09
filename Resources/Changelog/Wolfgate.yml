@@ -14,3 +14,10 @@ Entries:
   id: 100001
   time: '2026-09-08T22:16:11.0000000+00:00'
   url: https://github.com/Aphelion-Moon/Wolfgate/pull/4
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: SSymphony is now running game version 2.
+  id: 100002
+  time: '2026-09-09T02:46:23.0000000+00:00'
+  url: https://github.com/Aphelion-Moon/Wolfgate/pull/8

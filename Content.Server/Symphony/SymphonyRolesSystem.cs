@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Content.Server._Mono.Company;
+using Content.Server.Administration.Managers;
 using Content.Server.Database;
 using Content.Server.Players.JobWhitelist;
 using Content.Shared._Mono.CCVar;
@@ -31,10 +32,11 @@ namespace Content.Server.Symphony;
 
 /// <summary>
 /// The whitelisted roles this build has, and a way to make the game re-read a player's rows, for the SSymphony panel.
-/// The panel maps Discord roles onto role_whitelists and company_members and writes those tables itself; it asks here
-/// what there is to map, and after a write it asks the game to bring its caches into line for anyone online, since
-/// the job whitelist is read once at connect and company membership once at boot. Both calls take the admin API
-/// token, the way /admin does. Nothing upstream is touched: the handler hangs off the status host on its own.
+/// The panel maps Discord roles onto the admin table, role_whitelists and company_members and writes those tables
+/// itself; it asks here what there is to map, and after a write it asks the game to bring its caches into line for
+/// anyone online, since admin and job rows are read once at connect and company membership once at boot. Both calls
+/// take the admin API token, the way /admin does. Nothing upstream is touched: the handler hangs off the status host
+/// on its own.
 /// </summary>
 public sealed partial class SymphonyRolesSystem : EntitySystem
 {
@@ -51,6 +53,7 @@ public sealed partial class SymphonyRolesSystem : EntitySystem
     [Dependency] private ILocalizationManager _loc = default!;
     [Dependency] private JobWhitelistManager _jobWhitelist = default!;
     [Dependency] private CompanyManager _companies = default!;
+    [Dependency] private IAdminManager _adminManager = default!;
 
     public override void Initialize()
     {
@@ -171,11 +174,13 @@ public sealed partial class SymphonyRolesSystem : EntitySystem
             _prototypes.EnumeratePrototypes<GhostRolePrototype>().Where(r => r.Whitelisted).Select(r => r.ID).ToList(),
             _prototypes.EnumeratePrototypes<CompanyPrototype>().Where(c => c.Whitelisted).Select(c => c.ID).ToList()));
 
+        var named = wanted.Count > 0;
         var changed = 0;
         foreach (var user in online)
         {
             // A row in the whitelist table opens every whitelisted role, so the per-role rows are moot for them.
             var global = await _db.GetWhitelistStatusAsync(user);
+            var adminRow = await _db.GetAdminDataForAsync(user) != null;
             var rows = (await _db.GetJobWhitelists(user.UserId)).ToHashSet();
             var memberOf = new HashSet<string>();
             foreach (var company in companies)
@@ -184,7 +189,7 @@ public sealed partial class SymphonyRolesSystem : EntitySystem
                     memberOf.Add(company);
             }
 
-            changed += await OnMainThread(() => Reconcile(user, global, rows, memberOf, jobs, ghostRoles, companies));
+            changed += await OnMainThread(() => Reconcile(user, named, adminRow, global, rows, memberOf, jobs, ghostRoles, companies));
         }
 
         if (changed > 0)
@@ -199,6 +204,8 @@ public sealed partial class SymphonyRolesSystem : EntitySystem
     /// </summary>
     private int Reconcile(
         NetUserId user,
+        bool named,
+        bool adminRow,
         bool global,
         HashSet<string> rows,
         HashSet<string> memberOf,
@@ -210,6 +217,17 @@ public sealed partial class SymphonyRolesSystem : EntitySystem
             return 0;
 
         var changes = 0;
+
+        // The admin manager's own reload takes the row as it now stands: rank, flags, or gone. An account the
+        // panel named just had its row changed, so it is reloaded outright. For everyone else only a row
+        // appearing or going is certain enough, since a reload tells an active admin their permissions changed
+        // whether they did or not.
+        if (named || adminRow != _adminManager.IsAdmin(session, includeDeAdmin: true))
+        {
+            _adminManager.ReloadAdmin(session);
+            changes++;
+        }
+
         if (!global)
         {
             foreach (var job in jobs)

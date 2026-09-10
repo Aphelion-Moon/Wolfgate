@@ -115,6 +115,7 @@
   name: Urist McVoxster
   abstract: true
   components:
+  - type: Wagging # Wolfgate: this species has wag-capable tails but had no Wagging Tail action
   - type: Icon
     sprite: _FarHorizons/Mobs/Species/Proto-Vox/parts.rsi
     state: full
@@ -1230,6 +1231,7 @@
   id: BaseMobProtoReptile
   abstract: true
   components:
+  - type: Wagging # Wolfgate: this species has wag-capable tails but had no Wagging Tail action
   - type: HumanoidAppearance
     species: ProtoReptile
     hideLayersOnEquip:
@@ -2093,6 +2095,7 @@
   id: BaseMobProtoAvali
   abstract: true
   components:
+    - type: Wagging # Wolfgate: this species has wag-capable tails but had no Wagging Tail action
     - type: Tag
       tags:
         - CanPilot

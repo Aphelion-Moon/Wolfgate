@@ -5,6 +5,7 @@
   id: BaseMobVulpkanin
   abstract: true
   components:
+  - type: Wagging # Wolfgate: this species has wag-capable tails but had no Wagging Tail action
   - type: HumanoidAppearance
     species: Vulpkanin
     hideLayersOnEquip: # Mono

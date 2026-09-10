@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using Content.Client.Humanoid;
+using Content.Client._WF.Humanoid; // WOLFGATE
 using Content.Client.Lobby.UI.Loadouts;
 using Content.Client.Lobby.UI.Roles;
 using Content.Client.Message;
@@ -56,8 +57,7 @@ namespace Content.Client.Lobby.UI
         private readonly EntityWhitelistSystem _whitelist; // Frontier
         private readonly CompanyManager _companyManager; // Mono
 
-        private FlavorText.FlavorText? _flavorText;
-        private TextEdit? _flavorTextEdit;
+        private WolfgateDescriptionWindow? _descriptionWindow; // WOLFGATE
 
         // One at a time.
         private LoadoutWindow? _loadoutWindow;
@@ -186,11 +186,24 @@ namespace Content.Client.Lobby.UI
 
             #region Sex
 
-            SexButton.OnItemSelected += args =>
+            SexSelector.OnSexSelected += SetSex; // WOLFGATE
+
+            // WOLFGATE: species name override. Blank falls back to the species' own name.
+            CustomSpeciesNameEdit.IsValid = value => value.Length <= HumanoidCharacterProfile.MaxCustomSpeciesNameLength;
+            CustomSpeciesNameEdit.OnTextChanged += args =>
             {
-                SexButton.SelectId(args.Id);
-                SetSex((Sex) args.Id);
+                if (Profile == null || args.Text.Length > HumanoidCharacterProfile.MaxCustomSpeciesNameLength)
+                    return;
+
+                Profile = Profile.WithCustomSpeciesName(args.Text);
+                SetDirty();
+                ReloadPreview();
             };
+
+            // WOLFGATE: description box under the preview, plus a full-size editor for longer text.
+            DescriptionEdit.Placeholder = new Rope.Leaf(Loc.GetString("flavor-text-placeholder"));
+            DescriptionEdit.OnTextChanged += _ => OnFlavorTextChange(Rope.Collapse(DescriptionEdit.TextRope).Trim());
+            DescriptionExpand.OnPressed += _ => OpenDescriptionWindow();
 
             #endregion Sex
 
@@ -224,6 +237,7 @@ namespace Content.Client.Lobby.UI
             RefreshSpecies();
 
             SpeciesPicker.OnSpeciesSelected += SetSpecies; // WOLFGATE
+            SpeciesPicker.OnSpeciesInfoRequested += OpenSpeciesGuidebook; // WOLFGATE
             SpeciesButton.OnItemSelected += args =>
             {
                 SpeciesButton.SelectId(args.Id);
@@ -560,30 +574,8 @@ namespace Content.Client.Lobby.UI
         /// </summary>
         public void RefreshFlavorText()
         {
-            if (_cfgManager.GetCVar(CCVars.FlavorText))
-            {
-                if (_flavorText != null)
-                    return;
-
-                _flavorText = new FlavorText.FlavorText();
-                TabContainer.AddChild(_flavorText);
-                TabContainer.SetTabTitle(TabContainer.ChildCount - 1, Loc.GetString("humanoid-profile-editor-flavortext-tab"));
-                _flavorTextEdit = _flavorText.CFlavorTextInput;
-
-                _flavorText.OnFlavorTextChanged += OnFlavorTextChange;
-            }
-            else
-            {
-                if (_flavorText == null)
-                    return;
-
-                TabContainer.RemoveChild(_flavorText);
-                _flavorText.OnFlavorTextChanged -= OnFlavorTextChange;
-                _flavorText.Dispose();
-                _flavorTextEdit?.Dispose();
-                _flavorTextEdit = null;
-                _flavorText = null;
-            }
+            // WOLFGATE: the description lives under the preview now, so this only shows or hides that box.
+            DescriptionBox.Visible = _cfgManager.GetCVar(CCVars.FlavorText);
         }
 
         /// <summary>
@@ -1033,7 +1025,10 @@ namespace Content.Client.Lobby.UI
 
             SpeciesPicker.Populate(); // WOLFGATE
             if (Profile != null)
+            {
                 SpeciesPicker.SetSelected(Profile.Species);
+                CustomSpeciesNameEdit.Text = Profile.CustomSpeciesName;
+            }
 
             // If our species isn't available then reset it to default.
             if (Profile != null)
@@ -1239,12 +1234,17 @@ namespace Content.Client.Lobby.UI
 
         private void OnSpeciesInfoButtonPressed(BaseButton.ButtonEventArgs args)
         {
+            OpenSpeciesGuidebook(Profile?.Species ?? SharedHumanoidAppearanceSystem.DefaultSpecies);
+        }
+
+        /// <summary>WOLFGATE: split out so the species tab's per-card info buttons can reach it.</summary>
+        private void OpenSpeciesGuidebook(string species)
+        {
             // TODO GUIDEBOOK
             // make the species guide book a field on the species prototype.
             // I.e., do what jobs/antags do.
 
             var guidebookController = UserInterfaceManager.GetUIController<GuidebookUIController>();
-            var species = Profile?.Species ?? SharedHumanoidAppearanceSystem.DefaultSpecies;
             var page = DefaultSpeciesGuidebook;
             if (_prototypeManager.HasIndex<GuideEntryPrototype>(species))
                 page = species;
@@ -1504,6 +1504,28 @@ namespace Content.Client.Lobby.UI
             UpdateJobPriorities();
         }
 
+        /// <summary>WOLFGATE: opens the big description editor, kept in step with the small box.</summary>
+        private void OpenDescriptionWindow()
+        {
+            if (_descriptionWindow is { Disposed: false })
+            {
+                _descriptionWindow.MoveToFront();
+                return;
+            }
+
+            _descriptionWindow = new WolfgateDescriptionWindow(
+                Rope.Collapse(DescriptionEdit.TextRope),
+                Loc.GetString("flavor-text-placeholder"));
+
+            _descriptionWindow.OnTextChanged += text =>
+            {
+                DescriptionEdit.TextRope = new Rope.Leaf(text);
+                OnFlavorTextChange(text.Trim());
+            };
+            _descriptionWindow.OnClose += () => _descriptionWindow = null;
+            _descriptionWindow.OpenCentered();
+        }
+
         private void OnFlavorTextChange(string content)
         {
             if (Profile is null)
@@ -1682,6 +1704,7 @@ namespace Content.Client.Lobby.UI
         private void SetSpecies(string newSpecies)
         {
             Profile = Profile?.WithSpecies(newSpecies);
+            EnforceSpeciesHair(); // WOLFGATE
             SpeciesPicker.SetSelected(newSpecies); // WOLFGATE
             var speciesIndex = _species.FindIndex(s => s.ID == newSpecies); // WOLFGATE: keep the dropdown in step
             if (speciesIndex >= 0)
@@ -1698,6 +1721,33 @@ namespace Content.Client.Lobby.UI
             UpdateSexControls(); // update sex for new species
             UpdateSpeciesGuidebookIcon();
             ReloadPreview();
+        }
+
+        /// <summary>
+        /// WOLFGATE: hair and facial hair are stored outside the marking set, so a species change has to
+        /// drop them by hand. Without this, switching to a species with no hair left the old style on the
+        /// character with no picker to remove it.
+        /// </summary>
+        private void EnforceSpeciesHair()
+        {
+            if (Profile == null)
+                return;
+
+            var appearance = Profile.Appearance;
+            var hair = appearance.HairStyleId;
+            var facialHair = appearance.FacialHairStyleId;
+
+            if (!_markingManager.MarkingsByCategoryAndSpecies(MarkingCategories.Hair, Profile.Species).ContainsKey(hair))
+                hair = HairStyles.DefaultHairStyle;
+
+            if (!_markingManager.MarkingsByCategoryAndSpecies(MarkingCategories.FacialHair, Profile.Species).ContainsKey(facialHair))
+                facialHair = HairStyles.DefaultFacialHairStyle;
+
+            if (hair == appearance.HairStyleId && facialHair == appearance.FacialHairStyleId)
+                return;
+
+            Profile = Profile.WithCharacterAppearance(
+                appearance.WithHairStyleName(hair).WithFacialHairStyleName(facialHair));
         }
 
         private void EnforceSpeciesTraitRestrictions()
@@ -1789,9 +1839,9 @@ namespace Content.Client.Lobby.UI
 
         private void UpdateFlavorTextEdit()
         {
-            if (_flavorTextEdit != null)
+            if (DescriptionBox.Visible)
             {
-                _flavorTextEdit.TextRope = new Rope.Leaf(Profile?.FlavorText ?? "");
+                DescriptionEdit.TextRope = new Rope.Leaf(Profile?.FlavorText ?? "");
             }
         }
 
@@ -1815,9 +1865,11 @@ namespace Content.Client.Lobby.UI
         private void UpdateSexControls()
         {
             if (Profile == null)
+            {
+                // WOLFGATE: otherwise the previous character's segments stay visible and lit.
+                SexSelector.Visible = false;
                 return;
-
-            SexButton.Clear();
+            }
 
             var sexes = new List<Sex>();
 
@@ -1834,16 +1886,16 @@ namespace Content.Client.Lobby.UI
                 sexes.Add(Sex.Unsexed);
             }
 
-            // add button for each sex
-            foreach (var sex in sexes)
-            {
-                SexButton.AddItem(Loc.GetString($"humanoid-profile-editor-sex-{sex.ToString().ToLower()}-text"), (int) sex);
-            }
+            // WOLFGATE: an icon box per sex, and a real SetSex when the current one is not offered by the
+            // new species. The old dropdown only moved its visual selection, because OptionButton.SelectId
+            // does not raise OnItemSelected - so switching a Male character to Vox left Profile.Sex on Male
+            // while the box read "None", and the markings were never revalidated.
+            SexSelector.SetSexes(sexes);
 
             if (sexes.Contains(Profile.Sex))
-                SexButton.SelectId((int) Profile.Sex);
-            else
-                SexButton.SelectId((int) sexes[0]);
+                SexSelector.SetSelected(Profile.Sex);
+            else if (sexes.Count > 0)
+                SetSex(sexes[0]);
         }
 
         private void UpdateSkinColor()

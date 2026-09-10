@@ -6,7 +6,7 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared._DV.Abilities;
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)] // WOLFGATE: raise AfterAutoHandleState
 public sealed partial class CrawlUnderObjectsComponent : Component
 {
     [DataField]
@@ -15,7 +15,9 @@ public sealed partial class CrawlUnderObjectsComponent : Component
     [DataField]
     public EntProtoId? ActionProto;
 
-    [DataField]
+    // WOLFGATE: was a plain DataField while the component generates networked state, so the client's copy
+    // was stuck on false. Upstream and HardLight both network it.
+    [DataField, AutoNetworkedField]
     public bool Enabled = false;
 
     /// <summary>

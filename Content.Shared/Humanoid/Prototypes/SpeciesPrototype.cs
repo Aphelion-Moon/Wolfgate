@@ -108,8 +108,12 @@ public sealed partial class SpeciesPrototype : IPrototype
     [DataField]
     public SpeciesNaming Naming { get; private set; } = SpeciesNaming.FirstLast;
 
+    /// <summary>
+    /// WOLFGATE - Unsexed is offered by default. Species that are genuinely sexless (Vox, Arachnid, IPC)
+    /// still declare `sexes: [Unsexed]` and are unaffected.
+    /// </summary>
     [DataField]
-    public List<Sex> Sexes { get; private set; } = new() { Sex.Male, Sex.Female };
+    public List<Sex> Sexes { get; private set; } = new() { Sex.Male, Sex.Female, Sex.Unsexed };
 
     /// <summary>
     ///     Characters younger than this are too young to be hired by Nanotrasen.

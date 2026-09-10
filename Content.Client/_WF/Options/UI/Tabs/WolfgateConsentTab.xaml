@@ -1,0 +1,32 @@
+<tabs:WolfgateConsentTab xmlns="https://spacestation14.io"
+                         xmlns:tabs="clr-namespace:Content.Client._WF.Options.UI.Tabs"
+                         xmlns:gfx="clr-namespace:Robust.Client.Graphics;assembly=Robust.Client">
+    <BoxContainer Orientation="Vertical" Margin="8 8 8 8">
+        <!-- Shown when the client is not connected, since consent lives on the server. -->
+        <Label Name="UnavailableLabel"
+               Text="{Loc 'ui-options-consent-unavailable'}"
+               Visible="False" />
+        <BoxContainer Name="ConsentContent" Orientation="Vertical" VerticalExpand="True">
+            <Label Text="{Loc 'consent-window-text'}" />
+            <BoxContainer Orientation="Horizontal" Margin="0 5 0 5">
+                <Label Name="SaveLabel" FontColorOverride="Red" />
+                <Control HorizontalExpand="True" />
+                <Button Name="SaveConsentSettings" Text="{Loc 'ui-options-consent-save'}" Disabled="True" />
+            </BoxContainer>
+            <Label Text="{Loc 'consent-window-freetext-label'}" />
+            <PanelContainer HorizontalExpand="True" MinWidth="200">
+                <PanelContainer.PanelOverride>
+                    <gfx:StyleBoxFlat BackgroundColor="#1B1B1E" />
+                </PanelContainer.PanelOverride>
+                <TextEdit Name="ConsentFreetext" MinHeight="110" />
+            </PanelContainer>
+            <Control MinSize="0 10" />
+            <Label Text="{Loc 'consent-window-toggles-label'}" />
+            <ScrollContainer HorizontalExpand="True" VerticalExpand="True" HScrollEnabled="False" MinHeight="60">
+                <BoxContainer Name="ConsentSettings" Orientation="Vertical" HorizontalExpand="True" SeparationOverride="2">
+                    <!-- One control per consent toggle prototype, generated in code -->
+                </BoxContainer>
+            </ScrollContainer>
+        </BoxContainer>
+    </BoxContainer>
+</tabs:WolfgateConsentTab>

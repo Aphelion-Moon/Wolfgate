@@ -1,8 +1,8 @@
 # Wolfgate: consent system ported from HardLight.
 
 # UI
-game-hud-open-consent-window-button-tooltip = Open consent menu.
-ui-options-function-open-consent-window = Open consent menu
+game-hud-open-consent-window-button-tooltip = Open consent preferences in Game Options.
+ui-options-function-open-consent-window = Open consent preferences
 consent-window-title = OOC Consent & Preferences
 consent-window-text = This information is shown to other players to help with RP and used to opt-in or out of certain gameplay systems.
 consent-window-freetext-label = Freetext
@@ -18,3 +18,8 @@ consent-examine-not-set = This player has no consent preferences set.
 # Consent toggles
 consent-GenitalMarkings = See Genital Markings
     .desc = Turn this on to allow showing/hiding genital markings in-game.
+
+# Wolfgate: consent moved into a Game Options tab.
+ui-options-tab-consent = Consent
+ui-options-consent-save = Save
+ui-options-consent-unavailable = Connect to a server to set your consent preferences.

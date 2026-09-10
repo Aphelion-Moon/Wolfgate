@@ -110,7 +110,7 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
     private void OnExamined(EntityUid uid, HumanoidAppearanceComponent component, ExaminedEvent args)
     {
         var identity = Identity.Entity(uid, EntityManager);
-        var species = GetSpeciesRepresentation(component.Species).ToLower();
+        var species = GetSpeciesRepresentation(component.Species, component.CustomSpeciesName).ToLower(); // WOLFGATE
         var age = GetAgeRepresentation(component.Species, component.Age);
 
         // WWDP EDIT
@@ -407,6 +407,7 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
         }
 
         humanoid.EyeColor = eyeColor;
+        humanoid.CustomSpeciesName = profile.CustomSpeciesName;
         // End WOLFGATE
 
         SetSkinColor(uid, profile.Appearance.SkinColor, false);
@@ -557,6 +558,16 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
     /// <summary>
     /// Takes ID of the species prototype, returns UI-friendly name of the species.
     /// </summary>
+    /// <summary>
+    /// WOLFGATE - as above, but a non-empty custom name replaces the species name outright.
+    /// </summary>
+    public string GetSpeciesRepresentation(string speciesId, string? customSpeciesName)
+    {
+        return string.IsNullOrWhiteSpace(customSpeciesName)
+            ? GetSpeciesRepresentation(speciesId)
+            : customSpeciesName;
+    }
+
     public string GetSpeciesRepresentation(string speciesId)
     {
         if (_proto.TryIndex<SpeciesPrototype>(speciesId, out var species))

@@ -2,33 +2,37 @@ using System.Linq;
 using System.Numerics;
 using Content.Client._WF.Stylesheets;
 using Content.Client.Lobby;
+using Content.Shared.Guidebook;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Preferences;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Utility;
 
 namespace Content.Client._WF.Humanoid;
 
 /// <summary>
-/// Species browser: one row per species, each with a full-body preview of a default character of that
-/// species and a short summary. Subspecies are listed under the species they vary, and every row is a
-/// toggle in one group, so picking a row is picking a species.
+/// Species browser: a grid of cards, each with a full-body preview of a default character of that species,
+/// its name, a short summary and a link to its guidebook page. Species that vary another species are grouped
+/// on their own translucent panel under the species they vary.
 /// </summary>
 public sealed class WolfgateSpeciesPicker : BoxContainer
 {
     [Dependency] private IEntityManager _entManager = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
 
-    /// <summary>Raised with the species id when a row is clicked.</summary>
+    /// <summary>Raised with the species id when a card is clicked.</summary>
     public Action<string>? OnSpeciesSelected;
+
+    /// <summary>Raised with the species id when a card's info button is clicked.</summary>
+    public Action<string>? OnSpeciesInfoRequested;
 
     private readonly LobbyUIController _controller;
     private readonly ButtonGroup _group = new();
-    private readonly Dictionary<string, ContainerButton> _rows = new();
+    private readonly Dictionary<string, WolfgateSpeciesCard> _cards = new();
     private readonly List<EntityUid> _dummies = new();
+    private readonly List<GridContainer> _grids = new();
 
     private string? _selected;
 
@@ -37,13 +41,13 @@ public sealed class WolfgateSpeciesPicker : BoxContainer
         IoCManager.InjectDependencies(this);
         _controller = UserInterfaceManager.GetUIController<LobbyUIController>();
         Orientation = LayoutOrientation.Vertical;
-        SeparationOverride = 6;
+        SeparationOverride = 10;
     }
 
     protected override void EnteredTree()
     {
         base.EnteredTree();
-        if (_rows.Count == 0)
+        if (_cards.Count == 0)
             Populate();
     }
 
@@ -59,21 +63,22 @@ public sealed class WolfgateSpeciesPicker : BoxContainer
             _entManager.DeleteEntity(dummy);
 
         _dummies.Clear();
-        _rows.Clear();
+        _cards.Clear();
+        _grids.Clear();
         DisposeAllChildren();
     }
 
-    /// <summary>Marks a row as chosen without raising <see cref="OnSpeciesSelected"/>.</summary>
+    /// <summary>Marks a card as chosen without raising <see cref="OnSpeciesSelected"/>.</summary>
     public void SetSelected(string species)
     {
         _selected = species;
-        foreach (var (id, row) in _rows)
-            row.Pressed = id == species;
+        if (_cards.TryGetValue(species, out var card))
+            card.Pressed = true; // the group unpresses the others
     }
 
     /// <summary>
-    /// Rebuilds every row, spawning one preview dummy per species. Not free, so it runs when the
-    /// species list changes or the tab re-enters the tree, not on every selection.
+    /// Rebuilds every card, spawning one preview dummy per species. Not free, so it runs when the species
+    /// list changes or the tab re-enters the tree, not on every selection.
     /// </summary>
     public void Populate()
     {
@@ -81,89 +86,98 @@ public sealed class WolfgateSpeciesPicker : BoxContainer
 
         var all = _prototypeManager.EnumeratePrototypes<SpeciesPrototype>().Where(s => s.RoundStart).ToList();
 
-        // One group per species that has variants, keyed by the species they vary. Everything else is its
-        // own group of one. The species a group is named after need not be playable itself: Protogen is
-        // not round start here, only its subspecies are.
-        var groups = all.GroupBy(s => s.SubspeciesOf?.Id ?? s.ID)
-            .Select(g => (Name: GroupName(g.Key, g), Members: g.OrderBy(DisplayName).ToList()))
-            .OrderBy(g => g.Name)
+        // Species that vary another one get their own panel under its name; everything else shares a panel,
+        // because 25 panels of one card each reads worse than one panel of 25.
+        var families = all.Where(s => s.SubspeciesOf != null)
+            .GroupBy(s => s.SubspeciesOf!.Value.Id)
+            .OrderBy(g => GroupName(g.Key, g))
             .ToList();
 
-        foreach (var (name, members) in groups)
-        {
-            // A lone species speaks for itself; a group of variants gets a heading naming what they vary.
-            if (members.Count > 1 || members[0].SubspeciesOf != null)
-            {
-                AddChild(new Label
-                {
-                    Text = name,
-                    StyleClasses = { StyleWolfgate.StyleClassCreatorHeading },
-                    Margin = new Thickness(2, 6, 0, 0),
-                });
-            }
+        var parented = families.Select(g => g.Key).ToHashSet();
 
-            foreach (var species in members)
-                AddRow(species);
+        // A species that has variants heads its own panel rather than sitting in the general list.
+        var standalone = all
+            .Where(s => s.SubspeciesOf == null && !parented.Contains(s.ID))
+            .OrderBy(DisplayName)
+            .ToList();
+        if (standalone.Count > 0)
+            AddChild(Group(null, standalone));
+
+        foreach (var family in families)
+        {
+            var members = family.OrderBy(DisplayName).ToList();
+
+            // The parent first, when it is playable itself.
+            if (_prototypeManager.TryIndex<SpeciesPrototype>(family.Key, out var parent) && parent.RoundStart)
+                members.Insert(0, parent);
+
+            AddChild(Group(GroupName(family.Key, family), members));
         }
 
         if (_selected != null)
             SetSelected(_selected);
     }
 
-    /// <summary>Name a group is sorted and headed by: the species it varies, or its only member.</summary>
+    /// <summary>A translucent panel holding an optional heading and a grid of cards.</summary>
+    private Control Group(string? heading, List<SpeciesPrototype> members)
+    {
+        var content = new BoxContainer { Orientation = LayoutOrientation.Vertical, SeparationOverride = 6 };
+
+        if (heading != null)
+        {
+            content.AddChild(new Label
+            {
+                Text = heading,
+                StyleClasses = { StyleWolfgate.StyleClassCreatorHeading },
+            });
+        }
+
+        var grid = new GridContainer { Columns = Columns(), HSeparationOverride = 6, VSeparationOverride = 6 };
+        foreach (var species in members)
+            grid.AddChild(AddCard(species));
+
+        _grids.Add(grid);
+        content.AddChild(grid);
+
+        return new PanelContainer
+        {
+            StyleClasses = { StyleWolfgate.StyleClassCreatorGroup },
+            HorizontalExpand = true,
+            Children = { content },
+        };
+    }
+
+    /// <summary>Name a family panel is headed by: the species it varies, playable here or not.</summary>
     private string GroupName(string id, IEnumerable<SpeciesPrototype> members)
     {
-        if (_prototypeManager.TryIndex<SpeciesPrototype>(id, out var proto))
-            return DisplayName(proto);
-
-        return DisplayName(members.First());
+        return _prototypeManager.TryIndex<SpeciesPrototype>(id, out var proto)
+            ? DisplayName(proto)
+            : DisplayName(members.First());
     }
 
     private string DisplayName(SpeciesPrototype species) => Loc.GetString(species.Name);
 
-    private void AddRow(SpeciesPrototype species)
+    private WolfgateSpeciesCard AddCard(SpeciesPrototype species)
     {
-        var row = new ContainerButton
+        var card = new WolfgateSpeciesCard(
+            species.ID,
+            DisplayName(species),
+            Summary(species),
+            Preview(species),
+            _prototypeManager.HasIndex<GuideEntryPrototype>(species.ID))
         {
-            ToggleMode = true,
             Group = _group,
-            HorizontalExpand = true,
-            StyleClasses = { WolfgateMarkingTile.StyleClassTile },
         };
-        row.OnPressed += _ =>
+
+        card.OnPressed += _ =>
         {
             _selected = species.ID;
             OnSpeciesSelected?.Invoke(species.ID);
         };
+        card.OnInfoRequested += () => OnSpeciesInfoRequested?.Invoke(species.ID);
 
-        var text = new BoxContainer
-        {
-            Orientation = LayoutOrientation.Vertical,
-            SeparationOverride = 2,
-            HorizontalExpand = true,
-            VerticalAlignment = VAlignment.Center,
-        };
-        text.AddChild(new Label
-        {
-            Text = DisplayName(species),
-            StyleClasses = { StyleWolfgate.StyleClassCreatorHeading },
-        });
-
-        var summary = new RichTextLabel { HorizontalExpand = true, Margin = new Thickness(0, 2, 0, 0) };
-        summary.SetMessage(Summary(species));
-        text.AddChild(summary);
-
-        row.AddChild(new BoxContainer
-        {
-            Orientation = LayoutOrientation.Horizontal,
-            SeparationOverride = 12,
-            Margin = new Thickness(6, 4),
-            HorizontalExpand = true,
-            Children = { Preview(species), text },
-        });
-
-        _rows[species.ID] = row;
-        AddChild(row);
+        _cards[species.ID] = card;
+        return card;
     }
 
     /// <summary>
@@ -174,11 +188,11 @@ public sealed class WolfgateSpeciesPicker : BoxContainer
     {
         var view = new SpriteView
         {
+            // Fit scales the sprite down to the box using its rotated bounding box, so the drawn sprite is
+            // about 0.7 of the box. Scale only has to be large enough for that clamp to bite.
             Scale = new Vector2(3, 3),
             OverrideDirection = Direction.South,
-            // Fixed box so every row is the same height, and Fit shrinks the sprites that are taller
-            // than a tile (Shadekin ears, Harpy wings) rather than clipping them.
-            SetSize = new Vector2(104, 104),
+            SetSize = WolfgateSpeciesCard.PreviewBox,
             Stretch = SpriteView.StretchMode.Fit,
             VerticalAlignment = VAlignment.Center,
         };
@@ -196,9 +210,29 @@ public sealed class WolfgateSpeciesPicker : BoxContainer
         return view;
     }
 
-    private static FormattedMessage Summary(SpeciesPrototype species)
+    private static string Summary(SpeciesPrototype species)
     {
         var key = $"species-summary-{species.ID.ToLowerInvariant()}";
-        return FormattedMessage.FromMarkupPermissive(Loc.TryGetString(key, out var summary) ? summary : string.Empty);
+        return Loc.TryGetString(key, out var summary) ? summary : string.Empty;
+    }
+
+    /// <summary>Cards per row, shared by every panel so they line up across groups.</summary>
+    private int Columns()
+    {
+        const float gap = 6f;
+        const float panelPadding = 24f; // the group panel's content margin, both sides, plus slack
+        return Math.Max(1, (int) ((Width - panelPadding + gap) / (WolfgateSpeciesCard.CardWidth + gap)));
+    }
+
+    protected override void Resized()
+    {
+        base.Resized();
+        var columns = Columns();
+        foreach (var grid in _grids)
+        {
+            // Guarded: assigning Columns invalidates measure, so an unguarded write relayouts every frame.
+            if (grid.Columns != columns)
+                grid.Columns = columns;
+        }
     }
 }

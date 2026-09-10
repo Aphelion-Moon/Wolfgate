@@ -1,10 +1,16 @@
 # Wolfgate: ported from HardLight
+# Wolfgate: forcedColoring dropped - it hid the colour picker for these and left the
+# pre-coloured art being tinted to the wearer's skin. Same coloring block as the
+# vanilla undergarments.
 - type: marking
   id: RMCUnderwearBoxers
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: c_boxers
@@ -13,9 +19,11 @@
   id: RMCUnderwearBoxersBlue
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  # RMCFollowSkinColor: false (removed, not a valid field)
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: d_boxers
@@ -24,8 +32,11 @@
   id: RMCUnderwearBoxersJungle
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: j_boxers
@@ -34,8 +45,11 @@
   id: RMCUnderwearBoxersSnow
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: s_boxers
@@ -44,8 +58,11 @@
   id: RMCUnderwearBoxersUrban
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: urban_boxers
@@ -54,8 +71,11 @@
   id: RMCUnderwearLowriders
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: c_lowriders
@@ -64,8 +84,11 @@
   id: RMCUnderwearLowridersDesert
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: d_lowriders
@@ -74,8 +97,11 @@
   id: RMCUnderwearLowridersJungle
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: j_lowriders
@@ -84,8 +110,11 @@
   id: RMCUnderwearLowridersSnow
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: s_lowriders
@@ -94,8 +123,11 @@
   id: RMCUnderwearLowridersUrban
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: urban_lowriders
@@ -104,8 +136,11 @@
   id: RMCUnderwearBriefs
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: c_briefs
@@ -114,8 +149,11 @@
   id: RMCUnderwearBriefsDesert
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: d_briefs
@@ -124,8 +162,11 @@
   id: RMCUnderwearBriefsJungle
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: j_briefs
@@ -134,8 +175,11 @@
   id: RMCUnderwearBriefsSnow
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: s_briefs
@@ -144,8 +188,11 @@
   id: RMCUnderwearBriefsUrban
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: urban_briefs
@@ -154,8 +201,11 @@
   id: RMCUnderwearSatin
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: c_satin
@@ -164,8 +214,11 @@
   id: RMCUnderwearSatinDesert
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: d_satin
@@ -174,8 +227,11 @@
   id: RMCUnderwearSatinJungle
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: j_satin
@@ -184,8 +240,11 @@
   id: RMCUnderwearSatinSnow
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: s_satin
@@ -194,8 +253,11 @@
   id: RMCUnderwearSatinUrban
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: urban_satin
@@ -206,8 +268,11 @@
   id: RMCUnderwearTanga
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: classic_tanga
@@ -216,8 +281,11 @@
   id: RMCUnderwearTangaDesert
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: desert_tanga
@@ -226,8 +294,11 @@
   id: RMCUnderwearTangaJungle
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: jungle_tanga
@@ -236,8 +307,11 @@
   id: RMCUnderwearTangaSnow
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: snow_tanga
@@ -246,8 +320,11 @@
   id: RMCUnderwearTangaUrban
   bodyPart: UndergarmentBottom
   markingCategory: UndergarmentBottom
-  forcedColoring: true
-  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell]
+  coloring:
+    default:
+      type: null
+      fallbackColor: '#FFFFFF'
+  speciesRestriction: [Tajaran, Human, Dwarf, Felinid, Arachnid, Reptilian, Diona, Moth, SlimePerson, Avali, Vulpkanin, Rodentia, Feroxi, Skrell, Canine]
   sprites:
   - sprite: _RMC14/Mobs/Customization/underwear.rsi
     state: urban_tanga

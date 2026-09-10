@@ -104,7 +104,7 @@
   id: ShadekinEyeR
   bodyPart: Eyes
   markingCategory: Head
-  speciesRestriction: [Skrell, Avali, Dwarf, Human, SlimePerson, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, Feroxi, Moth, Kitsune, Chitinid, Shadekin, Felinid, Tajaran]
+  speciesRestriction: [Skrell, Avali, Dwarf, Human, SlimePerson, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, Feroxi, Moth, Kitsune, Chitinid, Shadekin, Felinid, Tajaran, Canine]
   coloring:
     default:
       type:
@@ -117,7 +117,7 @@
   id: ShadekinEyeL
   bodyPart: Eyes
   markingCategory: Head
-  speciesRestriction: [Skrell, Avali, Dwarf, Human, SlimePerson, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, Feroxi, Moth, Kitsune, Chitinid, Shadekin, Felinid, Tajaran]
+  speciesRestriction: [Skrell, Avali, Dwarf, Human, SlimePerson, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, Feroxi, Moth, Kitsune, Chitinid, Shadekin, Felinid, Tajaran, Canine]
   coloring:
     default:
       type:

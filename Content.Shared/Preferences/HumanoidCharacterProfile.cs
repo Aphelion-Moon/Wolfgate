@@ -143,6 +143,15 @@ namespace Content.Shared.Preferences
         [DataField]
         public string Company { get; private set; } = "None";
 
+        /// <summary>
+        /// WOLFGATE - shown instead of the species name wherever the species is displayed. Empty means
+        /// the species' own name is used.
+        /// </summary>
+        [DataField]
+        public string CustomSpeciesName { get; private set; } = string.Empty;
+
+        public const int MaxCustomSpeciesNameLength = 32;
+
         public HumanoidCharacterProfile(
             string name,
             string flavortext,
@@ -158,7 +167,8 @@ namespace Content.Shared.Preferences
             HashSet<ProtoId<AntagPrototype>> antagPreferences,
             HashSet<ProtoId<TraitPrototype>> traitPreferences,
             Dictionary<string, RoleLoadout> loadouts,
-            string company = "None")
+            string company = "None",
+            string customSpeciesName = "")
         {
             Name = name;
             FlavorText = flavortext;
@@ -175,6 +185,7 @@ namespace Content.Shared.Preferences
             _traitPreferences = traitPreferences;
             _loadouts = loadouts;
             Company = company;
+            CustomSpeciesName = customSpeciesName;
         }
 
         /// <summary>Copy constructor but with overridable references (to prevent useless copies)</summary>
@@ -185,7 +196,7 @@ namespace Content.Shared.Preferences
             HashSet<ProtoId<TraitPrototype>> traitPreferences,
             Dictionary<string, RoleLoadout> loadouts)
             : this(other.Name, other.FlavorText, other.Species, other.Age, other.Sex, other.Gender, other.BankBalance, other.Appearance, other.SpawnPriority,
-                jobPriorities, other.PreferenceUnavailable, antagPreferences, traitPreferences, loadouts, other.Company)
+                jobPriorities, other.PreferenceUnavailable, antagPreferences, traitPreferences, loadouts, other.Company, other.CustomSpeciesName)
         {
         }
 
@@ -205,7 +216,8 @@ namespace Content.Shared.Preferences
                 new HashSet<ProtoId<AntagPrototype>>(other.AntagPreferences),
                 new HashSet<ProtoId<TraitPrototype>>(other.TraitPreferences),
                 new Dictionary<string, RoleLoadout>(other.Loadouts),
-                other.Company)
+                other.Company,
+                other.CustomSpeciesName)
         {
         }
 
@@ -389,6 +401,12 @@ namespace Content.Shared.Preferences
             return new(this) { PreferenceUnavailable = mode };
         }
 
+        /// <summary>WOLFGATE</summary>
+        public HumanoidCharacterProfile WithCustomSpeciesName(string customSpeciesName)
+        {
+            return new(this) { CustomSpeciesName = customSpeciesName };
+        }
+
         public HumanoidCharacterProfile WithCompany(string company)
         {
             return new(this) { Company = company };
@@ -510,6 +528,7 @@ namespace Content.Shared.Preferences
             if (SpawnPriority != other.SpawnPriority) return false;
             if (Species != other.Species) return false;
             if (Company != other.Company) return false;
+            if (CustomSpeciesName != other.CustomSpeciesName) return false; // WOLFGATE
             if (!_jobPriorities.SequenceEqual(other._jobPriorities)) return false;
             if (!_antagPreferences.SequenceEqual(other._antagPreferences)) return false;
             if (!_traitPreferences.SequenceEqual(other._traitPreferences)) return false;
@@ -679,6 +698,15 @@ namespace Content.Shared.Preferences
             BankBalance = bankBalance;
             Appearance = appearance;
             SpawnPriority = spawnPriority;
+
+            // WOLFGATE: the custom species name is free text, so it gets the same treatment as the
+            // character name: trimmed, length-capped and stripped of anything that is not printable.
+            CustomSpeciesName = new string(CustomSpeciesName
+                    .Trim()
+                    .Where(c => !char.IsControl(c))
+                    .Take(MaxCustomSpeciesNameLength)
+                    .ToArray())
+                .Trim();
 
             // Check if the company exists, if not set to "None"
             if (!string.IsNullOrEmpty(Company) &&

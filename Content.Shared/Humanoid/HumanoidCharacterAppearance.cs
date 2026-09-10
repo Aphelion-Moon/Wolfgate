@@ -219,12 +219,15 @@ public sealed partial class HumanoidCharacterAppearance : ICharacterAppearance, 
         var proto = IoCManager.Resolve<IPrototypeManager>();
         var markingManager = IoCManager.Resolve<MarkingManager>();
 
-        if (!markingManager.MarkingsByCategory(MarkingCategories.Hair).ContainsKey(hairStyleId))
+        // WOLFGATE: checked against the species, not just the global list. Hair is stored outside the
+        // marking set, so switching to a species that cannot wear it used to leave it on the character
+        // with no picker to remove it.
+        if (!markingManager.MarkingsByCategoryAndSpecies(MarkingCategories.Hair, species).ContainsKey(hairStyleId))
         {
             hairStyleId = HairStyles.DefaultHairStyle;
         }
 
-        if (!markingManager.MarkingsByCategory(MarkingCategories.FacialHair).ContainsKey(facialHairStyleId))
+        if (!markingManager.MarkingsByCategoryAndSpecies(MarkingCategories.FacialHair, species).ContainsKey(facialHairStyleId))
         {
             facialHairStyleId = HairStyles.DefaultFacialHairStyle;
         }

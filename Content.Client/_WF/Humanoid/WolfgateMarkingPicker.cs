@@ -53,6 +53,8 @@ public sealed class WolfgateMarkingPicker : BoxContainer
     private readonly Label _appliedHeading;
     private readonly BoxContainer _applied;
     private readonly PanelContainer _appliedCard;
+    private readonly Button _clearAll;
+    private readonly BoxContainer _clearConfirm;
     private readonly ButtonGroup _partGroup = new();
     private readonly Dictionary<HumanoidVisualLayers, Button> _partButtons = new();
     private readonly HashSet<MarkingCategories> _ignoreCategories = new();
@@ -120,6 +122,8 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         _search.OnTextChanged += args => Populate(args.Text);
         _grid = new GridContainer { Columns = 8, HSeparationOverride = 4, VSeparationOverride = 4 };
         _appliedHeading = new Label { Text = Loc.GetString("wf-creator-markings-applied"), StyleClasses = { StyleWolfgate.StyleClassCreatorHeading } };
+        _clearAll = new Button { Text = Loc.GetString("wf-markings-clear-all"), StyleClasses = { StyleWolfgate.StyleClassLinkButton } };
+        _clearConfirm = BuildClearConfirm();
         _applied = new BoxContainer { Orientation = LayoutOrientation.Vertical, SeparationOverride = 6 };
 
         AddChild(Card(new BoxContainer
@@ -131,8 +135,15 @@ public sealed class WolfgateMarkingPicker : BoxContainer
                 new BoxContainer
                 {
                     Orientation = LayoutOrientation.Horizontal,
-                    Children = { new Label { Text = Loc.GetString("wf-creator-markings-available"), StyleClasses = { StyleWolfgate.StyleClassCreatorHeading }, HorizontalExpand = true }, _points },
+                    SeparationOverride = 8,
+                    Children =
+                    {
+                        new Label { Text = Loc.GetString("wf-creator-markings-available"), StyleClasses = { StyleWolfgate.StyleClassCreatorHeading }, HorizontalExpand = true },
+                        _points,
+                        _clearAll,
+                    },
                 },
+                _clearConfirm,
                 _parts,
                 _search,
                 // Capped height: past it the grid scrolls inside its box
@@ -147,6 +158,82 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         });
         _appliedCard.Visible = false;
         AddChild(_appliedCard);
+    }
+
+    /// <summary>
+    /// Confirmation row for Clear all, hidden until the button is pressed. Inline rather than a dialog so
+    /// the warning sits next to what it is about to wipe.
+    /// </summary>
+    private BoxContainer BuildClearConfirm()
+    {
+        var confirm = new Button { Text = Loc.GetString("wf-markings-clear-confirm"), StyleClasses = { StyleWolfgate.StyleClassCreatorPrimary } };
+        var cancel = new Button { Text = Loc.GetString("wf-markings-clear-cancel") };
+
+        var row = new BoxContainer
+        {
+            Orientation = LayoutOrientation.Horizontal,
+            SeparationOverride = 8,
+            Visible = false,
+            Children =
+            {
+                new RichTextLabel { HorizontalExpand = true, VerticalAlignment = VAlignment.Center },
+                confirm,
+                cancel,
+            },
+        };
+        ((RichTextLabel) row.Children.First()).SetMessage(Loc.GetString("wf-markings-clear-warning"));
+
+        _clearAll.OnPressed += _ => SetClearConfirmVisible(true);
+        cancel.OnPressed += _ => SetClearConfirmVisible(false);
+        confirm.OnPressed += _ =>
+        {
+            SetClearConfirmVisible(false);
+            ClearAll();
+        };
+
+        return row;
+    }
+
+    private void SetClearConfirmVisible(bool visible)
+    {
+        _clearConfirm.Visible = visible;
+        _clearAll.Visible = !visible;
+    }
+
+    /// <summary>
+    /// Drops every marking this tab owns, then puts back the ones the species requires. Hair and facial
+    /// hair are not touched: they have their own pickers on the Appearance tab.
+    /// </summary>
+    private void ClearAll()
+    {
+        foreach (var category in _allCategories)
+        {
+            if (_ignoreCategories.Contains(category) || !_current.Markings.TryGetValue(category, out var list))
+                continue;
+
+            foreach (var marking in list.Where(m => !m.Forced).Select(m => m.MarkingId).ToList())
+                _current.Remove(category, marking);
+        }
+
+        // Required categories would otherwise leave the character missing a part it cannot go without.
+        foreach (var (category, points) in _current.Points)
+        {
+            if (!points.Required || _ignoreCategories.Contains(category))
+                continue;
+
+            foreach (var id in points.DefaultMarkings)
+            {
+                if (_markingManager.Markings.TryGetValue(id, out var proto))
+                    _current.AddBack(category, new Marking(id, MarkingColoring.GetMarkingLayerColors(proto, CurrentSkinColor, CurrentEyeColor, _current)));
+            }
+        }
+
+        if (!IgnoreSpecies)
+            _current.EnsureSpecies(_species, CurrentSkinColor, _markingManager);
+
+        Populate(_search.Text);
+        PopulateUsed();
+        OnMarkingRemoved?.Invoke(_current);
     }
 
     private static PanelContainer Card(Control content)
@@ -278,6 +365,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
     /// <summary>Rebuilds the tile grid for the selected body part; applied markings are lit and tinted.</summary>
     public void Populate(string filter)
     {
+        SetClearConfirmVisible(false);
         SetupPartButtons();
         _grid.DisposeAllChildren();
 
@@ -465,7 +553,10 @@ public sealed class WolfgateMarkingPicker : BoxContainer
                     if (_current.TryGetMarking(proto.MarkingCategory, proto.ID, out var updated))
                         icon.SetColors(updated.MarkingColors);
                 };
-                card.AddChild(new Label { Text = Loc.GetString("wf-marking-layer-colour", ("layer", layers[i])), StyleClasses = { StyleWolfgate.StyleClassCreatorFieldLabel } });
+                var caption = proto.Sprites.Count == 1
+                    ? Loc.GetString("wf-marking-colour")
+                    : Loc.GetString("wf-marking-layer-colour", ("layer", layers[i]));
+                card.AddChild(new Label { Text = caption, StyleClasses = { StyleWolfgate.StyleClassCreatorFieldLabel } });
                 card.AddChild(picker);
             }
         }
@@ -537,6 +628,10 @@ public sealed class WolfgateMarkingPicker : BoxContainer
 
     private static string Name(MarkingPrototype proto) => Loc.GetString($"marking-{proto.ID}");
 
+    /// <summary>
+    /// Display name per sprite layer. Most markings have no per-layer string - only about two thirds are
+    /// translated - so an untranslated layer falls back to its readable state name rather than the raw key.
+    /// </summary>
     private static List<string> GetMarkingStateNames(MarkingPrototype proto)
     {
         var result = new List<string>();
@@ -545,10 +640,10 @@ public sealed class WolfgateMarkingPicker : BoxContainer
             switch (state)
             {
                 case SpriteSpecifier.Rsi rsi:
-                    result.Add(Loc.GetString($"marking-{proto.ID}-{rsi.RsiState}"));
+                    result.Add(LayerName(proto.ID, rsi.RsiState));
                     break;
                 case SpriteSpecifier.Texture texture:
-                    result.Add(Loc.GetString($"marking-{proto.ID}-{texture.TexturePath.Filename}"));
+                    result.Add(LayerName(proto.ID, texture.TexturePath.Filename));
                     break;
                 default:
                     result.Add(proto.ID);
@@ -556,5 +651,22 @@ public sealed class WolfgateMarkingPicker : BoxContainer
             }
         }
         return result;
+    }
+
+    private static string LayerName(string markingId, string state)
+    {
+        return Loc.TryGetString($"marking-{markingId}-{state}", out var name) ? name : Humanize(state);
+    }
+
+    /// <summary>"belly_pregnant-1" becomes "Belly Pregnant 1", so an untranslated layer still reads as words.</summary>
+    private static string Humanize(string state)
+    {
+        // Concatenating a char onto a string compiles to a span concat, which the content sandbox rejects,
+        // so both halves stay strings.
+        var separators = new[] { '_', '-', ' ' };
+        var words = state.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+        return words.Length == 0
+            ? state
+            : string.Join(" ", words.Select(w => w[..1].ToUpperInvariant() + w[1..]));
     }
 }

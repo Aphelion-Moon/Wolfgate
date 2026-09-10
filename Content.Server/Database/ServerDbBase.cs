@@ -280,7 +280,8 @@ namespace Content.Server.Database
                 antags.ToHashSet(),
                 traits.ToHashSet(),
                 loadouts,
-                company);
+                company,
+                profile.CustomSpeciesName ?? string.Empty); // WOLFGATE
         }
 
         private static Profile ConvertProfiles(HumanoidCharacterProfile humanoid, int slot, Profile? profile = null)
@@ -314,6 +315,7 @@ namespace Content.Server.Database
             profile.Slot = slot;
             profile.PreferenceUnavailable = (DbPreferenceUnavailableMode) humanoid.PreferenceUnavailable;
             profile.Company = humanoid.Company;
+            profile.CustomSpeciesName = humanoid.CustomSpeciesName; // WOLFGATE
 
             profile.Jobs.Clear();
             profile.Jobs.AddRange(

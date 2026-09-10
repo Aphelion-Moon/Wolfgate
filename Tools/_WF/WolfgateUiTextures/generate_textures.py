@@ -135,6 +135,63 @@ def save(im, *path):
     written.append(os.path.relpath(full, OUT).replace(os.sep, "/"))
 
 
+
+def sex_icons():
+    """Mars / Venus / neuter glyphs for the character creator's sex selector.
+
+    Drawn pure white so the control can tint them; nothing else in the repo has a sex glyph.
+    """
+    size = 24
+
+    def blank():
+        return Image.new("RGBA", (size, size), CLEAR)
+
+    def dot(px, x, y):
+        if 0 <= x < size and 0 <= y < size:
+            px[x, y] = WHITE
+
+    def stamp(px, x, y):
+        # 2px pen, so the glyph reads at 24px
+        dot(px, x, y)
+        dot(px, x + 1, y)
+        dot(px, x, y + 1)
+        dot(px, x + 1, y + 1)
+
+    def ring(px, cx, cy, r):
+        steps = 180
+        for i in range(steps):
+            a = 2 * 3.14159265 * i / steps
+            stamp(px, int(round(cx + r * __import__("math").cos(a))),
+                      int(round(cy + r * __import__("math").sin(a))))
+
+    def line(px, x0, y0, x1, y1):
+        steps = max(abs(x1 - x0), abs(y1 - y0)) * 4 + 1
+        for i in range(steps + 1):
+            t = i / steps
+            stamp(px, int(round(x0 + (x1 - x0) * t)), int(round(y0 + (y1 - y0) * t)))
+
+    # Male: circle low-left with an arrow to the upper right
+    im = blank(); px = im.load()
+    ring(px, 8, 15, 5)
+    line(px, 12, 11, 19, 4)
+    line(px, 19, 4, 14, 4)
+    line(px, 19, 4, 19, 9)
+    save(im, STYLE, "sex_male.png")
+
+    # Female: circle up top with a cross below
+    im = blank(); px = im.load()
+    ring(px, 11, 8, 5)
+    line(px, 11, 13, 11, 21)
+    line(px, 7, 18, 15, 18)
+    save(im, STYLE, "sex_female.png")
+
+    # Unsexed: the neuter glyph, a circle with a plain stem
+    im = blank(); px = im.load()
+    ring(px, 11, 9, 5)
+    line(px, 11, 14, 11, 21)
+    save(im, STYLE, "sex_none.png")
+
+
 def style_textures():
     accent = P["accent"]
     accent_dim = P["accent_dim"]
@@ -335,6 +392,7 @@ def main():
         STYLE = os.path.join(OUT, "Style")
         written = []
         style_textures()
+        sex_icons()
         overlay_textures()
         recolour_slots(hud_textures())
         recolour_storage()

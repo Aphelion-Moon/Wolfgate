@@ -490,6 +490,9 @@ namespace Content.Server.Database
 
         public string Company { get; set; } = "None";
 
+        // WOLFGATE - player-set species name override, empty when unused.
+        [Column("custom_species_name")] public string CustomSpeciesName { get; set; } = "";
+
         public int PreferenceId { get; set; }
         public Preference Preference { get; set; } = null!;
 

@@ -39,6 +39,7 @@
   - type: Sprite
     scale: 0.8, 0.8
     layers:
+      - map: [ "enum.HumanoidVisualLayers.TailBehind" ] # WOLFGATE - split tail layers ported from HardLight/Floof
       - map: [ "enum.HumanoidVisualLayers.Chest" ]
       - map: [ "enum.HumanoidVisualLayers.Head" ]
       - map: [ "enum.HumanoidVisualLayers.Snout" ]
@@ -47,6 +48,11 @@
       - map: [ "enum.HumanoidVisualLayers.LArm" ]
       - map: [ "enum.HumanoidVisualLayers.RLeg" ]
       - map: [ "enum.HumanoidVisualLayers.LLeg" ]
+      - map: [ "enum.HumanoidVisualLayers.Genital" ] # WOLFGATE - underwear/genital layers ported from HardLight
+      - map: [ "enum.HumanoidVisualLayers.Breasts" ] # WOLFGATE - underwear/genital layers ported from HardLight
+      - map: [ "enum.HumanoidVisualLayers.UndergarmentTop" ] # WOLFGATE - underwear/genital layers ported from HardLight
+      - map: [ "enum.HumanoidVisualLayers.Penis" ] # WOLFGATE - underwear/genital layers ported from HardLight
+      - map: [ "enum.HumanoidVisualLayers.UndergarmentBottom" ] # WOLFGATE - underwear/genital layers ported from HardLight
       - map: [ "jumpsuit" ]
       - map: [ "balaclava" ]
       - map: [ "enum.HumanoidVisualLayers.LHand" ]
@@ -66,6 +72,7 @@
       - map: [ "eyes" ]
       - map: [ "belt" ]
       - map: [ "back" ]
+      - map: [ "enum.HumanoidVisualLayers.TailOversuit" ] # WOLFGATE - split tail layers ported from HardLight/Floof
       - map: [ "neck" ]
       - map: [ "neck2" ]
       - map: [ "neck3" ]

@@ -1,0 +1,5 @@
+# Wolfgate: ported from HardLight
+- type: flavor
+  id: shimmeringblood
+  flavorType: Complex
+  description: flavor-complex-shimmeringblood

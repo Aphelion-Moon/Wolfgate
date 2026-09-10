@@ -203,3 +203,7 @@ language-NewKinPidgin-description = A debased dialect cobbled together by lower-
     While a primitive and clumsy attempt resulting in a dull, simplified mockery of their true language,
     higher-caste Vox can still discern meaning within the crude approximations.
     It sounds like chaotic shrieking to everyone else.
+
+# Wolfgate: ported from HardLight/Starlight - Avali language
+language-Scratch-name = Scratch
+language-Scratch-description = A simplified, written dialect of the Avali and Resomi. Scratch is the galactic standard language model for the Illuminate. The origins of this language come from the pre-space age nomadic tribes, whose carvings and etches into ice caves hold a striking similarity to the modern Scratch.

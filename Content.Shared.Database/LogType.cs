@@ -490,4 +490,10 @@ public enum LogType
     /// Events relating to midi playback.
     /// </summary>
     Instrument = 103,
+
+    /// <summary>
+    /// Players changing their consent settings.
+    /// </summary>
+    // WOLFGATE - ported from HardLight; the high id avoids clashing with upstream additions.
+    Consent = 12489,
 }

@@ -1,0 +1,12 @@
+# Dragon Wings
+# Wolfgate: ported from HardLight
+- type: marking
+  id: LizardChestDragonwings
+  bodyPart: Tail
+  markingCategory: Chest
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin]
+  sprites:
+  - sprite: _RMC14/Mobs/Customization/reptilian.rsi
+    state: body_dragonwings
+  - sprite: _RMC14/Mobs/Customization/reptilian.rsi
+    state: body_dragonwings_membrane

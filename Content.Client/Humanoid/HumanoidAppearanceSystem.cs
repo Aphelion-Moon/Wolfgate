@@ -1,4 +1,6 @@
 using System.Numerics;
+using Content.Client._Common.Consent; // WOLFGATE
+using Content.Shared._Common.Consent; // WOLFGATE
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;
@@ -14,6 +16,10 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
 {
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private MarkingManager _markingManager = default!;
+    [Dependency] private readonly IClientConsentManager _consentManager = default!; // WOLFGATE
+
+    // WOLFGATE - genital markings only render for viewers who have opted in.
+    private static readonly ProtoId<ConsentTogglePrototype> GenitalMarkingsConsent = "GenitalMarkings";
 
     public override void Initialize()
     {
@@ -283,7 +289,7 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
         HumanoidAppearanceComponent humanoid,
         SpriteComponent sprite)
     {
-        if (!sprite.LayerMapTryGet(markingPrototype.BodyPart, out int targetLayer))
+        if (!sprite.LayerMapTryGet(markingPrototype.BodyPart, out int _))
         {
             return;
         }
@@ -291,6 +297,24 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
         visible &= !IsHidden(humanoid, markingPrototype.BodyPart);
         visible &= humanoid.BaseLayers.TryGetValue(markingPrototype.BodyPart, out var setting)
            && setting.AllowsMarkings;
+
+        // WOLFGATE - ported from HardLight: hide genital markings unless this client consented.
+        if (markingPrototype.MarkingCategory == MarkingCategories.Genital
+            && (!_consentManager.HasLoaded
+                || !_consentManager.GetConsentSettings().Toggles.TryGetValue(GenitalMarkingsConsent, out var consentVal)
+                || consentVal != "on"))
+        {
+            visible = false;
+        }
+        // End WOLFGATE
+
+        // WOLFGATE - ported from HardLight/Floof: resolve per-sprite colours through colorLinks so a
+        // multi-sprite marking (e.g. a tail split across two layers) is coloured as one unit.
+        var linkedColors = ResolveMarkingColors(markingPrototype, colors);
+        // Sprites of one marking may land in different layers; count within each layer separately so
+        // ordering is unchanged for ordinary single-layer markings.
+        var slotOffsets = new Dictionary<HumanoidVisualLayers, int>();
+        // End WOLFGATE
 
         for (var j = 0; j < markingPrototype.Sprites.Count; j++)
         {
@@ -303,9 +327,27 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
 
             var layerId = $"{markingPrototype.ID}-{rsi.RsiState}";
 
+            // WOLFGATE - a marking may redirect individual sprites into other layers.
+            var layerSlot = markingPrototype.BodyPart;
+            if (markingPrototype.Layering != null
+                && markingPrototype.Layering.TryGetValue(rsi.RsiState, out var layerName)
+                && Enum.TryParse<HumanoidVisualLayers>(layerName, out var parsedSlot))
+            {
+                layerSlot = parsedSlot;
+            }
+
+            if (!sprite.LayerMapTryGet(layerSlot, out var targetLayer))
+            {
+                continue;
+            }
+
+            var slotOffset = slotOffsets.TryGetValue(layerSlot, out var o) ? o : 0;
+            slotOffsets[layerSlot] = slotOffset + 1;
+            // End WOLFGATE
+
             if (!sprite.LayerMapTryGet(layerId, out _))
             {
-                var layer = sprite.AddLayer(markingSprite, targetLayer + j + 1);
+                var layer = sprite.AddLayer(markingSprite, targetLayer + slotOffset + 1);
                 sprite.LayerMapSet(layerId, layer);
                 sprite.LayerSetSprite(layerId, rsi);
             }
@@ -326,15 +368,48 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
             // Okay so if the marking prototype is modified but we load old marking data this may no longer be valid
             // and we need to check the index is correct.
             // So if that happens just default to white?
-            if (colors != null && j < colors.Count)
+            // WOLFGATE - colours come from the colorLinks-resolved list rather than straight from colors.
+            if (linkedColors != null && j < linkedColors.Count)
             {
-                sprite.LayerSetColor(layerId, colors[j]);
+                sprite.LayerSetColor(layerId, linkedColors[j]);
             }
             else
             {
                 sprite.LayerSetColor(layerId, Color.White);
             }
+            // End WOLFGATE
         }
+    }
+
+    /// <summary>
+    /// WOLFGATE - ported from HardLight/Floof. Returns the per-sprite colours for a marking with
+    /// <see cref="MarkingPrototype.ColorLinks"/> applied, so linked sprites take their parent's
+    /// colour. Returns <paramref name="colors"/> unchanged when the marking has no links.
+    /// </summary>
+    private static IReadOnlyList<Color>? ResolveMarkingColors(MarkingPrototype prototype, IReadOnlyList<Color>? colors)
+    {
+        if (prototype.ColorLinks is not { Count: > 0 } || colors == null)
+            return colors;
+
+        var byState = new Dictionary<string, Color>();
+        for (var i = 0; i < prototype.Sprites.Count && i < colors.Count; i++)
+        {
+            if (prototype.Sprites[i] is SpriteSpecifier.Rsi rsi)
+                byState[rsi.RsiState] = colors[i];
+        }
+
+        var resolved = new List<Color>(colors);
+        for (var i = 0; i < prototype.Sprites.Count && i < resolved.Count; i++)
+        {
+            if (prototype.Sprites[i] is SpriteSpecifier.Rsi rsi
+                && prototype.ColorLinks.TryGetValue(rsi.RsiState, out var parent)
+                && byState.TryGetValue(parent, out var parentColor))
+            {
+                resolved[i] = parentColor;
+            }
+        }
+
+        return resolved;
     }
 
     public override void SetSkinColor(EntityUid uid, Color skinColor, bool sync = true, bool verify = true, HumanoidAppearanceComponent? humanoid = null)

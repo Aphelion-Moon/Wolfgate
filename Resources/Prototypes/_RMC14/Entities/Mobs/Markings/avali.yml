@@ -1,0 +1,10 @@
+# Avali animated sprites
+# Wolfgate: ported from HardLight
+- type: marking
+  id: AvaliTailBaseAnimated
+  bodyPart: Tail
+  markingCategory: Tail
+  speciesRestriction: []
+  sprites:
+    - sprite: _RMC14/Mobs/Avali/avali_parts.rsi
+      state: avali_tail_wag

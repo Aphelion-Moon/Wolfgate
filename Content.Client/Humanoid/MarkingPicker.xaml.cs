@@ -408,7 +408,16 @@ public sealed partial class MarkingPicker : Control
                 Orientation = LayoutOrientation.Vertical,
             };
 
-            CMarkingColors.AddChild(colorContainer);
+            // WOLFGATE - ported from HardLight/Floof: a sprite whose colour is linked to another
+            // sprite's gets no picker of its own. The selector is still created and kept in the list
+            // so the remaining pickers stay aligned with their colour indices.
+            var linked = prototype.ColorLinks is { Count: > 0 }
+                && prototype.Sprites[i] is SpriteSpecifier.Rsi linkedRsi
+                && prototype.ColorLinks.ContainsKey(linkedRsi.RsiState);
+
+            if (!linked)
+                CMarkingColors.AddChild(colorContainer);
+            // End WOLFGATE
 
             WolfgateColorPicker colorSelector = new WolfgateColorPicker(); // WOLFGATE
             colorSelector.SelectorType = ColorSelectorSliders.ColorSelectorType.Hsv; // defaults color selector to HSV

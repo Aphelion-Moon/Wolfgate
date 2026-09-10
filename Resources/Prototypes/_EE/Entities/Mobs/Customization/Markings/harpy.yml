@@ -316,3 +316,21 @@
     - sprite: _EE/Mobs/Customization/Harpy/harpy_wings.rsi
       state: bionic_wings_tone_2
       shader: unshaded
+
+# Wolfgate: ported from HardLight
+- type: marking
+  id: HarpyWingFoldedWhitescale2
+  bodyPart: RArmExtension # Frontier: RArm<RArmExtension
+  markingCategory: Arms
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin]
+  coloring:
+    default:
+      type:
+        !type:CategoryColoring
+          category: Hair
+      fallbackTypes:
+        - !type:SimpleColoring
+          color: "#964b00"
+  sprites:
+    - sprite: _EE/Mobs/Customization/Harpy/harpy_wings.rsi
+      state: whitescale_harpy_folded2

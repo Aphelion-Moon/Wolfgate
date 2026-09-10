@@ -81,6 +81,13 @@ public sealed partial class SpeciesPrototype : IPrototype
     [DataField(required: true)]
     public HumanoidSkinColor SkinColoration { get; private set; }
 
+    /// <summary>
+    /// WOLFGATE - ported from HardLight/Starlight: how this species' eye colour is constrained.
+    /// Shadekin use this to keep their eyes dark.
+    /// </summary>
+    [DataField]
+    public HumanoidEyeColor EyeColoration { get; private set; } = HumanoidEyeColor.Standard;
+
     [DataField]
     public string MaleFirstNames { get; private set; } = "names_first_male";
 

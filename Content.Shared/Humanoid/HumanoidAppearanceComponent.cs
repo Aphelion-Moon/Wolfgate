@@ -73,6 +73,9 @@ public sealed partial class HumanoidAppearanceComponent : Component
     [DataField, AutoNetworkedField]
     public Color EyeColor = Color.Brown;
 
+    // WOLFGATE - ported from HardLight/Starlight: Shadekin "brighteye" state.
+    public bool EyeGlowing = false;
+
     [DataField, AutoNetworkedField]
     public float Height = 1.0f;
 

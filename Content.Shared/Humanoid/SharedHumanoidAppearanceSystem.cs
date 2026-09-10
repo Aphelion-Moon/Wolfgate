@@ -397,7 +397,17 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
 
         SetSpecies(uid, profile.Species, false, humanoid);
         SetSex(uid, profile.Sex, false, humanoid);
-        humanoid.EyeColor = profile.Appearance.EyeColor;
+
+        // WOLFGATE - ported from HardLight/Starlight: constrain eye colour per species.
+        var eyeColor = profile.Appearance.EyeColor;
+        if (_proto.TryIndex<SpeciesPrototype>(humanoid.Species, out var eyeSpecies)
+            && !EyeColor.VerifyEyeColor(eyeSpecies.EyeColoration, eyeColor))
+        {
+            eyeColor = EyeColor.ValidEyeColor(eyeSpecies.EyeColoration, eyeColor);
+        }
+
+        humanoid.EyeColor = eyeColor;
+        // End WOLFGATE
 
         SetSkinColor(uid, profile.Appearance.SkinColor, false);
 

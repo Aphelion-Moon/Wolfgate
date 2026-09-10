@@ -1554,6 +1554,23 @@ namespace Content.Client.Lobby.UI
                         break;
                     }
                 // Goobstation Section End - Tajaran
+
+                // WOLFGATE - ported from HardLight: unrestricted skin colour.
+                case HumanoidSkinColor.AnyColour:
+                    {
+                        if (!RgbSkinColorContainer.Visible)
+                        {
+                            Skin.Visible = false;
+                            RgbSkinColorContainer.Visible = true;
+                        }
+
+                        var anyColor = _rgbSkinColorSelector.Color;
+
+                        Markings.CurrentSkinColor = anyColor;
+                        Profile = Profile.WithCharacterAppearance(Profile.Appearance.WithSkinColor(anyColor));
+                        break;
+                    }
+                // End WOLFGATE
                 case HumanoidSkinColor.Hues:
                 {
                     if (!RgbSkinColorContainer.Visible)
@@ -1889,6 +1906,20 @@ namespace Content.Client.Lobby.UI
                         break;
                     }
                 // Goobstation Section End - Tajaran
+
+                // WOLFGATE - ported from HardLight: unrestricted skin colour.
+                case HumanoidSkinColor.AnyColour:
+                    {
+                        if (!RgbSkinColorContainer.Visible)
+                        {
+                            Skin.Visible = false;
+                            RgbSkinColorContainer.Visible = true;
+                        }
+
+                        _rgbSkinColorSelector.Color = Profile.Appearance.SkinColor;
+                        break;
+                    }
+                // End WOLFGATE
             }
 
         }

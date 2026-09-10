@@ -82,7 +82,7 @@
         type: SurgeryBui
   - type: Speech
     speechVerb: Skrell
-    allowedEmotes: [ 'RMCSkrellPeep', 'RMCSkrellAnger', 'Trill', 'RMCSkrellWarble' ]
+    allowedEmotes: [ 'RMCSkrellPeep', 'RMCSkrellAnger', 'Trill', 'Warble' ] # Wolfgate: was RMCSkrellWarble, which shared Warble's trigger words
   - type: Vocal
     sounds:
       Male: RMCMaleSkrell

@@ -391,25 +391,7 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
         if (prototype.ColorLinks is not { Count: > 0 } || colors == null)
             return colors;
 
-        var byState = new Dictionary<string, Color>();
-        for (var i = 0; i < prototype.Sprites.Count && i < colors.Count; i++)
-        {
-            if (prototype.Sprites[i] is SpriteSpecifier.Rsi rsi)
-                byState[rsi.RsiState] = colors[i];
-        }
-
-        var resolved = new List<Color>(colors);
-        for (var i = 0; i < prototype.Sprites.Count && i < resolved.Count; i++)
-        {
-            if (prototype.Sprites[i] is SpriteSpecifier.Rsi rsi
-                && prototype.ColorLinks.TryGetValue(rsi.RsiState, out var parent)
-                && byState.TryGetValue(parent, out var parentColor))
-            {
-                resolved[i] = parentColor;
-            }
-        }
-
-        return resolved;
+        return prototype.ResolveLinkedColors(colors);
     }
 
     public override void SetSkinColor(EntityUid uid, Color skinColor, bool sync = true, bool verify = true, HumanoidAppearanceComponent? humanoid = null)

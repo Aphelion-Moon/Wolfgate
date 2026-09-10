@@ -2870,7 +2870,7 @@
 - type: marking
   id: Pregnant-1
   bodyPart: Chest
-  markingCategory: Chest
+  markingCategory: Overlay # Wolfgate: was Chest, which used up the Chest marking point
   speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, ProtoVulp, ProtoVox, ProtoThaven, ProtoSlimePerson, ProtoKin, ProtoResomi, ProtoReptile, ProtoMoth, ProtoHumie, ProtoFeline, ProtoDawi, ProtoDionae, ProtoAvali, ProtoArachnid, Canine]
   sprites:
     - sprite: Mobs/Customization/Markings/Genital/pregnant_bellies.rsi
@@ -2879,7 +2879,7 @@
 - type: marking
   id: Pregnant-2
   bodyPart: Chest
-  markingCategory: Chest
+  markingCategory: Overlay # Wolfgate: was Chest, which used up the Chest marking point
   speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, ProtoVulp, ProtoVox, ProtoThaven, ProtoSlimePerson, ProtoKin, ProtoResomi, ProtoReptile, ProtoMoth, ProtoHumie, ProtoFeline, ProtoDawi, ProtoDionae, ProtoAvali, ProtoArachnid, Canine]
   sprites:
     - sprite: Mobs/Customization/Markings/Genital/pregnant_bellies.rsi
@@ -2888,7 +2888,7 @@
 - type: marking
   id: Pregnant-3
   bodyPart: Chest
-  markingCategory: Chest
+  markingCategory: Overlay # Wolfgate: was Chest, which used up the Chest marking point
   speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, ProtoVulp, ProtoVox, ProtoThaven, ProtoSlimePerson, ProtoKin, ProtoResomi, ProtoReptile, ProtoMoth, ProtoHumie, ProtoFeline, ProtoDawi, ProtoDionae, ProtoAvali, ProtoArachnid, Canine]
   sprites:
     - sprite: Mobs/Customization/Markings/Genital/pregnant_bellies.rsi
@@ -2897,7 +2897,7 @@
 - type: marking
   id: Pregnant-4
   bodyPart: Chest
-  markingCategory: Chest
+  markingCategory: Overlay # Wolfgate: was Chest, which used up the Chest marking point
   speciesRestriction: [Tajaran, Skrell, Vox, Avali, Felionoid, Resomi, Protogen, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Synth, Shadekin, ProtoVulp, ProtoVox, ProtoThaven, ProtoSlimePerson, ProtoKin, ProtoResomi, ProtoReptile, ProtoMoth, ProtoHumie, ProtoFeline, ProtoDawi, ProtoDionae, ProtoAvali, ProtoArachnid, Canine]
   sprites:
     - sprite: Mobs/Customization/Markings/Genital/pregnant_bellies.rsi

@@ -167,7 +167,7 @@
     m_tail_cable_FRONT_secondary: TailOversuit
   colorLinks:
     m_tail_cable_BEHIND_primary: m_tail_cable_FRONT_primary
-    m_tail_cable_BEHIND_secondary: m_tail_cable_FRONT_secondary
+    # Wolfgate: dropped the secondary link, this tail has no secondary sprites
   sprites:
   - sprite: _Floof/Mobs/Customization/skyrattails.rsi
     state: m_tail_cable_FRONT_primary
@@ -592,12 +592,12 @@
   speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, Canine]
   layering:
     m_tail_leopard_BEHIND_primary: TailBehind
-    m_tail_leopard_BEHIND_secondary: TailBehind
+    m_tail_leopard_BEHIND_tertiary: TailBehind # Wolfgate: was secondary, which this tail does not have
     m_tail_leopard_FRONT_primary: TailOversuit
-    m_tail_leopard_FRONT_secondary: TailOversuit
+    m_tail_leopard_FRONT_tertiary: TailOversuit # Wolfgate: was secondary
   colorLinks:
     m_tail_leopard_BEHIND_primary: m_tail_leopard_FRONT_primary
-    m_tail_leopard_BEHIND_secondary: m_tail_leopard_FRONT_secondary
+    m_tail_leopard_BEHIND_tertiary: m_tail_leopard_FRONT_tertiary # Wolfgate: was secondary
   sprites:
   - sprite: _Floof/Mobs/Customization/skyrattails.rsi
     state: m_tail_leopard_FRONT_primary
@@ -717,21 +717,21 @@
     state: m_tail_otie_BEHIND_primary
 
 - type: marking
-  id: TailPede
+  id: TailPede # Wolfgate: layering and colorLinks named the leopard tail's sprites, now its own
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, Canine]
   layering:
-    m_tail_leopard_BEHIND_primary: TailBehind
-    m_tail_leopard_BEHIND_secondary: TailBehind
-    m_tail_leopard_BEHIND_tertiary: TailBehind
-    m_tail_leopard_FRONT_primary: Tail
-    m_tail_leopard_FRONT_secondary: Tail
-    m_tail_leopard_FRONT_tertiary: Tail
+    m_tail_pede_BEHIND_primary: TailBehind
+    m_tail_pede_BEHIND_secondary: TailBehind
+    m_tail_pede_BEHIND_tertiary: TailBehind
+    m_tail_pede_FRONT_primary: Tail
+    m_tail_pede_FRONT_secondary: Tail
+    m_tail_pede_FRONT_tertiary: Tail
   colorLinks:
-    m_tail_leopard_BEHIND_primary: m_tail_leopard_FRONT_primary
-    m_tail_leopard_BEHIND_secondary: m_tail_leopard_FRONT_secondary
-    m_tail_leopard_BEHIND_tertiary: m_tail_leopard_FRONT_tertiary
+    m_tail_pede_BEHIND_primary: m_tail_pede_FRONT_primary
+    m_tail_pede_BEHIND_secondary: m_tail_pede_FRONT_secondary
+    m_tail_pede_BEHIND_tertiary: m_tail_pede_FRONT_tertiary
   sprites:
   - sprite: _Floof/Mobs/Customization/skyrattails.rsi
     state: m_tail_pede_FRONT_primary
@@ -811,7 +811,7 @@
     m_tail_queeninsect_FRONT_secondary: TailOversuit
   colorLinks:
     m_tail_queeninsect_BEHIND_primary: m_tail_queeninsect_FRONT_primary
-    m_tail_queeninsect_BEHIND_secondary: m_tail_queeninsect_FRONT_secondary
+    # Wolfgate: dropped the secondary link, this tail has no secondary sprites
   sprites:
   - sprite: _Floof/Mobs/Customization/skyrattails.rsi
     state: m_tail_queeninsect_FRONT_primary

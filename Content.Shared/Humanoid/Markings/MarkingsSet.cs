@@ -241,9 +241,12 @@ public sealed partial class MarkingSet
     {
         IoCManager.Resolve(ref markingManager);
 
-        var toRemove = new List<int>();
         foreach (var (category, list) in Markings)
         {
+            // WOLFGATE: collected per category and removed from the back. This used to be one list for the
+            // whole set, so indices found in one category were removed again from every later category, and
+            // removing front to back shifted the remaining indices onto the wrong markings.
+            var toRemove = new List<int>();
             for (var i = 0; i < list.Count; i++)
             {
                 if (!markingManager.TryGetMarking(list[i], out var marking))
@@ -258,9 +261,9 @@ public sealed partial class MarkingSet
                 }
             }
 
-            foreach (var i in toRemove)
+            for (var i = toRemove.Count - 1; i >= 0; i--)
             {
-                Remove(category, i);
+                Remove(category, toRemove[i]);
             }
         }
     }

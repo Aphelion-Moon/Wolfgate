@@ -61,5 +61,46 @@ namespace Content.Shared.Humanoid.Markings
         {
             return new Marking(ID, Sprites.Count);
         }
+
+        // WOLFGATE - colour links, ported from HardLight/Floof.
+        /// <summary>
+        /// Per-sprite colours with <see cref="ColorLinks"/> applied: a linked sprite takes the colour of the sprite
+        /// it follows. Returns a copy and leaves the input alone.
+        /// </summary>
+        public List<Color> ResolveLinkedColors(IReadOnlyList<Color> colors)
+        {
+            var resolved = new List<Color>(colors);
+            if (ColorLinks is not { Count: > 0 })
+                return resolved;
+
+            var byState = new Dictionary<string, Color>();
+            for (var i = 0; i < Sprites.Count && i < resolved.Count; i++)
+            {
+                if (Sprites[i] is SpriteSpecifier.Rsi rsi)
+                    byState[rsi.RsiState] = resolved[i];
+            }
+
+            for (var i = 0; i < Sprites.Count && i < resolved.Count; i++)
+            {
+                if (Sprites[i] is SpriteSpecifier.Rsi rsi
+                    && ColorLinks.TryGetValue(rsi.RsiState, out var parent)
+                    && byState.TryGetValue(parent, out var parentColor))
+                {
+                    resolved[i] = parentColor;
+                }
+            }
+
+            return resolved;
+        }
+
+        /// <summary>Whether a sprite takes its colour from another one, and so has no colour of its own.</summary>
+        public bool IsColorLinked(int index)
+        {
+            return ColorLinks is { Count: > 0 }
+                && index >= 0 && index < Sprites.Count
+                && Sprites[index] is SpriteSpecifier.Rsi rsi
+                && ColorLinks.ContainsKey(rsi.RsiState);
+        }
+        // End WOLFGATE
     }
 }

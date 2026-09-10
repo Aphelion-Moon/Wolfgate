@@ -224,7 +224,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
             foreach (var id in points.DefaultMarkings)
             {
                 if (_markingManager.Markings.TryGetValue(id, out var proto))
-                    _current.AddBack(category, new Marking(id, MarkingColoring.GetMarkingLayerColors(proto, CurrentSkinColor, CurrentEyeColor, _current)));
+                    _current.AddBack(category, new Marking(id, proto.ResolveLinkedColors(MarkingColoring.GetMarkingLayerColors(proto, CurrentSkinColor, CurrentEyeColor, _current))));
             }
         }
 
@@ -382,7 +382,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
                 Pressed = applied,
             };
             if (applied && marking!.MarkingColors.Count > 0)
-                tile.SetColors(marking.MarkingColors);
+                tile.SetColors(proto.ResolveLinkedColors(marking.MarkingColors));
             var chosen = proto;
             tile.OnPressed += _ => Toggle(chosen);
             _grid.AddChild(tile);
@@ -437,7 +437,8 @@ public sealed class WolfgateMarkingPicker : BoxContainer
 
         if (!_markingManager.MustMatchSkin(_species, proto.BodyPart, out _, _prototypeManager))
         {
-            var colors = MarkingColoring.GetMarkingLayerColors(proto, CurrentSkinColor, CurrentEyeColor, withHair);
+            // Linked sprites take their parent's colour, so the stored colours match what is drawn.
+            var colors = proto.ResolveLinkedColors(MarkingColoring.GetMarkingLayerColors(proto, CurrentSkinColor, CurrentEyeColor, withHair));
             for (var i = 0; i < colors.Count; i++)
                 marking.SetColor(i, colors[i]);
         }
@@ -515,7 +516,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
     private Control BuildAppliedCard(Marking marking, MarkingPrototype proto, bool topmost, bool bottommost)
     {
         var icon = new WolfgateMarkingIcon(proto.Sprites, _direction);
-        icon.SetColors(marking.MarkingColors);
+        icon.SetColors(proto.ResolveLinkedColors(marking.MarkingColors));
         _appliedIcons.Add(icon);
         var name = new Label
         {
@@ -542,8 +543,13 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         if (!proto.ForcedColoring)
         {
             var layers = GetMarkingStateNames(proto);
+            // A sprite linked to another takes that sprite's colour, so only the unlinked ones get a picker.
+            var ownColours = Enumerable.Range(0, proto.Sprites.Count).Count(j => !proto.IsColorLinked(j));
             for (var i = 0; i < proto.Sprites.Count && i < marking.MarkingColors.Count; i++)
             {
+                if (proto.IsColorLinked(i))
+                    continue;
+
                 var layer = i;
                 var picker = new WolfgateColorPicker { HorizontalExpand = true, Color = marking.MarkingColors[i] };
                 picker.SelectorType = ColorSelectorSliders.ColorSelectorType.Hsv;
@@ -553,7 +559,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
                     if (_current.TryGetMarking(proto.MarkingCategory, proto.ID, out var updated))
                         icon.SetColors(updated.MarkingColors);
                 };
-                var caption = proto.Sprites.Count == 1
+                var caption = ownColours == 1
                     ? Loc.GetString("wf-marking-colour")
                     : Loc.GetString("wf-marking-layer-colour", ("layer", layers[i]));
                 card.AddChild(new Label { Text = caption, StyleClasses = { StyleWolfgate.StyleClassCreatorFieldLabel } });
@@ -615,6 +621,11 @@ public sealed class WolfgateMarkingPicker : BoxContainer
 
         var marking = new Marking(_current.Markings[category][index]);
         marking.SetColor(layer, color);
+
+        // Keep linked sprites in step with the sprite they follow, so the tiles and the saved colours agree.
+        var resolved = proto.ResolveLinkedColors(marking.MarkingColors);
+        for (var i = 0; i < resolved.Count; i++)
+            marking.SetColor(i, resolved[i]);
         _current.Replace(category, index, marking);
 
         foreach (var child in _grid.Children)

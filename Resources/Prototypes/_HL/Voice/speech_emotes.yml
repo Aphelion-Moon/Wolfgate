@@ -2,6 +2,7 @@
 - type: emote
   id: Marr
   name: chat-emote-name-marr
+  icon: Interface/Emotes/vocal.png # Wolfgate: was the default scream icon
   category: Vocal
   available: false
   whitelist:

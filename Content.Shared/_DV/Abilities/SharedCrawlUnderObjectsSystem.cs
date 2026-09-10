@@ -1,5 +1,4 @@
 using System.Numerics;
-using Content.Shared.Climbing.Components;
 using Content.Shared.Climbing.Events;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Movement.Systems;
@@ -15,12 +14,14 @@ namespace Content.Shared._DV.Abilities;
 
 /// <summary>
 /// Sneaking slows the mob down and shrinks its circle fixtures so it can squeeze past mobs and furniture.
-/// Tables still block and have to be climbed. Runs predicted on the client; the server stays authoritative.
+/// Walking through tables stays blocked; once it has climbed onto one it is drawn underneath it.
+/// Runs predicted on the client; the server stays authoritative.
 /// </summary>
 // WOLFGATE: rewritten as a shared, predicted system with HardLight's squeeze geometry. The Delta-V original was
 // server-only and stripped table bits from the collision mask instead.
 public abstract partial class SharedCrawlUnderObjectsSystem : EntitySystem
 {
+    [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private MovementSpeedModifierSystem _movespeed = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
@@ -115,7 +116,7 @@ public abstract partial class SharedCrawlUnderObjectsSystem : EntitySystem
     }
 
     /// <summary>
-    /// Tries to start or stop sneaking. Starting fails while climbing or downed; stopping is always allowed so
+    /// Tries to start or stop sneaking. Starting fails while downed; stopping is always allowed so
     /// nobody gets stuck squeezed.
     /// </summary>
     public bool TrySetEnabled(Entity<CrawlUnderObjectsComponent> ent, bool enabled)
@@ -128,9 +129,6 @@ public abstract partial class SharedCrawlUnderObjectsSystem : EntitySystem
             EnsureBaselineInflation(ent);
 
             if (_standing.IsDown(ent))
-                return false;
-
-            if (TryComp<ClimbingComponent>(ent, out var climbing) && climbing.IsClimbing)
                 return false;
         }
 
@@ -165,6 +163,7 @@ public abstract partial class SharedCrawlUnderObjectsSystem : EntitySystem
         }
 
         _movespeed.RefreshMovementSpeedModifiers(ent);
+        _appearance.SetData(ent, SneakMode.Enabled, enabled);
         Dirty(ent);
 
         if (!popup)

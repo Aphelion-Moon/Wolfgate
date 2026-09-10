@@ -2,12 +2,14 @@ using System.Numerics;
 using Content.Shared.Actions;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared._DV.Abilities;
 
 /// <summary>
 /// Lets a mob toggle sneaking: it moves slower and its circle fixtures shrink, so it can squeeze past mobs and
-/// furniture. Tables still have to be climbed. See <see cref="SharedCrawlUnderObjectsSystem"/>.
+/// furniture, and it is drawn under tables it has climbed onto. Walking through tables stays blocked.
+/// See <see cref="SharedCrawlUnderObjectsSystem"/>.
 /// </summary>
 // WOLFGATE: HardLight balance. The Delta-V original dropped the mob under tables instead.
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
@@ -54,6 +56,18 @@ public sealed partial class CrawlUnderObjectsComponent : Component
     public List<(string key, Vector2 position, float radius)> DownedCircles = new();
 
     public bool DownedScaleApplied;
+
+    /// <summary>
+    /// Client only: the draw depth the sprite had before it was dropped under the tables.
+    /// </summary>
+    [DataField]
+    public int? OriginalDrawDepth;
+}
+
+[Serializable, NetSerializable]
+public enum SneakMode : byte
+{
+    Enabled
 }
 
 public sealed partial class ToggleCrawlingStateEvent : InstantActionEvent { }

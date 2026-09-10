@@ -129,6 +129,9 @@
       - 0, 2, 5, 4
   - type: CrawlUnderObjects
     actionProto: ActionToggleSneakMode
+    sneakSpeedModifier: 0.55 # WOLFGATE: HardLight balance, squeeze instead of walking under tables
+    squeezeRadiusScale: 0.9
+    unsqueezedRadiusScale: 1.0
 
 - type: entity
   save: false

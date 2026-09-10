@@ -1,12 +1,16 @@
+using System.Numerics;
 using Content.Shared.Actions;
-using DrawDepth = Content.Shared.DrawDepth.DrawDepth;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization;
 
 namespace Content.Shared._DV.Abilities;
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)] // WOLFGATE: raise AfterAutoHandleState
+/// <summary>
+/// Lets a mob toggle sneaking: it moves slower and its circle fixtures shrink, so it can squeeze past mobs and
+/// furniture. Tables still have to be climbed. See <see cref="SharedCrawlUnderObjectsSystem"/>.
+/// </summary>
+// WOLFGATE: HardLight balance. The Delta-V original dropped the mob under tables instead.
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class CrawlUnderObjectsComponent : Component
 {
     [DataField]
@@ -15,35 +19,41 @@ public sealed partial class CrawlUnderObjectsComponent : Component
     [DataField]
     public EntProtoId? ActionProto;
 
-    // WOLFGATE: was a plain DataField while the component generates networked state, so the client's copy
-    // was stuck on false. Upstream and HardLight both network it.
     [DataField, AutoNetworkedField]
-    public bool Enabled = false;
-
-    /// <summary>
-    ///     List of fixtures that had their collision mask changed.
-    ///     Required for re-adding the collision mask.
-    /// </summary>
-    [DataField, AutoNetworkedField]
-    public List<(string key, int originalMask)> ChangedFixtures = new();
-
-    [DataField]
-    public int? OriginalDrawDepth;
+    public bool Enabled;
 
     [DataField]
     public float SneakSpeedModifier = 0.7f;
-}
 
-[Serializable, NetSerializable]
-public enum SneakMode : byte
-{
-    Enabled
+    /// <summary>
+    /// Circle fixture radius multiplier while sneaking, relative to the unsqueezed radius.
+    /// </summary>
+    [DataField]
+    public float SqueezeRadiusScale = 1f;
+
+    /// <summary>
+    /// Circle fixture radius multiplier applied once at startup, so a species can be bulkier than its prototype
+    /// radius while standing.
+    /// </summary>
+    [DataField]
+    public float UnsqueezedRadiusScale = 1f;
+
+    /// <summary>
+    /// Circle geometry captured when sneaking starts and restored when it ends, so cycles never drift.
+    /// </summary>
+    public List<(string key, Vector2 position, float radius)> ChangedCircles = new();
+
+    /// <summary>
+    /// Guards the unsqueezed baseline inflation so it is only applied once.
+    /// </summary>
+    public bool BaselineInflationApplied;
+
+    /// <summary>
+    /// Geometry captured while downed, which uses the squeeze scale too.
+    /// </summary>
+    public List<(string key, Vector2 position, float radius)> DownedCircles = new();
+
+    public bool DownedScaleApplied;
 }
 
 public sealed partial class ToggleCrawlingStateEvent : InstantActionEvent { }
-
-[Serializable, NetSerializable]
-public sealed partial class CrawlingUpdatedEvent(bool enabled = false) : EventArgs
-{
-    public readonly bool Enabled = enabled;
-}

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Content.Server._Mono.Company;
@@ -42,7 +40,6 @@ public sealed partial class SymphonyRolesSystem : EntitySystem
 {
     public const string RolesPath = "/symphony/roles";
     public const string RefreshPath = "/symphony/roles/refresh";
-    private const string TokenScheme = "SS14Token";
 
     [Dependency] private IStatusHost _statusHost = default!;
     [Dependency] private ITaskManager _tasks = default!;
@@ -69,7 +66,7 @@ public sealed partial class SymphonyRolesSystem : EntitySystem
         if (path != RolesPath && path != RefreshPath)
             return false;
 
-        if (!await Authorised(context))
+        if (!await SymphonyApi.AuthorisedAsync(_cfg, context))
             return true;
 
         if (path == RolesPath && context.RequestMethod == HttpMethod.Get)
@@ -83,34 +80,12 @@ public sealed partial class SymphonyRolesSystem : EntitySystem
     }
 
     /// <summary>
-    /// The same check /admin makes: an SS14Token header carrying admin.api_token. An unset token admits nobody.
-    /// </summary>
-    private async Task<bool> Authorised(IStatusHandlerContext context)
-    {
-        var token = _cfg.GetCVar(CCVars.AdminApiToken);
-        if (token != "" && context.RequestHeaders.TryGetValue("Authorization", out var header))
-        {
-            var value = header.ToString();
-            var space = value.IndexOf(' ');
-            if (space > 0 && value[..space] == TokenScheme)
-            {
-                var given = Encoding.UTF8.GetBytes(value[(space + 1)..].Trim());
-                if (CryptographicOperations.FixedTimeEquals(given, Encoding.UTF8.GetBytes(token)))
-                    return true;
-            }
-        }
-
-        await context.RespondErrorAsync(HttpStatusCode.Unauthorized);
-        return false;
-    }
-
-    /// <summary>
     /// Every whitelisted job, ghost role and company, with the names players see, and the switches that decide
     /// whether a whitelist means anything right now.
     /// </summary>
     private async Task RespondCatalogue(IStatusHandlerContext context)
     {
-        var catalogue = await OnMainThread(() => new Catalogue
+        var catalogue = await _tasks.OnMainThread(() => new Catalogue
         {
             SymphonyModule = SharedSymphony.ModuleVersion,
             RoleWhitelistEnabled = _cfg.GetCVar(CCVars.GameRoleWhitelist),
@@ -164,7 +139,7 @@ public sealed partial class SymphonyRolesSystem : EntitySystem
         }
 
         // Who is online is main-thread state; the database reads are not. Collect first, compare after.
-        var (online, jobs, ghostRoles, companies) = await OnMainThread(() => (
+        var (online, jobs, ghostRoles, companies) = await _tasks.OnMainThread(() => (
             _players.Sessions
                 .Where(s => s.Status == SessionStatus.InGame)
                 .Where(s => wanted.Count == 0 || wanted.Contains(s.UserId))
@@ -189,7 +164,7 @@ public sealed partial class SymphonyRolesSystem : EntitySystem
                     memberOf.Add(company);
             }
 
-            changed += await OnMainThread(() => Reconcile(user, named, adminRow, global, rows, memberOf, jobs, ghostRoles, companies));
+            changed += await _tasks.OnMainThread(() => Reconcile(user, named, adminRow, global, rows, memberOf, jobs, ghostRoles, companies));
         }
 
         if (changed > 0)
@@ -271,23 +246,6 @@ public sealed partial class SymphonyRolesSystem : EntitySystem
         }
 
         return changes;
-    }
-
-    private Task<T> OnMainThread<T>(Func<T> work)
-    {
-        var done = new TaskCompletionSource<T>();
-        _tasks.RunOnMainThread(() =>
-        {
-            try
-            {
-                done.TrySetResult(work());
-            }
-            catch (Exception e)
-            {
-                done.TrySetException(e);
-            }
-        });
-        return done.Task;
     }
 
     private sealed class Catalogue

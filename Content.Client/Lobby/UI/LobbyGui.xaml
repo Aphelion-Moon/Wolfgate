@@ -22,9 +22,10 @@
                                   SeparationOverride="0">
                         <!-- Menu column -->
                         <BoxContainer Orientation="Vertical" MinWidth="300" Margin="40 40 16 24" SeparationOverride="0">
+                            <!-- Fixed width so a long server name wraps instead of widening the menu column -->
                             <BoxContainer Name="HeaderContainer" Access="Public" Orientation="Vertical"
-                                          SeparationOverride="0">
-                                <Label Name="ServerName" Access="Public" StyleClasses="LobbyTitle" />
+                                          SeparationOverride="0" SetWidth="440">
+                                <RichTextLabel Name="ServerName" Access="Public" StyleClasses="LobbyTitle" />
                                 <PanelContainer StyleClasses="LobbyTitleRule" MinHeight="4" Margin="0 2 0 4" />
                                 <Label Name="StartTime" Access="Public" StyleClasses="LobbyStatus" />
                             </BoxContainer>

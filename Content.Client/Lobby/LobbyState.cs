@@ -13,6 +13,7 @@ using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Shared.Configuration;
+using Robust.Shared.Utility; // WOLFGATE
 using Robust.Shared.Timing;
 using PickerWindow = Content.Client._NF.LateJoin.Windows.PickerWindow;
 
@@ -60,9 +61,10 @@ namespace Content.Client.Lobby
             var lobbyNameCvar = _cfg.GetCVar(CCVars.ServerLobbyName);
             var serverName = _baseClient.GameInfo?.ServerName ?? string.Empty;
 
-            Lobby.ServerName.Text = string.IsNullOrEmpty(lobbyNameCvar)
+            // WOLFGATE: rich label so long names wrap in the menu column; unformatted so brackets in names survive
+            Lobby.ServerName.SetMessage(FormattedMessage.FromUnformatted(string.IsNullOrEmpty(lobbyNameCvar)
                 ? Loc.GetString("ui-lobby-title", ("serverName", serverName))
-                : lobbyNameCvar;
+                : lobbyNameCvar));
 
             var width = _cfg.GetCVar(CCVars.ServerLobbyRightPanelWidth);
             // WOLFGATE: the game-menu lobby keeps the chat as a dock, at most 30% of the window

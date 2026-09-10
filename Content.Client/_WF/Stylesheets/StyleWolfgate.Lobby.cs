@@ -75,6 +75,9 @@ public sealed partial class StyleWolfgate
             Element<Label>().Class(StyleClassLobbyTitle)
                 .Prop(Label.StylePropertyFont, Display(32))
                 .Prop(Label.StylePropertyFontColor, Accent),
+            Element<RichTextLabel>().Class(StyleClassLobbyTitle)
+                .Prop(Label.StylePropertyFont, Display(32))
+                .Prop(Label.StylePropertyFontColor, Accent),
             Element<Label>().Class(StyleClassLobbyStatus)
                 .Prop(Label.StylePropertyFont, Display(16))
                 .Prop(Label.StylePropertyFontColor, TextMuted),

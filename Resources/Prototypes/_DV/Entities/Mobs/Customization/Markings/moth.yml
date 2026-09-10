@@ -3,7 +3,7 @@
   bodyPart: Tail
   markingCategory: Tail
   forcedColoring: true
-  speciesRestriction: [Moth]
+  speciesRestriction: [Moth, ProtoMoth]
   coloring:
     default:
       type:
@@ -17,7 +17,7 @@
   id: MothWingsSelene
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Moth]
+  speciesRestriction: [Moth, ProtoMoth]
   sprites:
   - sprite: _DV/Mobs/Customization/Moth/moth_wings.rsi
     state: selene_primary

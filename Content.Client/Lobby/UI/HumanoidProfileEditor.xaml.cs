@@ -181,7 +181,8 @@ namespace Content.Client.Lobby.UI
 
             #region Appearance
 
-            TabContainer.SetTabTitle(0, Loc.GetString("humanoid-profile-editor-appearance-tab"));
+            TabContainer.SetTabTitle(0, Loc.GetString("wf-creator-species-tab")); // WOLFGATE
+            TabContainer.SetTabTitle(1, Loc.GetString("humanoid-profile-editor-appearance-tab"));
 
             #region Sex
 
@@ -222,6 +223,7 @@ namespace Content.Client.Lobby.UI
 
             RefreshSpecies();
 
+            SpeciesPicker.OnSpeciesSelected += SetSpecies; // WOLFGATE
             SpeciesButton.OnItemSelected += args =>
             {
                 SpeciesButton.SelectId(args.Id);
@@ -413,7 +415,7 @@ namespace Content.Client.Lobby.UI
 
             #region Jobs
 
-            TabContainer.SetTabTitle(1, Loc.GetString("humanoid-profile-editor-jobs-tab"));
+            TabContainer.SetTabTitle(2, Loc.GetString("humanoid-profile-editor-jobs-tab"));
 
             PreferenceUnavailableButton.AddItem(
                 Loc.GetString("humanoid-profile-editor-preference-unavailable-stay-in-lobby-button"),
@@ -446,7 +448,7 @@ namespace Content.Client.Lobby.UI
 
             #region Company
 
-            TabContainer.SetTabTitle(3, Loc.GetString("humanoid-profile-editor-company-tab"));
+            TabContainer.SetTabTitle(4, Loc.GetString("humanoid-profile-editor-company-tab"));
 
             // Clear any existing items
             CompanyButton.Clear();
@@ -513,7 +515,7 @@ namespace Content.Client.Lobby.UI
 
             #region Markings
 
-            TabContainer.SetTabTitle(4, Loc.GetString("humanoid-profile-editor-markings-tab"));
+            TabContainer.SetTabTitle(5, Loc.GetString("humanoid-profile-editor-markings-tab"));
 
             Markings.OnMarkingAdded += OnMarkingChange;
             Markings.OnMarkingRemoved += OnMarkingChange;
@@ -594,7 +596,7 @@ namespace Content.Client.Lobby.UI
             EnforceSpeciesTraitRestrictions();
 
             var traits = _prototypeManager.EnumeratePrototypes<TraitPrototype>().OrderBy(t => Loc.GetString(t.Name)).ToList();
-            TabContainer.SetTabTitle(2, Loc.GetString("humanoid-profile-editor-traits-tab"));
+            TabContainer.SetTabTitle(3, Loc.GetString("humanoid-profile-editor-traits-tab"));
 
             if (traits.Count < 1)
             {
@@ -1028,6 +1030,10 @@ namespace Content.Client.Lobby.UI
                     SpeciesButton.SelectId(i);
                 }
             }
+
+            SpeciesPicker.Populate(); // WOLFGATE
+            if (Profile != null)
+                SpeciesPicker.SetSelected(Profile.Species);
 
             // If our species isn't available then reset it to default.
             if (Profile != null)
@@ -1676,6 +1682,10 @@ namespace Content.Client.Lobby.UI
         private void SetSpecies(string newSpecies)
         {
             Profile = Profile?.WithSpecies(newSpecies);
+            SpeciesPicker.SetSelected(newSpecies); // WOLFGATE
+            var speciesIndex = _species.FindIndex(s => s.ID == newSpecies); // WOLFGATE: keep the dropdown in step
+            if (speciesIndex >= 0)
+                SpeciesButton.SelectId(speciesIndex);
             OnSkinColorOnValueChanged(); // Species may have special color prefs, make sure to update it.
             Markings.SetSpecies(newSpecies); // Repopulate the markings tab as well.
             EnforceSpeciesTraitRestrictions();

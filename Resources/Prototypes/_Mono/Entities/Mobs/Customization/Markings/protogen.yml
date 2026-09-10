@@ -2,7 +2,7 @@
   id: ProtogenTail
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Protogen]
+  speciesRestriction: [Protogen, ProtoAvali, ProtoDawi, ProtoFeline, ProtoHumie, ProtoKin, ProtoMoth, ProtoResomi, ProtoThaven, ProtoVox, ProtoVulp]
   sprites:
   - sprite: _Mono/Mobs/Customization/protogen_parts.rsi
     state: tail_protogen
@@ -11,7 +11,7 @@
   id: ProtogenTailBushy
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Protogen]
+  speciesRestriction: [Protogen, ProtoAvali, ProtoDawi, ProtoFeline, ProtoHumie, ProtoKin, ProtoMoth, ProtoResomi, ProtoThaven, ProtoVox, ProtoVulp]
   sprites:
   - sprite: _Mono/Mobs/Customization/protogen_parts.rsi
     state: bushy_tail_protogen
@@ -20,7 +20,7 @@
   id: ProtogenTailShark
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [Protogen]
+  speciesRestriction: [Protogen, ProtoAvali, ProtoDawi, ProtoFeline, ProtoHumie, ProtoKin, ProtoMoth, ProtoResomi, ProtoThaven, ProtoVox, ProtoVulp]
   sprites:
   - sprite: _Mono/Mobs/Customization/protogen_parts.rsi
     state: shark_tail_protogen
@@ -29,7 +29,7 @@
   id: ProtogenEars
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Protogen]
+  speciesRestriction: [Protogen, ProtoAvali, ProtoDawi, ProtoFeline, ProtoHumie, ProtoKin, ProtoMoth, ProtoThaven, ProtoVox, ProtoVulp]
   sprites:
   - sprite: _Mono/Mobs/Customization/protogen_parts.rsi
     state: ears_protogen
@@ -38,7 +38,7 @@
   id: TwoProtogenEars
   bodyPart: HeadTop
   markingCategory: HeadTop
-  speciesRestriction: [Protogen]
+  speciesRestriction: [Protogen, ProtoAvali, ProtoDawi, ProtoFeline, ProtoHumie, ProtoKin, ProtoMoth, ProtoThaven, ProtoVox, ProtoVulp]
   sprites:
   - sprite: _Mono/Mobs/Customization/protogen_parts.rsi
     state: two_ears_protogen
@@ -47,7 +47,7 @@
   id: ProtogenVisor
   bodyPart: Snout
   markingCategory: Snout
-  speciesRestriction: [Protogen]
+  speciesRestriction: [Protogen, ProtoDawi, ProtoHumie]
   sprites:
   - sprite: _Mono/Mobs/Customization/protogen_parts.rsi
     state: visor_protogen

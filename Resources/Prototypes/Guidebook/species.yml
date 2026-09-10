@@ -81,6 +81,21 @@
   id: Protogen
   name: species-name-protogen
   text: "/ServerInfo/Guidebook/Mobs/Protogen.xml"
+  children: # Wolfgate: the 14 subspecies ported from HardLight
+  - ProtoVulp
+  - ProtoVox
+  - ProtoThaven
+  - ProtoSlimePerson
+  - ProtoKin
+  - ProtoResomi
+  - ProtoReptile
+  - ProtoMoth
+  - ProtoHumie
+  - ProtoFeline
+  - ProtoDawi
+  - ProtoDionae
+  - ProtoAvali
+  - ProtoArachnid
 
 - type: guideEntry
   id: IPC

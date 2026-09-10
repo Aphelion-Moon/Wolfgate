@@ -171,7 +171,7 @@ public sealed class WolfgateSlotMarkingPicker : BoxContainer
 
         foreach (var (id, proto) in sorted)
         {
-            var tile = new WolfgateMarkingTile(id, Name(proto), proto.Sprites[0], _direction)
+            var tile = new WolfgateMarkingTile(id, Name(proto), proto.Sprites, _direction)
             {
                 Pressed = current?.MarkingId == id,
                 Tint = tint,

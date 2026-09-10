@@ -64,7 +64,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
     private Sex _sex = Sex.Unsexed;
     private bool _ignoreSpecies;
     private Direction _direction = Direction.South;
-    private readonly List<(TextureRect icon, SpriteSpecifier sprite)> _appliedIcons = new();
+    private readonly List<WolfgateMarkingIcon> _appliedIcons = new();
 
     /// <summary>Direction the tile and card sprites face; follows the preview pawn.</summary>
     public Direction PreviewDirection
@@ -78,8 +78,8 @@ public sealed class WolfgateMarkingPicker : BoxContainer
                 if (child is WolfgateMarkingTile tile)
                     tile.SetDirection(value);
             }
-            foreach (var (icon, sprite) in _appliedIcons)
-                icon.Texture = WolfgateMarkingTile.FrameFor(sprite, value);
+            foreach (var icon in _appliedIcons)
+                icon.SetDirection(value);
         }
     }
 
@@ -289,11 +289,12 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         foreach (var proto in sorted)
         {
             var applied = _current.TryGetMarking(proto.MarkingCategory, proto.ID, out var marking);
-            var tile = new WolfgateMarkingTile(proto.ID, Name(proto), proto.Sprites[0], _direction)
+            var tile = new WolfgateMarkingTile(proto.ID, Name(proto), proto.Sprites, _direction)
             {
                 Pressed = applied,
-                Tint = applied && marking!.MarkingColors.Count > 0 ? marking.MarkingColors[0] : Color.White,
             };
+            if (applied && marking!.MarkingColors.Count > 0)
+                tile.SetColors(marking.MarkingColors);
             var chosen = proto;
             tile.OnPressed += _ => Toggle(chosen);
             _grid.AddChild(tile);
@@ -425,15 +426,9 @@ public sealed class WolfgateMarkingPicker : BoxContainer
 
     private Control BuildAppliedCard(Marking marking, MarkingPrototype proto, bool topmost, bool bottommost)
     {
-        var icon = new TextureRect
-        {
-            Texture = WolfgateMarkingTile.FrameFor(proto.Sprites[0], _direction),
-            TextureScale = new Vector2(2, 2),
-            Stretch = TextureRect.StretchMode.KeepCentered,
-            MinSize = new Vector2(64, 64),
-            ModulateSelfOverride = marking.MarkingColors.Count > 0 ? marking.MarkingColors[0] : Color.White,
-        };
-        _appliedIcons.Add((icon, proto.Sprites[0]));
+        var icon = new WolfgateMarkingIcon(proto.Sprites, _direction);
+        icon.SetColors(marking.MarkingColors);
+        _appliedIcons.Add(icon);
         var name = new Label
         {
             Text = Loc.GetString(marking.Forced ? "marking-used-forced" : "marking-used",
@@ -467,8 +462,8 @@ public sealed class WolfgateMarkingPicker : BoxContainer
                 picker.OnColorChanged += color =>
                 {
                     Recolor(proto, layer, color);
-                    if (layer == 0)
-                        icon.ModulateSelfOverride = color;
+                    if (_current.TryGetMarking(proto.MarkingCategory, proto.ID, out var updated))
+                        icon.SetColors(updated.MarkingColors);
                 };
                 card.AddChild(new Label { Text = Loc.GetString("wf-marking-layer-colour", ("layer", layers[i])), StyleClasses = { StyleWolfgate.StyleClassCreatorFieldLabel } });
                 card.AddChild(picker);
@@ -531,13 +526,10 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         marking.SetColor(layer, color);
         _current.Replace(category, index, marking);
 
-        if (layer == 0)
+        foreach (var child in _grid.Children)
         {
-            foreach (var child in _grid.Children)
-            {
-                if (child is WolfgateMarkingTile { MarkingId: { } id } tile && id == proto.ID)
-                    tile.Tint = color;
-            }
+            if (child is WolfgateMarkingTile { MarkingId: { } id } tile && id == proto.ID)
+                tile.SetColors(marking.MarkingColors);
         }
 
         OnMarkingColorChange?.Invoke(_current);

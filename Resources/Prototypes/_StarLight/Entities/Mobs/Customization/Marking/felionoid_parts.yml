@@ -3,7 +3,7 @@
   id: FelionoidTailAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: []
+  speciesRestriction: [Felionoid, ProtoFeline] # Wolfgate: was [], which stripped it from every species including Felionoid
   sprites:
     - sprite: _Starlight/Mobs/Customization/felionoid_parts.rsi
       state: tail_wagging

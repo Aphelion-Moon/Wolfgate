@@ -6,7 +6,8 @@
     species:
     - SlimePerson
     - Vox
-
+    # Wolfgate: uses the Slime body
+    - ProtoSlimePerson
 - type: loadoutEffectGroup
   id: OxygenBreatherNF
   effects:
@@ -31,7 +32,26 @@
     - Yowie # Goob
     - Tajaran # Goob
     - Hydrakin # Mono
-
+    # Wolfgate: Protogen subspecies + the six species the earlier port missed
+    - ProtoVulp
+    - ProtoVox
+    - ProtoThaven
+    - ProtoKin
+    - ProtoResomi
+    - ProtoReptile
+    - ProtoMoth
+    - ProtoHumie
+    - ProtoFeline
+    - ProtoDawi
+    - ProtoDionae
+    - ProtoAvali
+    - ProtoArachnid
+    - Felionoid
+    - Avali
+    - Skrell
+    - Shadekin
+    - Thaven
+    - Synth
 - type: loadoutEffectGroup
   id: ShoesCapableNF
   effects:
@@ -58,7 +78,26 @@
     - Diona # Mono
     - Hydrakin # Mono
     - Feroxi # Mono/DV
-
+    # Wolfgate: Protogen subspecies (not ProtoDionae - no shoes slot) + the six the earlier port missed
+    - ProtoVulp
+    - ProtoVox
+    - ProtoThaven
+    - ProtoSlimePerson
+    - ProtoKin
+    - ProtoResomi
+    - ProtoReptile
+    - ProtoMoth
+    - ProtoHumie
+    - ProtoFeline
+    - ProtoDawi
+    - ProtoAvali
+    - ProtoArachnid
+    - Felionoid
+    - Avali
+    - Skrell
+    - Shadekin
+    - Thaven
+    - Synth
 - type: loadoutEffectGroup
   id: NFNotDocOrStc
   effects:

@@ -32,6 +32,14 @@ public sealed partial class SpeciesPrototype : IPrototype
     [DataField(required: true)]
     public bool RoundStart { get; private set; } = false;
 
+    /// <summary>
+    /// WOLFGATE - the species this one is a variant of, if any. Purely cosmetic: the character creator
+    /// lists a subspecies under its parent instead of on its own. Subspecies are ordinary species in
+    /// every other respect.
+    /// </summary>
+    [DataField]
+    public ProtoId<SpeciesPrototype>? SubspeciesOf { get; private set; }
+
     // The below two are to avoid fetching information about the species from the entity
     // prototype.
 

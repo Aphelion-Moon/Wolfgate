@@ -5,7 +5,7 @@
          HorizontalExpand="True"
          SeparationOverride="0">
     <!-- WOLFGATE: creator rebuilt as cards with a preview column. Control names and tab order are unchanged
-         because the code-behind binds to them (tabs: Appearance, Jobs, Traits, Company, Markings, then Description). -->
+         because the code-behind binds to them (tabs: Species, Appearance, Jobs, Traits, Company, Markings, then Description). -->
     <!-- Editor column -->
     <BoxContainer Orientation="Vertical" Margin="12 12 12 12" HorizontalExpand="True" SeparationOverride="8">
         <PanelContainer StyleClasses="CreatorCard">
@@ -20,6 +20,14 @@
             </BoxContainer>
         </PanelContainer>
         <TabContainer Name="TabContainer" VerticalExpand="True" StyleClasses="CreatorTabs">
+            <!-- Species -->
+            <BoxContainer Orientation="Vertical">
+                <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+                    <BoxContainer Orientation="Vertical" Margin="8" HorizontalExpand="True">
+                        <wfh:WolfgateSpeciesPicker Name="SpeciesPicker" HorizontalExpand="True" />
+                    </BoxContainer>
+                </ScrollContainer>
+            </BoxContainer>
             <!-- Appearance -->
             <BoxContainer Orientation="Vertical">
                 <ScrollContainer VerticalExpand="True" HScrollEnabled="False">

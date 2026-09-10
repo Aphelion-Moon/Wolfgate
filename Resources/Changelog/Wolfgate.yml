@@ -35,3 +35,12 @@ Entries:
   id: 100004
   time: '2026-09-09T11:05:11.0000000+00:00'
   url: https://github.com/Aphelion-Moon/Wolfgate/pull/11
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: TSF and PDV borgs can customize name
+    - type: Add
+      message: Added voicelines to mouse and mothroach based on events
+  id: 100005
+  time: '2026-09-10T02:11:21.0000000+00:00'
+  url: https://github.com/Aphelion-Moon/Wolfgate/pull/13

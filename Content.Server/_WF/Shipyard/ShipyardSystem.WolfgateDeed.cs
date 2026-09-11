@@ -1,38 +1,75 @@
+using System.Linq;
+using Content.Server._NF.Station.Components;
 using Content.Server.Shuttles.Components;
+using Content.Server.Shuttles.Systems;
+using Content.Server.StationEvents.Components;
+using Content.Server.StationRecords;
+using Content.Shared._Mono.Company;
+using Content.Shared._Mono.Ships.Components;
+using Content.Shared._Mono.Shipyard;
 using Content.Shared._NF.Shipyard.Components;
+using Content.Shared._NF.Shipyard.Prototypes;
+using Content.Shared._NF.ShuttleRecords;
 using Content.Shared.Access.Components;
+using Content.Shared.Forensics.Components;
+using Content.Shared.Maps;
+using Content.Shared.Preferences;
 using Content.Shared.Shuttles.Components;
+using Content.Shared.StationRecords;
+using Content.Shared.Tag;
 using Robust.Shared.Player;
 
 namespace Content.Server._NF.Shipyard.Systems;
 
 /// <summary>
-/// Wolfgate: deed assignment for ships spawned outside the shipyard. Lives in the shipyard partial
-/// because the deed and lock components are access-restricted to it.
+/// Wolfgate: registers an already-spawned ship to an owner the way a shipyard purchase would. Lives in the
+/// shipyard partial because the deed and lock components are access-restricted to it.
 /// </summary>
 public sealed partial class ShipyardSystem
 {
     /// <summary>
-    /// Writes a deed for the ship onto an ID card and locks the ship's consoles to it,
-    /// mirroring a shipyard purchase without payment, records or vouchers.
+    /// Runs every post-payment step of a shipyard purchase on an existing ship: company, late-join station,
+    /// FTL lock, deeds, console locks, ownership, station and shuttle records, ship access, lifecycle,
+    /// vessel tags and crew requirement. Skipped on purpose: payment, vouchers, purchase-attempt checks,
+    /// ID access levels and job title, and the shipyard console messages.
     /// </summary>
-    public bool TryAssignDeed(EntityUid shuttleUid, EntityUid idCard, ICommonSession owner, string shuttleName)
+    public bool TryAssignDeed(EntityUid shuttleUid, EntityUid idCard, ICommonSession owner, VesselPrototype vessel)
     {
-        if (!HasComp<ShuttleComponent>(shuttleUid) || !HasComp<IdCardComponent>(idCard))
+        if (!HasComp<ShuttleComponent>(shuttleUid) || !TryComp<IdCardComponent>(idCard, out var card))
             return false;
 
-        var ownerName = owner.AttachedEntity is { Valid: true } ownerEntity ? Name(ownerEntity).Trim() : owner.Name;
+        var ownerEntity = owner.AttachedEntity is { Valid: true } attached ? attached : (EntityUid?)null;
+        var ownerName = ownerEntity != null ? Name(ownerEntity.Value).Trim() : owner.Name;
+        var name = vessel.Name;
+
+        if (!string.IsNullOrEmpty(card.CompanyName))
+        {
+            var company = EnsureComp<CompanyComponent>(shuttleUid);
+            company.CompanyName = card.CompanyName;
+            Dirty(shuttleUid, company);
+        }
+
+        // Ships with a matching game map get a station so players can late-join onto them.
+        EntityUid? shuttleStation = null;
+        if (_prototypeManager.TryIndex<GameMapPrototype>(vessel.ID, out var stationProto))
+        {
+            shuttleStation = _station.InitializeNewStation(stationProto.Stations[vessel.ID], new List<EntityUid> { shuttleUid });
+            name = Name(shuttleStation.Value);
+            EnsureComp<ExtraShuttleInformationComponent>(shuttleStation.Value).Vessel = vessel.ID;
+        }
+
+        EnsureComp<FTLLockComponent>(shuttleUid);
+        EntityManager.System<ShuttleConsoleSystem>().ToggleFTLLock(shuttleUid, new List<NetEntity>(), true);
 
         var deedId = EnsureComp<ShuttleDeedComponent>(idCard);
-        AssignShuttleDeedProperties(deedId, shuttleUid, shuttleName, ownerName, false);
+        AssignShuttleDeedProperties(deedId, shuttleUid, name, ownerName, false);
         deedId.DeedHolder = idCard;
         Dirty(idCard, deedId);
 
         var deedShuttle = EnsureComp<ShuttleDeedComponent>(shuttleUid);
-        AssignShuttleDeedProperties(deedShuttle, shuttleUid, shuttleName, ownerName, false);
+        AssignShuttleDeedProperties(deedShuttle, shuttleUid, name, ownerName, false);
         Dirty(shuttleUid, deedShuttle);
 
-        // Lock every console on the ship to the deed.
         var consoles = EntityQueryEnumerator<ShuttleConsoleComponent, TransformComponent>();
         while (consoles.MoveNext(out var consoleUid, out _, out var xform))
         {
@@ -44,7 +81,63 @@ public sealed partial class ShipyardSystem
         }
 
         _shipOwnership.RegisterShipOwnership(shuttleUid, owner);
+
+        if (shuttleStation != null)
+            MoveOwnerRecord(shuttleStation.Value, idCard, ownerEntity, owner);
+
+        AddShipAccessToEntities(shuttleUid);
+        EnsureComp<LinkedLifecycleGridParentComponent>(shuttleUid);
+
+        EnsureComp<VesselComponent>(shuttleUid).VesselId = vessel.ID;
+        EnsureComp<TagComponent>(shuttleUid);
+        _tagSystem.TryAddTags(shuttleUid, vessel.Tags);
+        if (vessel.RequireCrew || vessel.Classes.Contains(VesselClass.Capital) || _tagSystem.HasTag(shuttleUid, CrewedShuttleTag))
+            EnsureComp<CrewedShuttleComponent>(shuttleUid);
+
+        _shuttleRecordsSystem.AddRecord(new ShuttleRecord(
+            name: deedShuttle.ShuttleName ?? string.Empty,
+            suffix: deedShuttle.ShuttleNameSuffix ?? string.Empty,
+            ownerName: ownerName,
+            entityUid: GetNetEntity(shuttleUid),
+            purchasedWithVoucher: false,
+            purchasePrice: (uint)vessel.Price));
+
+        if (ownerEntity != null)
+        {
+            var purchaseEv = new ShipyardShuttlePurchaseEvent(shuttleUid, ownerEntity.Value);
+            RaiseLocalEvent(purchaseEv);
+        }
+
         _metaData.SetEntityName(shuttleUid, GetFullName(deedShuttle));
         return true;
+    }
+
+    /// <summary>
+    /// Copies the owner's general station record onto the ship's station, or creates a Captain record
+    /// from their profile. Same behaviour as a purchase, guarded so ghosts and admin bodies can't crash it.
+    /// </summary>
+    private void MoveOwnerRecord(EntityUid shuttleStation, EntityUid idCard, EntityUid? ownerEntity, ICommonSession owner)
+    {
+        var copied = false;
+        if (TryComp<StationRecordKeyStorageComponent>(idCard, out var keyStorage)
+            && keyStorage.Key != null
+            && _records.TryGetRecord<GeneralStationRecord>(keyStorage.Key.Value, out var record))
+        {
+            _records.AddRecordEntry(shuttleStation, record);
+            copied = true;
+        }
+
+        if (!copied
+            && ownerEntity != null
+            && _prefManager.GetPreferencesOrNull(owner.UserId)?.SelectedCharacter is HumanoidCharacterProfile profile
+            && TryComp<FingerprintComponent>(ownerEntity, out var fingerprint)
+            && TryComp<DnaComponent>(ownerEntity, out var dna)
+            && TryComp<StationRecordsComponent>(shuttleStation, out var stationRecords))
+        {
+            _records.CreateGeneralRecord(shuttleStation, idCard, profile.Name, profile.Age, profile.Species, profile.Gender,
+                "Captain", fingerprint.Fingerprint, dna.DNA, profile, stationRecords);
+        }
+
+        _records.Synchronize(shuttleStation);
     }
 }

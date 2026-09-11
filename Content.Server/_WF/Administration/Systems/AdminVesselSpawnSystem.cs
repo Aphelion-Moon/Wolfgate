@@ -87,11 +87,11 @@ public sealed partial class AdminVesselSpawnSystem : EntitySystem
     }
 
     /// <summary>
-    /// Gives the owner a deed for the spawned vessel and locks its consoles to it.
+    /// Registers the spawned vessel to the owner like a shipyard purchase: deed, console locks, records, ship access.
     /// </summary>
     public bool TryAssignOwner(EntityUid gridUid, VesselPrototype vessel, EntityUid idCard, ICommonSession owner)
     {
-        if (!_shipyard.TryAssignDeed(gridUid, idCard, owner, vessel.Name))
+        if (!_shipyard.TryAssignDeed(gridUid, idCard, owner, vessel))
             return false;
 
         _adminLogger.Add(LogType.EntitySpawn, LogImpact.Medium,

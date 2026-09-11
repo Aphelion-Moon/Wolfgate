@@ -11,4 +11,6 @@ public static class WolfgateAdminCommands
     public const string PlayInternetSound = "playinternetsound";
     public const string StopInternetSound = "stopinternetsound";
     public const string GridPower = "gridpower";
+    public const string ErtBuilder = "ertbuilder";
+    public const string ErtBuilderUi = "ertbuilderui";
 }

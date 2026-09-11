@@ -206,7 +206,7 @@ public sealed partial class ErtBuilderWindow : DefaultWindow
     private string TeamName()
     {
         var team = TeamNameEdit.Text.Trim();
-        return team.Length > 0 ? team : Loc.GetString("wf-ert-team-name-placeholder");
+        return team.Length > 0 ? team : Loc.GetString("wf-ert-team-name-default");
     }
 
     private void Spawn()
@@ -228,11 +228,14 @@ public sealed partial class ErtBuilderWindow : DefaultWindow
             Vessel = Selected(ShipSelect, _shipShown),
         };
 
+        // Spawning isn't idempotent; block double-clicks until the server answers.
+        SpawnButton.Disabled = true;
         _ert.RequestSpawn(config);
     }
 
     private void OnResult(string message, bool isError)
     {
+        SpawnButton.Disabled = false;
         StatusLabel.Text = message;
         StatusLabel.FontColorOverride = isError ? Color.Red : null;
     }

@@ -51,9 +51,10 @@ public sealed partial class ShipyardSystem
 
         // Ships with a matching game map get a station so players can late-join onto them.
         EntityUid? shuttleStation = null;
-        if (_prototypeManager.TryIndex<GameMapPrototype>(vessel.ID, out var stationProto))
+        if (_prototypeManager.TryIndex<GameMapPrototype>(vessel.ID, out var stationProto)
+            && stationProto.Stations.TryGetValue(vessel.ID, out var stationConfig))
         {
-            shuttleStation = _station.InitializeNewStation(stationProto.Stations[vessel.ID], new List<EntityUid> { shuttleUid });
+            shuttleStation = _station.InitializeNewStation(stationConfig, new List<EntityUid> { shuttleUid });
             name = Name(shuttleStation.Value);
             EnsureComp<ExtraShuttleInformationComponent>(shuttleStation.Value).Vessel = vessel.ID;
         }

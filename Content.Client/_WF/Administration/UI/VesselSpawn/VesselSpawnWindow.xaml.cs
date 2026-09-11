@@ -43,6 +43,10 @@ public sealed partial class VesselSpawnWindow : DefaultWindow
         SizeFilter.OnItemSelected += OnSizeSelected;
         OwnerSelect.OnItemSelected += args => OwnerSelect.SelectId(args.Id);
 
+        // Keep the owner picker in step with players joining and leaving.
+        _playerManager.PlayerListUpdated += PopulateOwners;
+        OnClose += () => _playerManager.PlayerListUpdated -= PopulateOwners;
+
         PopulateVessels();
     }
 
@@ -77,6 +81,10 @@ public sealed partial class VesselSpawnWindow : DefaultWindow
     /// </summary>
     private void PopulateOwners()
     {
+        // Keep the current pick if that player is still connected.
+        var selectedId = OwnerSelect.SelectedId;
+        var selected = selectedId > 0 && selectedId <= _owners.Count ? _owners[selectedId - 1] : null;
+
         _owners.Clear();
         _owners.AddRange(_playerManager.Sessions.Select(session => session.Name).OrderBy(name => name));
 
@@ -86,6 +94,9 @@ public sealed partial class VesselSpawnWindow : DefaultWindow
         {
             OwnerSelect.AddItem(_owners[i], i + 1);
         }
+
+        var index = selected == null ? -1 : _owners.IndexOf(selected);
+        OwnerSelect.SelectId(index >= 0 ? index + 1 : 0);
     }
 
     private void OnSizeSelected(OptionButton.ItemSelectedEventArgs args)

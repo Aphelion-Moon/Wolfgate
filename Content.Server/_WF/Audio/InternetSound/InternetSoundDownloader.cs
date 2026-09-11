@@ -2,6 +2,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,6 +39,8 @@ public static class InternetSoundDownloader
     {
         using var timeout = CancellationTokenSource.CreateLinkedTokenSource(cancel);
         timeout.CancelAfter(TimeSpan.FromSeconds(settings.TimeoutSeconds));
+
+        await EnsurePublicHost(new Uri(url), timeout.Token);
 
         var dir = Path.Combine(Path.GetTempPath(), "wolfgate-internet-sound", Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(dir);
@@ -99,9 +103,9 @@ public static class InternetSoundDownloader
             {
                 Directory.Delete(dir, true);
             }
-            catch (IOException)
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
             {
-                // Leftover temp files are harmless.
+                // Leftover temp files are harmless; don't let cleanup fail a good fetch.
             }
         }
     }
@@ -165,6 +169,48 @@ public static class InternetSoundDownloader
 
             return (process.ExitCode, await output, await error);
         }
+    }
+
+    /// <summary>
+    /// Refuses links whose host resolves to a loopback, private, link-local or other non-public address, so the
+    /// server can't be pointed at its own network. Redirects are followed by yt-dlp and aren't re-checked.
+    /// </summary>
+    private static async Task EnsurePublicHost(Uri uri, CancellationToken cancel)
+    {
+        IPAddress[] addresses;
+        try
+        {
+            addresses = IPAddress.TryParse(uri.Host.Trim('[', ']'), out var literal)
+                ? new[] { literal }
+                : await Dns.GetHostAddressesAsync(uri.DnsSafeHost, cancel);
+        }
+        catch (SocketException)
+        {
+            throw new FetchException("wf-internet-sound-error-host", uri.Host);
+        }
+
+        if (addresses.Length == 0 || addresses.Any(IsNonPublic))
+            throw new FetchException("wf-internet-sound-error-host", uri.Host);
+    }
+
+    private static bool IsNonPublic(IPAddress address)
+    {
+        if (address.IsIPv4MappedToIPv6)
+            address = address.MapToIPv4();
+
+        if (IPAddress.IsLoopback(address) || address.Equals(IPAddress.Any) || address.Equals(IPAddress.IPv6Any))
+            return true;
+
+        if (address.AddressFamily == AddressFamily.InterNetworkV6)
+            return address.IsIPv6LinkLocal || address.IsIPv6SiteLocal || address.IsIPv6UniqueLocal || address.IsIPv6Multicast;
+
+        var b = address.GetAddressBytes();
+        return b[0] is 0 or 10 or 127
+               || b[0] == 172 && b[1] is >= 16 and <= 31
+               || b[0] == 192 && b[1] == 168
+               || b[0] == 169 && b[1] == 254
+               || b[0] == 100 && b[1] is >= 64 and <= 127 // Carrier-grade NAT.
+               || b[0] >= 224; // Multicast and reserved.
     }
 
     private static string LastLine(string text)

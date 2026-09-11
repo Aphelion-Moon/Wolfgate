@@ -99,6 +99,14 @@ public sealed partial class InternetSoundSystem : EntitySystem
         base.Shutdown();
         StopPlayback(true);
 
+        // FrameUpdate won't run again to free these, and entities are already gone by now.
+        foreach (var (_, stream) in _retired)
+        {
+            stream.Dispose();
+        }
+
+        _retired.Clear();
+
         lock (Receivers)
         {
             if (Receivers.TryGetValue(_transfer, out var receiver) && receiver == this)
@@ -158,8 +166,18 @@ public sealed partial class InternetSoundSystem : EntitySystem
             var loaded = header = ReadHeader(headerBytes);
             receiver?._task.RunOnMainThread(() => receiver.BeginLoading(loaded));
 
+            // Capped so a bad or oversized transfer can't exhaust client memory.
             using var buffer = new MemoryStream();
-            await stream.CopyToAsync(buffer);
+            var chunk = new byte[81920];
+            int read;
+            while ((read = await stream.ReadAsync(chunk)) > 0)
+            {
+                if (buffer.Length + read > InternetSoundProtocol.MaxPayloadBytes)
+                    throw new IOException("Internet sound is larger than the client limit.");
+
+                buffer.Write(chunk, 0, read);
+            }
+
             var wav = buffer.ToArray();
 
             // Decoding a whole song takes a while; keep it off the main thread.

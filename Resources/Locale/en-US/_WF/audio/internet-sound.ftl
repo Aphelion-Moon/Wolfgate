@@ -30,6 +30,7 @@ wf-internet-sound-admin-idle = Nothing playing.
 wf-internet-sound-error-ytdlp-missing = yt-dlp wasn't found ({$detail}). Install it or set wf.internet_sound.ytdlp_path.
 wf-internet-sound-error-ffmpeg-missing = ffmpeg wasn't found ({$detail}). Install it or set wf.internet_sound.ffmpeg_path.
 wf-internet-sound-error-download = yt-dlp couldn't fetch that link: {$detail}
+wf-internet-sound-error-host = {$detail} is a private, local or unresolvable address, which isn't allowed.
 wf-internet-sound-error-rejected = That link is a livestream or longer than the {$detail} second limit.
 wf-internet-sound-error-transcode = ffmpeg couldn't convert the audio: {$detail}
 wf-internet-sound-error-too-large = The converted audio is {$detail} MB, over the size limit.

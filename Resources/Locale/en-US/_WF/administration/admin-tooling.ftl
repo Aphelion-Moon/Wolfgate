@@ -16,6 +16,9 @@ wf-vessel-spawn-none = None
 wf-vessel-spawn-button = Spawn
 wf-vessel-spawn-count = Showing {$shown} of {$total} vessels
 
+# Frontier defines the other shipyard class names but not this one.
+shipyard-console-class-Mercenary = Mercenary
+
 ## spawnvessel command
 cmd-spawnvessel-desc = Spawns a vessel prototype's grid at your current position, optionally handing a player its deed.
 cmd-spawnvessel-help = Usage: {$command} <vessel ID> [owner username]

@@ -16,6 +16,11 @@ public static class InternetSoundProtocol
     /// Clients reject longer headers as corrupt.
     /// </summary>
     public const int MaxHeaderBytes = 64 * 1024;
+
+    /// <summary>
+    /// Clients abort transfers larger than this. Well above the server's own size limit.
+    /// </summary>
+    public const int MaxPayloadBytes = 64 * 1024 * 1024;
 }
 
 /// <summary>

@@ -44,3 +44,10 @@ Entries:
   id: 100005
   time: '2026-09-10T02:11:21.0000000+00:00'
   url: https://github.com/Aphelion-Moon/Wolfgate/pull/13
+- author: Gandalf2k15
+  changes:
+    - type: Tweak
+      message: Standard has been renamed to Insurgency. Glory to the Sultan.
+  id: 100006
+  time: '2026-09-11T04:49:09.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/15

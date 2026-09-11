@@ -1,0 +1,30 @@
+<DefaultWindow xmlns="https://spacestation14.io"
+               Title="{Loc 'wf-internet-sound-popup-title'}"
+               MinSize="340 0"
+               SetSize="340 110">
+    <BoxContainer Orientation="Vertical" Margin="6 4">
+        <Label Name="AdminLabel" StyleClasses="LabelSubText" />
+        <Label Name="TitleLabel"
+               StyleClasses="LabelKeyText"
+               ClipText="True"
+               HorizontalExpand="True" />
+        <BoxContainer Orientation="Horizontal" Margin="0 6 0 0">
+            <Label Text="{Loc 'wf-internet-sound-popup-volume'}"
+                   VerticalAlignment="Center"
+                   Margin="0 0 6 0" />
+            <Slider Name="VolumeSlider"
+                    MinValue="0"
+                    MaxValue="100"
+                    HorizontalExpand="True"
+                    VerticalAlignment="Center" />
+            <Label Name="VolumeLabel"
+                   MinWidth="44"
+                   Align="Right"
+                   VerticalAlignment="Center"
+                   Margin="4 0 6 0" />
+            <Button Name="StopButton"
+                    Text="{Loc 'wf-internet-sound-popup-stop'}"
+                    StyleClasses="ButtonSquare" />
+        </BoxContainer>
+    </BoxContainer>
+</DefaultWindow>

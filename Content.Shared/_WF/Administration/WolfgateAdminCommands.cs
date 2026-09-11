@@ -8,4 +8,6 @@ public static class WolfgateAdminCommands
     public const string SpawnVessel = "spawnvessel";
     public const string SpawnOutfit = "spawnoutfit";
     public const string SpawnOutfitUi = "spawnoutfitui";
+    public const string PlayInternetSound = "playinternetsound";
+    public const string StopInternetSound = "stopinternetsound";
 }

@@ -2,7 +2,8 @@
 
 ## Radio popup
 wf-internet-sound-popup-title = Admin Radio
-wf-internet-sound-popup-played = {$admin} played:
+wf-internet-sound-popup-played = Played by {$admin}
+wf-internet-sound-popup-loading = Tuning in... (from {$admin})
 wf-internet-sound-popup-volume = Volume
 wf-internet-sound-popup-stop = Stop
 
@@ -19,8 +20,13 @@ wf-internet-sound-server-name = The server
 wf-internet-sound-disabled = Internet sounds are disabled on this server.
 wf-internet-sound-invalid-url = That isn't an http or https link.
 wf-internet-sound-fetching = Fetching {$url}...
-wf-internet-sound-playing = Now playing "{$title}" for {$count} players.
+wf-internet-sound-playing = Sending "{$title}" to {$count} players. It starts for each as soon as it arrives.
 wf-internet-sound-stopped = Internet sound stopped for everyone.
+wf-internet-sound-busy = "{$title}" is still playing. Stop it before playing something else.
+wf-internet-sound-busy-fetching = A sound is still being fetched. Stop it before playing something else.
+wf-internet-sound-admin-now-playing = Now playing: "{$title}" from {$admin}
+wf-internet-sound-admin-fetching = Fetching a sound...
+wf-internet-sound-admin-idle = Nothing playing.
 wf-internet-sound-error-ytdlp-missing = yt-dlp wasn't found ({$detail}). Install it or set wf.internet_sound.ytdlp_path.
 wf-internet-sound-error-ffmpeg-missing = ffmpeg wasn't found ({$detail}). Install it or set wf.internet_sound.ffmpeg_path.
 wf-internet-sound-error-download = yt-dlp couldn't fetch that link: {$detail}

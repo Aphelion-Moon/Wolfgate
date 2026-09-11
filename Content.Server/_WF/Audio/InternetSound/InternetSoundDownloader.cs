@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 namespace Content.Server._WF.Audio.InternetSound;
 
 /// <summary>
-/// Fetches audio from a link with yt-dlp and converts it to Ogg Vorbis with ffmpeg. Runs off the main thread.
+/// Fetches audio from a link with yt-dlp and converts it to IMA ADPCM WAV with ffmpeg. Runs off the main thread.
+/// ADPCM rather than Ogg because clients can decode it off their main thread; the engine's Ogg loader can't be.
 /// </summary>
 public static class InternetSoundDownloader
 {
-    public sealed record Settings(string YtDlpPath, string FfmpegPath, int MaxDurationSeconds, int TimeoutSeconds, int MaxSizeMb);
+    public sealed record Settings(string YtDlpPath, string FfmpegPath, int MaxDurationSeconds, int TimeoutSeconds, int MaxSizeMb, int SampleRate, int Channels);
 
     public sealed record Result(string Title, byte[] Audio);
 
@@ -68,15 +69,15 @@ public static class InternetSoundDownloader
             if (source == null || !File.Exists(source))
                 throw new FetchException("wf-internet-sound-error-rejected", settings.MaxDurationSeconds.ToString());
 
-            var output = Path.Combine(dir, "sound.ogg");
+            var output = Path.Combine(dir, "sound.wav");
             var convert = await Run(settings.FfmpegPath,
                 new[]
                 {
                     "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
                     "-i", source,
                     "-vn", "-map_metadata", "-1",
-                    "-ac", "2", "-ar", "44100",
-                    "-c:a", "libvorbis", "-q:a", "3",
+                    "-ac", settings.Channels.ToString(), "-ar", settings.SampleRate.ToString(),
+                    "-c:a", "adpcm_ima_wav",
                     "-t", settings.MaxDurationSeconds.ToString(),
                     output,
                 },

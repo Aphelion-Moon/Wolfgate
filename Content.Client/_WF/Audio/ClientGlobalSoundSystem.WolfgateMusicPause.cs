@@ -30,10 +30,15 @@ public sealed partial class ClientGlobalSoundSystem
 
         foreach (var uid in _eventAudio.Values)
         {
-            if (uid == null || !TryComp<AudioComponent>(uid, out var audio) || audio.State != AudioState.Playing)
+            if (uid == null || !TryComp<AudioComponent>(uid, out var audio))
                 continue;
 
-            _audio.SetState(uid, AudioState.Paused, component: audio);
+            // The engine starts a new track on its first audio frame even if it was paused before then.
+            var restarted = audio.State == AudioState.Paused && audio.Playing;
+            if (audio.State != AudioState.Playing && !restarted)
+                continue;
+
+            _audio.SetState(uid, AudioState.Paused, force: restarted, component: audio);
             _wfPausedEventMusic.Add(uid.Value);
         }
     }

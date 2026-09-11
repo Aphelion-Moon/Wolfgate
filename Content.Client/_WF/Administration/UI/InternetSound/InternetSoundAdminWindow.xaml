@@ -5,6 +5,11 @@
         <Label Text="{Loc 'wf-internet-sound-admin-info'}"
                StyleClasses="LabelSubText"
                Margin="0 0 0 4" />
+        <Label Name="NowPlayingLabel"
+               StyleClasses="LabelKeyText"
+               ClipText="True"
+               HorizontalExpand="True"
+               Margin="0 0 0 4" />
         <BoxContainer Orientation="Horizontal">
             <LineEdit Name="UrlEdit"
                       PlaceHolder="{Loc 'wf-internet-sound-admin-url'}"

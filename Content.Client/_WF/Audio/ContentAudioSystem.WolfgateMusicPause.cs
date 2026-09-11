@@ -51,10 +51,16 @@ public sealed partial class ContentAudioSystem
 
     private void PauseMusicStream(EntityUid? uid)
     {
-        if (uid == null || !TryComp<AudioComponent>(uid, out var audio) || audio.State != AudioState.Playing)
+        if (uid == null || !TryComp<AudioComponent>(uid, out var audio))
             return;
 
-        _audio.SetState(uid, AudioState.Paused, component: audio);
+        // The engine starts a new track on its first audio frame even if we paused it before then,
+        // leaving it marked paused but audible. Combat and biome changes hit this, so re-pause those too.
+        var restarted = audio.State == AudioState.Paused && audio.Playing;
+        if (audio.State != AudioState.Playing && !restarted)
+            return;
+
+        _audio.SetState(uid, AudioState.Paused, force: restarted, component: audio);
         _wfPausedMusic.Add(uid.Value);
     }
 }

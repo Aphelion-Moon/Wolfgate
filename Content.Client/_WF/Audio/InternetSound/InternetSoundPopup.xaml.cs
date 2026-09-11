@@ -5,7 +5,8 @@ using Robust.Client.UserInterface.XAML;
 namespace Content.Client._WF.Audio.InternetSound;
 
 /// <summary>
-/// Small radio shown to every player while an admin internet sound plays: who played it, what it is, volume and stop.
+/// Small radio shown at the top of every player's screen for an admin internet sound: what it is, who sent it,
+/// volume and stop. Opens in a loading state until the audio has arrived.
 /// </summary>
 [GenerateTypedNameReferences]
 public sealed partial class InternetSoundPopup : DefaultWindow
@@ -18,13 +19,16 @@ public sealed partial class InternetSoundPopup : DefaultWindow
     public event Action? VolumeReleased;
     public event Action? StopPressed;
 
+    private readonly string _admin;
+
     public InternetSoundPopup(string title, string admin, float volume)
     {
         RobustXamlLoader.Load(this);
+        _admin = admin;
 
-        AdminLabel.Text = Loc.GetString("wf-internet-sound-popup-played", ("admin", admin));
-        TitleLabel.Text = title;
-        TitleLabel.ToolTip = title;
+        SoundLabel.Text = title;
+        SoundLabel.ToolTip = title;
+        StatusLabel.Text = Loc.GetString("wf-internet-sound-popup-loading", ("admin", admin));
 
         SetVolume(volume);
         VolumeSlider.OnValueChanged += _ =>
@@ -34,6 +38,14 @@ public sealed partial class InternetSoundPopup : DefaultWindow
         };
         VolumeSlider.OnReleased += _ => VolumeReleased?.Invoke();
         StopButton.OnPressed += _ => StopPressed?.Invoke();
+    }
+
+    /// <summary>
+    /// Switches the status line from loading to playing.
+    /// </summary>
+    public void SetPlaying()
+    {
+        StatusLabel.Text = Loc.GetString("wf-internet-sound-popup-played", ("admin", _admin));
     }
 
     /// <summary>

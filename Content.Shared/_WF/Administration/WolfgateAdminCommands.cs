@@ -10,4 +10,5 @@ public static class WolfgateAdminCommands
     public const string SpawnOutfitUi = "spawnoutfitui";
     public const string PlayInternetSound = "playinternetsound";
     public const string StopInternetSound = "stopinternetsound";
+    public const string GridPower = "gridpower";
 }

@@ -16,11 +16,15 @@ using Content.Shared.Access;
 using Content.Shared.Access.Systems;
 using Content.Shared.Administration;
 using Content.Shared.Database;
+using Content.Shared.GameTicking;
+using Content.Shared.Ghost;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Prototypes;
 using Content.Shared.Mind.Components;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
+using Robust.Shared.Audio;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
@@ -29,8 +33,8 @@ using Robust.Shared.Random;
 namespace Content.Server._WF.Administration.Systems;
 
 /// <summary>
-/// Admin ERT Builder: spawns an optional ship and one ghost role per member aboard it. Each role builds its body on
-/// takeover, from the player's own character when its species is allowed.
+/// Admin ERT Builder: spawns an optional ship and one ghost role per member aboard it, then prompts every ghost to
+/// sign up. Each role builds its body on takeover, from the player's own character when its species is allowed.
 /// </summary>
 public sealed partial class ErtSystem : EntitySystem
 {
@@ -46,15 +50,28 @@ public sealed partial class ErtSystem : EntitySystem
     [Dependency] private SharedAccessSystem _access = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
 
     private const string SpawnerPrototype = "WolfgateErtSpawner";
+
+    private static readonly SoundSpecifier CallSound = new SoundPathSpecifier("/Audio/Misc/notice1.ogg");
+
+    private sealed record ErtTeam(string Name, List<EntityUid> Slots);
+
+    /// <summary>
+    /// Teams with places still open, by id, so ghosts can sign up from their prompt.
+    /// </summary>
+    private readonly Dictionary<int, ErtTeam> _teams = new();
+    private int _lastTeamId;
 
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeNetworkEvent<ErtSpawnRequestEvent>(OnSpawnRequest);
+        SubscribeNetworkEvent<ErtSignUpEvent>(OnSignUp);
         SubscribeLocalEvent<WolfgateErtSpawnerComponent, TakeGhostRoleEvent>(OnTakeRole);
+        SubscribeLocalEvent<RoundRestartCleanupEvent>(_ => _teams.Clear());
     }
 
     private void OnSpawnRequest(ErtSpawnRequestEvent ev, EntitySessionEventArgs args)
@@ -151,39 +168,148 @@ public sealed partial class ErtSystem : EntitySystem
         if (memberTitle.Length == 0)
             memberTitle = Loc.GetString("wf-ert-default-member-title", ("team", team));
 
+        var teamId = ++_lastTeamId;
+        var slots = new List<EntityUid>();
         for (var i = 0; i < config.Members; i++)
         {
             var leader = config.HasLeader && i == 0;
-            SpawnSlot(spawnAt, new WolfgateErtSpawnerComponent
+            slots.Add(SpawnSlot(spawnAt, new WolfgateErtSpawnerComponent
             {
+                TeamId = teamId,
+                Leader = leader,
                 TeamName = team,
                 Title = leader ? leaderTitle : memberTitle,
                 Outfit = leader ? leaderOutfit : config.MemberOutfit,
                 Species = species,
+                GenericHumans = config.GenericHumans,
                 AccessGroups = groups,
                 KeepOutfitAccess = config.KeepOutfitAccess,
-            }, briefing);
+            }, briefing));
         }
+
+        _teams[teamId] = new ErtTeam(team, slots);
+        var prompted = PromptGhosts(new ErtCalledEvent(teamId, team, briefing, config.Members, config.HasLeader));
 
         _adminLogger.Add(LogType.AdminCommands, LogImpact.High,
             $"{admin.Name} spawned ERT \"{team}\" with {config.Members} slots{shipNote}");
 
-        message = Loc.GetString("wf-ert-spawned", ("team", team), ("count", config.Members));
+        message = Loc.GetString("wf-ert-spawned", ("team", team), ("count", config.Members), ("ghosts", prompted));
         return true;
+    }
+
+    /// <summary>
+    /// Pops the sign-up prompt and a chime for every ghost. Returns how many were asked.
+    /// </summary>
+    private int PromptGhosts(ErtCalledEvent call)
+    {
+        var ghosts = Filter.Empty().AddWhere(session =>
+            session.AttachedEntity is { } entity && HasComp<GhostComponent>(entity));
+
+        RaiseNetworkEvent(call, ghosts);
+        _audio.PlayGlobal(CallSound, ghosts, true);
+        return ghosts.Recipients.Count();
+    }
+
+    /// <summary>
+    /// Enters a ghost into the draw for the open slot with the fewest entrants, so sign-ups spread across places.
+    /// </summary>
+    private void OnSignUp(ErtSignUpEvent ev, EntitySessionEventArgs args)
+    {
+        var player = args.SenderSession;
+        string message;
+        var isError = true;
+
+        if (player.AttachedEntity is not { } ghost || !HasComp<GhostComponent>(ghost))
+        {
+            message = Loc.GetString("wf-ert-signup-not-ghost");
+        }
+        else if (!_teams.TryGetValue(ev.TeamId, out var team))
+        {
+            message = Loc.GetString("wf-ert-signup-closed");
+        }
+        else if (PickSlot(team, player, ev.Leader, out var alreadyJoined) is not { } slot)
+        {
+            message = Loc.GetString(alreadyJoined ? "wf-ert-signup-already"
+                : ev.Leader ? "wf-ert-signup-no-leader" : "wf-ert-signup-full");
+        }
+        else
+        {
+            _ghostRoles.Request(player, slot.Comp.Identifier);
+            message = Loc.GetString("wf-ert-signup-joined", ("title", Comp<WolfgateErtSpawnerComponent>(slot).Title));
+            isError = false;
+        }
+
+        RaiseNetworkEvent(new ErtSignUpResultEvent(ev.TeamId, message, isError), Filter.SinglePlayer(player));
+    }
+
+    private Entity<GhostRoleComponent>? PickSlot(ErtTeam team, ICommonSession player, bool leader, out bool alreadyJoined)
+    {
+        alreadyJoined = false;
+        Entity<GhostRoleComponent>? best = null;
+        var fewest = int.MaxValue;
+
+        foreach (var uid in team.Slots)
+        {
+            if (!TryComp<WolfgateErtSpawnerComponent>(uid, out var slot) || slot.Taken
+                || !TryComp<GhostRoleComponent>(uid, out var role))
+                continue;
+
+            // The draw only exists once someone has joined.
+            var entrants = TryComp<GhostRoleRaffleComponent>(uid, out var raffle) ? raffle.CurrentMembers : null;
+            if (entrants != null && entrants.Contains(player))
+            {
+                alreadyJoined = true;
+                return null;
+            }
+
+            if (slot.Leader != leader)
+                continue;
+
+            var count = entrants?.Count ?? 0;
+            if (count >= fewest)
+                continue;
+
+            fewest = count;
+            best = (uid, role);
+        }
+
+        return best;
+    }
+
+    /// <summary>
+    /// Closes the team's prompts once every place is filled.
+    /// </summary>
+    private void CloseTeamIfFull(int teamId, EntityUid justTaken)
+    {
+        if (!_teams.TryGetValue(teamId, out var team))
+            return;
+
+        var open = team.Slots.Any(uid => uid != justTaken
+                                          && !TerminatingOrDeleted(uid)
+                                          && TryComp<WolfgateErtSpawnerComponent>(uid, out var slot)
+                                          && !slot.Taken);
+        if (open)
+            return;
+
+        _teams.Remove(teamId);
+        RaiseNetworkEvent(new ErtClosedEvent(teamId));
     }
 
     /// <summary>
     /// Creates one ghost role marker. It's filled in before initialising so the role registers with the right text.
     /// </summary>
-    private void SpawnSlot(EntityCoordinates at, WolfgateErtSpawnerComponent settings, string briefing)
+    private EntityUid SpawnSlot(EntityCoordinates at, WolfgateErtSpawnerComponent settings, string briefing)
     {
         var uid = EntityManager.CreateEntityUninitialized(SpawnerPrototype, at);
 
         var slot = Comp<WolfgateErtSpawnerComponent>(uid);
+        slot.TeamId = settings.TeamId;
+        slot.Leader = settings.Leader;
         slot.TeamName = settings.TeamName;
         slot.Title = settings.Title;
         slot.Outfit = settings.Outfit;
         slot.Species = settings.Species;
+        slot.GenericHumans = settings.GenericHumans;
         slot.AccessGroups = settings.AccessGroups;
         slot.KeepOutfitAccess = settings.KeepOutfitAccess;
 
@@ -193,6 +319,7 @@ public sealed partial class ErtSystem : EntitySystem
 
         _metaData.SetEntityName(uid, settings.Title);
         EntityManager.InitializeAndStartEntity(uid);
+        return uid;
     }
 
     /// <summary>
@@ -231,7 +358,7 @@ public sealed partial class ErtSystem : EntitySystem
         slot.Comp.Taken = true;
         _ghostRoles.UnregisterGhostRole((slot, role));
 
-        var profile = PickProfile(args.Player, slot.Comp.Species);
+        var profile = PickProfile(args.Player, slot.Comp);
         var mob = _stationSpawning.SpawnPlayerMob(Transform(slot).Coordinates, null, profile, null);
         _transform.AttachToGridOrMap(mob);
 
@@ -243,13 +370,22 @@ public sealed partial class ErtSystem : EntitySystem
 
         QueueDel(slot);
         args.TookRole = true;
+        CloseTeamIfFull(slot.Comp.TeamId, slot);
 
         _adminLogger.Add(LogType.Action, LogImpact.Low,
             $"{args.Player.Name} joined ERT \"{slot.Comp.TeamName}\" as {ToPrettyString(mob):mob} ({slot.Comp.Title})");
     }
 
-    private HumanoidCharacterProfile PickProfile(ICommonSession player, List<string> species)
+    private HumanoidCharacterProfile PickProfile(ICommonSession player, WolfgateErtSpawnerComponent slot)
     {
+        // Anonymous team: the stock bald male human, each with a random human name.
+        if (slot.GenericHumans)
+        {
+            var generic = HumanoidCharacterProfile.DefaultWithSpecies(SharedHumanoidAppearanceSystem.DefaultSpecies);
+            return generic.WithName(HumanoidCharacterProfile.GetName(SharedHumanoidAppearanceSystem.DefaultSpecies, generic.Gender));
+        }
+
+        var species = slot.Species;
         if (_preferences.GetPreferencesOrNull(player.UserId)?.SelectedCharacter is HumanoidCharacterProfile own
             && (species.Count == 0 || species.Contains(own.Species.Id)))
         {

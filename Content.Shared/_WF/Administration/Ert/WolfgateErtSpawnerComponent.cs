@@ -7,6 +7,15 @@ namespace Content.Shared._WF.Administration.Ert;
 [RegisterComponent]
 public sealed partial class WolfgateErtSpawnerComponent : Component
 {
+    /// <summary>
+    /// Which spawned team this slot belongs to, for sign-ups.
+    /// </summary>
+    [ViewVariables]
+    public int TeamId;
+
+    [ViewVariables]
+    public bool Leader;
+
     [ViewVariables]
     public string TeamName = string.Empty;
 
@@ -27,6 +36,12 @@ public sealed partial class WolfgateErtSpawnerComponent : Component
     /// </summary>
     [ViewVariables]
     public List<string> Species = new();
+
+    /// <summary>
+    /// Ignore the player's character and <see cref="Species"/>; spawn the default bald male human with a random name.
+    /// </summary>
+    [ViewVariables]
+    public bool GenericHumans;
 
     [ViewVariables]
     public List<string> AccessGroups = new();

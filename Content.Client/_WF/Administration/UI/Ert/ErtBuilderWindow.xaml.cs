@@ -77,7 +77,19 @@ public sealed partial class ErtBuilderWindow : DefaultWindow
         ShipSelect.OnItemSelected += args => ShipSelect.SelectId(args.Id);
 
         TeamNameEdit.OnTextChanged += _ => UpdateTitlePlaceholders();
+        GenericHumansCheck.OnToggled += args => SetSpeciesEnabled(!args.Pressed);
         SpawnButton.OnPressed += _ => Spawn();
+    }
+
+    /// <summary>
+    /// The species filter doesn't apply when everyone is a random human.
+    /// </summary>
+    private void SetSpeciesEnabled(bool enabled)
+    {
+        foreach (var box in _species.Values)
+        {
+            box.Disabled = !enabled;
+        }
     }
 
     /// <summary>
@@ -210,6 +222,7 @@ public sealed partial class ErtBuilderWindow : DefaultWindow
             MemberOutfit = Selected(MemberOutfitSelect, _memberShown),
             LeaderOutfit = Selected(LeaderOutfitSelect, _leaderShown),
             Species = _species.Where(pair => pair.Value.Pressed).Select(pair => pair.Key).ToList(),
+            GenericHumans = GenericHumansCheck.Pressed,
             AccessGroups = _access.Where(pair => pair.Value.Pressed).Select(pair => pair.Key).ToList(),
             KeepOutfitAccess = KeepAccessCheck.Pressed,
             Vessel = Selected(ShipSelect, _shipShown),

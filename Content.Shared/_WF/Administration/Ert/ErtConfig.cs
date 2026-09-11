@@ -33,6 +33,11 @@ public sealed class ErtConfig
     public List<string> Species = new();
 
     /// <summary>
+    /// Everyone becomes the default bald male human with a random human name, ignoring their characters and <see cref="Species"/>.
+    /// </summary>
+    public bool GenericHumans;
+
+    /// <summary>
     /// Access groups added to every ID.
     /// </summary>
     public List<string> AccessGroups = new();
@@ -69,6 +74,76 @@ public sealed class ErtSpawnRequestEvent : EntityEventArgs
     public ErtSpawnRequestEvent(ErtConfig config)
     {
         Config = config;
+    }
+}
+
+/// <summary>
+/// Sent to every ghost when a team is spawned so they can sign up.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class ErtCalledEvent : EntityEventArgs
+{
+    public int TeamId;
+    public string Team;
+    public string Briefing;
+    public int Places;
+    public bool HasLeader;
+
+    public ErtCalledEvent(int teamId, string team, string briefing, int places, bool hasLeader)
+    {
+        TeamId = teamId;
+        Team = team;
+        Briefing = briefing;
+        Places = places;
+        HasLeader = hasLeader;
+    }
+}
+
+/// <summary>
+/// A ghost signs up for a team, as a member or for the leader place.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class ErtSignUpEvent : EntityEventArgs
+{
+    public int TeamId;
+    public bool Leader;
+
+    public ErtSignUpEvent(int teamId, bool leader)
+    {
+        TeamId = teamId;
+        Leader = leader;
+    }
+}
+
+/// <summary>
+/// Answer to a sign-up, for the ghost who sent it.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class ErtSignUpResultEvent : EntityEventArgs
+{
+    public int TeamId;
+    public string Message;
+    public bool IsError;
+
+    public ErtSignUpResultEvent(int teamId, string message, bool isError)
+    {
+        TeamId = teamId;
+        Message = message;
+        IsError = isError;
+    }
+}
+
+/// <summary>
+/// Every place in a team is filled; clients close its sign-up prompt.
+/// </summary>
+[Serializable, NetSerializable]
+public sealed class ErtClosedEvent : EntityEventArgs
+{
+    public int TeamId;
+
+    public ErtClosedEvent(int teamId)
+    {
+        TeamId = teamId;
     }
 }
 

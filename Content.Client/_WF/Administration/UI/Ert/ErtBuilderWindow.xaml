@@ -47,6 +47,7 @@
 
                 <!-- Species -->
                 <Label Text="{Loc 'wf-ert-section-species'}" StyleClasses="LabelHeading" Margin="0 8 0 0" />
+                <CheckBox Name="GenericHumansCheck" Text="{Loc 'wf-ert-generic-humans'}" Margin="0 2 0 2" />
                 <Label Text="{Loc 'wf-ert-species-hint'}" StyleClasses="LabelSubText" />
                 <GridContainer Name="SpeciesGrid" Columns="4" HorizontalExpand="True" />
 

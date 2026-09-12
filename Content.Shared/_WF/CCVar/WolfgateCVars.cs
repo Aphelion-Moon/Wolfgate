@@ -26,4 +26,10 @@ public sealed class WolfgateCVars
     /// </summary>
     public static readonly CVarDef<int> AnatomyNoticeSeen =
         CVarDef.Create("wf.anatomy_notice_seen", 0, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
+    /// Shows the title bar button that pops in-game windows out into their own OS window.
+    /// </summary>
+    public static readonly CVarDef<bool> WindowPopout =
+        CVarDef.Create("wf.ui_window_popout", true, CVar.CLIENTONLY | CVar.ARCHIVE);
 }

@@ -1,10 +1,10 @@
 name: Publish
 
-# Every push to main becomes a build on the Robust.Cdn, which then tells the watchdog; the server restarts
-# onto it at the end of the current round. Manual runs are still possible from the Actions tab.
+# Publishing is something you ask for, never something a push does. A build lands on the Robust.Cdn, which
+# tells the watchdog, and the server restarts onto it at the end of the current round - so a push to main
+# used to replace a test merged build with a plain one while nobody was looking. Run it from the Actions tab,
+# or from the SSymphony panel, which is what its Test merges page does.
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
     inputs:
       test_merges:

@@ -344,6 +344,11 @@ namespace Content.Server.Preferences.Managers
 
                 if (prefs != null)
                 {
+                    // WOLFGATE: this path read the database straight into the client and undid the sanitizing that
+                    // FinishLoad does on login, so anything this build no longer has - a species from a branch that
+                    // is not deployed, a removed job - reached the lobby raw and threw there.
+                    prefs = SanitizePreferences(session, prefs, _dependencies);
+
                     prefsData.Prefs = prefs;
                     prefsData.PrefsLoaded = true;
 

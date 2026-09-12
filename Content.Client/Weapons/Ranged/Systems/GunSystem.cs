@@ -89,6 +89,7 @@ public sealed partial class GunSystem : SharedGunSystem
     {
         base.Initialize();
         UpdatesOutsidePrediction = true;
+        UpdatesBefore.Add(typeof(Robust.Shared.Physics.Systems.SharedPhysicsSystem)); // WOLFGATE: predicted copies move on the tick they're fired, like the server's
         SubscribeLocalEvent<AmmoCounterComponent, ItemStatusCollectMessage>(OnAmmoCounterCollect);
         SubscribeLocalEvent<AmmoCounterComponent, UpdateClientAmmoEvent>(OnUpdateClientAmmo);
         SubscribeAllEvent<MuzzleFlashEvent>(OnMuzzleFlash);
@@ -191,6 +192,8 @@ public sealed partial class GunSystem : SharedGunSystem
 
     public override void Update(float frameTime)
     {
+        base.Update(frameTime); // WOLFGATE: keeps the Mono multi-shot offset in step with the server
+
         if (!Timing.IsFirstTimePredicted)
             return;
 
@@ -252,7 +255,7 @@ public sealed partial class GunSystem : SharedGunSystem
             Target = target,
             Coordinates = GetNetCoordinates(coordinates),
             Gun = GetNetEntity(gunUid),
-            Shot = projectiles?.Select(e => e.Entity.Id).ToList(),
+            Shot = projectiles, // WOLFGATE: one slot per fired projectile, holding its predicted copy's id
         });
     }
 
@@ -266,11 +269,15 @@ public sealed partial class GunSystem : SharedGunSystem
         // This also means any ammo specific stuff can be grabbed as necessary.
         var direction = TransformSystem.ToMapCoordinates(fromCoordinates).Position - TransformSystem.ToMapCoordinates(toCoordinates).Position;
         var worldAngle = direction.ToAngle().Opposite();
+        var volley = BeginVolley(gunUid, gun, fromCoordinates, toCoordinates, user, ammo.Count); // WOLFGATE: recoil and predicted copies
 
         foreach (var (ent, shootable) in ammo)
         {
+            NextRound(volley); // WOLFGATE
+
             if (throwItems)
             {
+                ReserveSlot(volley, ent); // WOLFGATE
                 Recoil(user, direction, gun.CameraRecoilScalarModified);
                 if (IsClientSide(ent!.Value))
                     Del(ent.Value);
@@ -284,6 +291,7 @@ public sealed partial class GunSystem : SharedGunSystem
                 case CartridgeAmmoComponent cartridge:
                     if (!cartridge.Spent)
                     {
+                        PredictCartridge(volley, cartridge); // WOLFGATE
                         SetCartridgeSpent(ent!.Value, cartridge, true);
                         MuzzleFlash(gunUid, cartridge, worldAngle, user);
                         Audio.PlayPredicted(gun.SoundGunshotModified, gunUid, user);
@@ -306,6 +314,8 @@ public sealed partial class GunSystem : SharedGunSystem
                     MuzzleFlash(gunUid, newAmmo, worldAngle, user);
                     Audio.PlayPredicted(gun.SoundGunshotModified, gunUid, user);
                     Recoil(user, direction, gun.CameraRecoilScalarModified);
+                    if (PredictAmmo(volley, ent!.Value)) // WOLFGATE: fired as its own predicted copy
+                        break;
                     if (IsClientSide(ent!.Value))
                         Del(ent.Value);
                     else
@@ -314,6 +324,9 @@ public sealed partial class GunSystem : SharedGunSystem
                 case HitscanAmmoComponent:
                     Audio.PlayPredicted(gun.SoundGunshotModified, gunUid, user);
                     Recoil(user, direction, gun.CameraRecoilScalarModified);
+                    // WOLFGATE: the server fires the hitscan, so don't leak the client-side ammo
+                    if (ent != null && IsClientSide(ent.Value))
+                        QueueDel(ent.Value);
                     break;
             }
         }

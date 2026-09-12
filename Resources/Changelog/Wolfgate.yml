@@ -67,3 +67,17 @@ Entries:
   id: 100008
   time: '2026-09-12T01:29:21.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/16
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Added a much better entity spawn menu for admins.
+  id: 100009
+  time: '2026-09-12T06:17:06.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/21
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: Adds a ship damage menu to the pilot console.
+  id: 100010
+  time: '2026-09-12T06:17:20.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/22

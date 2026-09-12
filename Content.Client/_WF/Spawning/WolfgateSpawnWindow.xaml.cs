@@ -70,8 +70,17 @@ public sealed partial class WolfgateSpawnWindow : FancyWindow
 
         SearchBar.OnTextChanged += args =>
         {
+            var previous = _search;
             _search = args.Text.Trim().ToLowerInvariant();
             ClearButton.Disabled = _search.Length == 0;
+
+            // Starting a search looks everywhere: nobody types into a search box hoping to be told the thing they
+            // want is not in the folder they happen to have open. Narrowing afterwards is still a click away, and
+            // refining the query keeps whatever folder they narrowed to.
+            if (previous.Length == 0 && _search.Length > 0)
+                _node = WfSpawnNode.All;
+
+            GridScroll.SetScrollValue(Vector2.Zero);
             Refresh();
         };
         SearchBar.OnTextEntered += _ => SelectFirstResult();
@@ -80,6 +89,7 @@ public sealed partial class WolfgateSpawnWindow : FancyWindow
             SearchBar.Clear();
             _search = string.Empty;
             ClearButton.Disabled = true;
+            GridScroll.SetScrollValue(Vector2.Zero);
             Refresh();
         };
 
@@ -142,6 +152,16 @@ public sealed partial class WolfgateSpawnWindow : FancyWindow
     {
         _catalog.Invalidate();
         Refresh();
+
+        // A reload can delete whatever was selected, and placing a prototype that no longer exists does nothing.
+        if (_selectedId != null && _catalog.Find(_selectedId) == null)
+        {
+            _selectedId = null;
+            OnEntrySelected?.Invoke(null);
+            UpdateGrid();
+        }
+
+        UpdateSelectionPanel();
     }
 
     protected override void Opened()
@@ -156,6 +176,12 @@ public sealed partial class WolfgateSpawnWindow : FancyWindow
             {
                 tile.SetSkin(skin);
             }
+
+            // Node buttons bake their palette in at construction, so the tree has to be rebuilt to restyle.
+            BuildTree();
+            Refresh();
+            UpdateSelectionPanel();
+            return;
         }
 
         UpdateGrid();
@@ -356,7 +382,7 @@ public sealed partial class WolfgateSpawnWindow : FancyWindow
             }
 
             var start = startRow * columns;
-            Grid.ItemOffset = start;
+            Grid.StartRow = startRow;
 
             for (var i = 0; i < _tiles.Count; i++)
             {

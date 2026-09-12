@@ -351,6 +351,12 @@ public sealed class WolfgateSpawnClassifier
         if (Has(comps, _projectile))
             return WfSpawnCategory.Projectiles;
 
+        // Last sweep for things that explode but name themselves nothing in particular, such as snap pops. It runs
+        // this late because the component is also on gas tanks, jetpacks and anything else that ruptures, and those
+        // read better as the atmospherics and clothing the earlier rules made them.
+        if (item && Has(comps, _explosive))
+            return WfSpawnCategory.Explosives;
+
         if (item)
             return WfSpawnCategory.ItemsOther;
         if (Lineage("BaseStructure"))

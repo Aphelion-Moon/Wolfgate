@@ -14,7 +14,7 @@ public sealed class WolfgateSpawnGrid : Container
     public const float CellHeight = 42;
 
     private int _totalItemCount;
-    private int _itemOffset;
+    private int _startRow;
 
     /// <summary>How many tiles fit across, decided by the last measure.</summary>
     public int Columns { get; private set; } = 1;
@@ -36,16 +36,20 @@ public sealed class WolfgateSpawnGrid : Container
         }
     }
 
-    /// <summary>Index of the first child in the result set. Always a whole number of rows.</summary>
-    public int ItemOffset
+    /// <summary>
+    /// Row the first pooled child sits on. Stored as a row rather than an item index, because a measure can change
+    /// <see cref="Columns"/> before the window gets a chance to refill, and dividing a stale index by the new column
+    /// count would arrange the whole grid at the wrong offset.
+    /// </summary>
+    public int StartRow
     {
-        get => _itemOffset;
+        get => _startRow;
         set
         {
-            if (_itemOffset == value)
+            if (_startRow == value)
                 return;
 
-            _itemOffset = value;
+            _startRow = value;
             InvalidateArrange();
         }
     }
@@ -72,12 +76,11 @@ public sealed class WolfgateSpawnGrid : Container
 
     protected override Vector2 ArrangeOverride(Vector2 finalSize)
     {
-        var startRow = Columns <= 0 ? 0 : ItemOffset / Columns;
         var index = 0;
 
         foreach (var child in Children)
         {
-            var row = startRow + index / Columns;
+            var row = StartRow + index / Columns;
             var column = index % Columns;
 
             child.Arrange(UIBox2.FromDimensions(

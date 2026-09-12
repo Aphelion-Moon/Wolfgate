@@ -20,4 +20,10 @@ public sealed class WolfgateCVars
     /// </summary>
     public static readonly CVarDef<bool> WindowPopout =
         CVarDef.Create("wf.ui_window_popout", true, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
+    /// Comma separated entity prototype ids starred in the spawn menu's Favourites folder.
+    /// </summary>
+    public static readonly CVarDef<string> SpawnFavourites =
+        CVarDef.Create("wf.spawn_favourites", string.Empty, CVar.CLIENTONLY | CVar.ARCHIVE);
 }

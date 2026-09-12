@@ -130,11 +130,7 @@ public sealed partial class GhostUIController : UIController, IOnSystemChanged<G
 
     private void OnWarpsResponse(GhostWarpsResponseEvent msg)
     {
-        if (Gui?.TargetWindow is not { } window)
-            return;
-
-        window.UpdateWarps(msg.Warps);
-        window.Populate();
+        // WOLFGATE: GhostOrbitWindow fetches its own targets through GhostOrbitSystem.
     }
 
     private void OnRoleCountUpdated(GhostUpdateGhostRoleCountEvent msg)
@@ -162,7 +158,7 @@ public sealed partial class GhostUIController : UIController, IOnSystemChanged<G
         Gui.RequestWarpsPressed += RequestWarps;
         Gui.ReturnToBodyPressed += ReturnToBody;
         Gui.GhostRolesPressed += GhostRolesPressed;
-        Gui.TargetWindow.WarpClicked += OnWarpClicked;
+        // WOLFGATE: GhostOrbitWindow sends its own orbit requests, no WarpClicked
         Gui.TargetWindow.OnGhostnadoClicked += OnGhostnadoClicked;
         Gui.GhostRespawnPressed += GuiOnGhostRespawnPressed;
         UpdateGui();
@@ -181,7 +177,7 @@ public sealed partial class GhostUIController : UIController, IOnSystemChanged<G
         Gui.RequestWarpsPressed -= RequestWarps;
         Gui.ReturnToBodyPressed -= ReturnToBody;
         Gui.GhostRolesPressed -= GhostRolesPressed;
-        Gui.TargetWindow.WarpClicked -= OnWarpClicked;
+        Gui.TargetWindow.OnGhostnadoClicked -= OnGhostnadoClicked; // WOLFGATE: was WarpClicked
         Gui.GhostRespawnPressed -= GuiOnGhostRespawnPressed;
 
         Gui.Hide();
@@ -194,7 +190,7 @@ public sealed partial class GhostUIController : UIController, IOnSystemChanged<G
 
     private void RequestWarps()
     {
-        _system?.RequestWarps();
+        // WOLFGATE: the orbit window requests its targets when it opens
         Gui?.TargetWindow.Populate();
         Gui?.TargetWindow.OpenCentered();
     }

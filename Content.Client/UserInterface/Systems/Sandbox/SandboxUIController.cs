@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Client.Administration.Managers;
+using Content.Client._WF.Spawning; // WOLFGATE
 using Content.Client.Gameplay;
 using Content.Client.Markers;
 using Content.Client.Sandbox;
@@ -43,7 +44,8 @@ public sealed partial class SandboxUIController : UIController, IOnStateChanged<
     private SandboxWindow? _window;
 
     // TODO hud refactor cache
-    private EntitySpawningUIController EntitySpawningController => UIManager.GetUIController<EntitySpawningUIController>();
+    // WOLFGATE: the categorised spawn menu replaces the engine's flat EntitySpawningUIController.
+    private WolfgateSpawnUIController EntitySpawningController => UIManager.GetUIController<WolfgateSpawnUIController>();
     private TileSpawningUIController TileSpawningController => UIManager.GetUIController<TileSpawningUIController>();
     private DecalPlacerUIController DecalPlacerController => UIManager.GetUIController<DecalPlacerUIController>();
 

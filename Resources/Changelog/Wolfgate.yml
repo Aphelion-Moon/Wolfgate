@@ -51,3 +51,12 @@ Entries:
   id: 100006
   time: '2026-09-11T04:49:09.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/15
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Added a new ghost orbit menu with way more features + an inline chat
+        follow hyperlink.
+  id: 100007
+  time: '2026-09-12T01:28:55.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/17

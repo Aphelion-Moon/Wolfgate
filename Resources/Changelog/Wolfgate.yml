@@ -60,3 +60,10 @@ Entries:
   id: 100007
   time: '2026-09-12T01:28:55.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/17
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: You can now pop out windows and move them to different screens.
+  id: 100008
+  time: '2026-09-12T01:29:21.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/16

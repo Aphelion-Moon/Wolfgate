@@ -30,6 +30,7 @@ public sealed partial class GunSystem
         public GunComponent GunComp = default!;
         public EntityUid? User;
         public MapCoordinates FromMap;
+        public EntityCoordinates From;
         public Vector2 Direction;
         public Angle BaseAngle;
         public Xoroshiro64S Random;
@@ -56,6 +57,7 @@ public sealed partial class GunSystem
             GunComp = gun,
             User = user,
             FromMap = fromMap,
+            From = fromCoordinates,
             Direction = direction,
             BaseAngle = direction.ToAngle(),
             Random = GetRecoilRandom(gunUid),
@@ -193,6 +195,21 @@ public sealed partial class GunSystem
         ShootProjectile(uid, direction, volley.GunVelocity, volley.Gun, volley.User, volley.GunComp.ProjectileSpeedModified, volley.Offset);
         volley.Shot!.Slots.Add(uid.Id);
         return true;
+    }
+
+    /// <summary>Whether this client drew the beams for the shot it last requested.</summary>
+    public bool DrewHitscan { get; private set; }
+
+    /// <summary>
+    /// Runs the shared hitscan trace locally, so the shooter sees the beam on the tick they fired it.
+    /// </summary>
+    private void PredictHitscan(PredictedVolley volley, EntityUid? hitscan)
+    {
+        if (volley.Shot == null || hitscan == null || !CanPredictHitscan(hitscan.Value))
+            return;
+
+        ShootHitscan(hitscan.Value, volley.From, volley.Direction, volley.Gun, volley.User, volley.GunComp.Target);
+        DrewHitscan = true;
     }
 
     /// <summary>

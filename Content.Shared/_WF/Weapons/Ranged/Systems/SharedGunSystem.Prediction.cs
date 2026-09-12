@@ -1,5 +1,7 @@
+using Content.Shared._Mono.Weapons.Hitscan.Components;
 using Content.Shared._RMC14.Random;
 using Content.Shared.Item;
+using Content.Shared.Weapons.Hitscan.Components;
 using Content.Shared.Mech.Components;
 using Content.Shared.Weapons.Ranged.Components;
 using Robust.Shared.Map;
@@ -24,7 +26,7 @@ public abstract partial class SharedGunSystem
     /// Returns one slot per projectile fired, holding the client-side id of its predicted copy or 0,
     /// or null when nothing was predicted.
     /// </summary>
-    public List<int>? ShootRequested(NetEntity gun, NetCoordinates coordinates, NetEntity? target, List<int>? shot, ICommonSession session)
+    public List<int>? ShootRequested(NetEntity gun, NetCoordinates coordinates, NetEntity? target, List<int>? shot, ICommonSession session, bool predicted = false)
     {
         var user = session.AttachedEntity;
         if (user == null || !_combatMode.IsInCombatMode(user))
@@ -42,8 +44,8 @@ public abstract partial class SharedGunSystem
         if (gunComp.Target == null || !gunComp.BurstActivated || !gunComp.LockOnTargetBurst)
             gunComp.Target = GetEntity(target);
 
-        var predicted = new PredictedShot(session, ent, shot);
-        PredictedShotContext = predicted;
+        var predictedShot = new PredictedShot(session, ent, shot, predicted);
+        PredictedShotContext = predictedShot;
         try
         {
             AttemptShoot(user.Value, ent, gunComp);
@@ -53,7 +55,7 @@ public abstract partial class SharedGunSystem
             PredictedShotContext = null;
         }
 
-        return predicted.Slots.Exists(id => id != 0) ? predicted.Slots : null;
+        return predictedShot.Slots.Exists(id => id != 0) ? predictedShot.Slots : null;
     }
 
     /// <summary>
@@ -102,10 +104,42 @@ public abstract partial class SharedGunSystem
     }
 
     /// <summary>
+    /// Beyond roughly the client's PVS range it cannot see what stops a beam, so longer hitscans stay server-drawn.
+    /// </summary>
+    private const float PredictedHitscanRange = 25f;
+
+    /// <summary>
+    /// Whether the shooter's client drew this shot's beams itself, so the server leaves them out of its own.
+    /// The client's word decides it, which keeps the two sides from disagreeing over what is predictable.
+    /// </summary>
+    protected bool IsPredictedHitscan(EntityUid gunUid)
+    {
+        return GunPrediction && PredictedShotContext is { Predicting: true } shot && shot.Gun == gunUid;
+    }
+
+    /// <summary>
+    /// Only plain, short-ranged raycast-and-beam hitscans are predicted; the client can't mirror diffraction,
+    /// jumps, piercing or spawns.
+    /// </summary>
+    public bool CanPredictHitscan(EntityUid hitscan)
+    {
+        return TryComp<HitscanBasicRaycastComponent>(hitscan, out var raycast)
+               && raycast.MaxDistance <= PredictedHitscanRange
+               && HasComp<HitscanBasicVisualsComponent>(hitscan)
+               && !HasComp<HitscanDiffractComponent>(hitscan)
+               && !HasComp<HitscanJumpComponent>(hitscan)
+               && !HasComp<HitscanMultiRaycastComponent>(hitscan)
+               && !HasComp<HitscanSpawnEntityComponent>(hitscan);
+    }
+
+    /// <summary>
     /// Links the projectiles fired for one shoot request to the copies the shooter's client predicted.
     /// </summary>
-    protected sealed class PredictedShot(ICommonSession shooter, EntityUid gun, List<int>? clientIds)
+    protected sealed class PredictedShot(ICommonSession shooter, EntityUid gun, List<int>? clientIds, bool predicting)
     {
+        /// <summary>Whether the shooter's client draws this shot's own effects.</summary>
+        public readonly bool Predicting = predicting;
+
         /// <summary>The player who sent the request.</summary>
         public readonly ICommonSession Shooter = shooter;
 

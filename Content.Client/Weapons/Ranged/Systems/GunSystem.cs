@@ -95,7 +95,7 @@ public sealed partial class GunSystem : SharedGunSystem
         SubscribeAllEvent<MuzzleFlashEvent>(OnMuzzleFlash);
 
         // Plays animated effects on the client.
-        SubscribeNetworkEvent<HitscanEvent>(OnHitscan);
+        SubscribeAllEvent<HitscanEvent>(OnHitscan); // WOLFGATE: also draws the beams this client predicts locally
 
         InitializeMagazineVisuals();
         InitializeSpentAmmo();
@@ -248,7 +248,9 @@ public sealed partial class GunSystem : SharedGunSystem
         if (_player.LocalSession is not { } session)
             return;
 
-        var projectiles = ShootRequested(GetNetEntity(gunUid), GetNetCoordinates(coordinates), target, null, (Robust.Shared.Player.ICommonSession)session);
+        var predicting = GunPrediction && _gameState.IsPredictionEnabled; // WOLFGATE
+        DrewHitscan = false; // WOLFGATE
+        var projectiles = ShootRequested(GetNetEntity(gunUid), GetNetCoordinates(coordinates), target, null, (Robust.Shared.Player.ICommonSession)session, predicting);
 
         EntityManager.RaisePredictiveEvent(new RequestShootEvent()
         {
@@ -256,6 +258,7 @@ public sealed partial class GunSystem : SharedGunSystem
             Coordinates = GetNetCoordinates(coordinates),
             Gun = GetNetEntity(gunUid),
             Shot = projectiles, // WOLFGATE: one slot per fired projectile, holding its predicted copy's id
+            Predicted = DrewHitscan, // WOLFGATE: this client already drew this shot's beams
         });
     }
 
@@ -324,6 +327,7 @@ public sealed partial class GunSystem : SharedGunSystem
                 case HitscanAmmoComponent:
                     Audio.PlayPredicted(gun.SoundGunshotModified, gunUid, user);
                     Recoil(user, direction, gun.CameraRecoilScalarModified);
+                    PredictHitscan(volley, ent); // WOLFGATE: draw the beam now rather than waiting for the server's
                     // WOLFGATE: the server fires the hitscan, so don't leak the client-side ammo
                     if (ent != null && IsClientSide(ent.Value))
                         QueueDel(ent.Value);

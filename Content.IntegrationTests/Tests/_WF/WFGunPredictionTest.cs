@@ -15,6 +15,7 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
 using Robust.Shared.Physics.Components;
+using ClientGunSystem = Content.Client.Weapons.Ranged.Systems.GunSystem;
 using ServerPrediction = Content.Server._RMC14.Weapons.Ranged.Prediction.GunPredictionSystem;
 
 namespace Content.IntegrationTests.Tests._WF;
@@ -83,6 +84,24 @@ public sealed class WFGunPredictionTest : InteractionTest
   - type: BallisticAmmoProvider
     proto: WFPredTestShell
     capacity: 10
+
+- type: entity
+  id: WFPredTestLaser
+  components:
+  - type: Item
+  - type: Gun
+    fireRate: 1
+    minAngle: 0
+    maxAngle: 0
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+  - type: HitscanBatteryAmmoProvider
+    proto: RedLightLaser
+    fireCost: 20
+  - type: Battery
+    maxCharge: 1000
+    startingCharge: 1000
 ";
 
     private sealed record ServerCopy(EntityUid Uid, int ClientId, EntityUid? ClientEnt, bool ShooterMatches, Vector2 Velocity);
@@ -114,8 +133,17 @@ public sealed class WFGunPredictionTest : InteractionTest
         await Client.WaitPost(() =>
         {
             tick = CTiming.CurTick.Value;
-            slots = CEntMan.System<SharedGunSystem>().ShootRequested(gun, aim, null, null, ClientSession);
-            CEntMan.EntityNetManager!.SendSystemNetworkMessage(new RequestShootEvent { Gun = gun, Coordinates = aim, Shot = slots });
+
+            // Mirrors what GunSystem.Update does when the player pulls the trigger.
+            var gunSystem = CEntMan.System<ClientGunSystem>();
+            slots = gunSystem.ShootRequested(gun, aim, null, null, ClientSession, true);
+            CEntMan.EntityNetManager!.SendSystemNetworkMessage(new RequestShootEvent
+            {
+                Gun = gun,
+                Coordinates = aim,
+                Shot = slots,
+                Predicted = gunSystem.DrewHitscan,
+            });
         });
         return (slots, tick);
     }
@@ -255,6 +283,38 @@ public sealed class WFGunPredictionTest : InteractionTest
             }
         });
         await RunTicks(5);
+    }
+
+    /// <summary>
+    /// Counts the beam effect entities the client is currently drawing.
+    /// </summary>
+    private async Task<int> ClientBeams()
+    {
+        var beams = 0;
+        await Client.WaitPost(() =>
+        {
+            var query = CEntMan.EntityQueryEnumerator<MetaDataComponent>();
+            while (query.MoveNext(out _, out var meta))
+            {
+                if (meta.EntityPrototype?.ID == "HitscanEffect")
+                    beams++;
+            }
+        });
+        return beams;
+    }
+
+    [Test]
+    public async Task PredictedHitscanDrawsOneBeam()
+    {
+        var gun = SEntMan.GetNetEntity(await ArmPlayer("WFPredTestLaser"));
+        var aim = new NetCoordinates(Player, new Vector2(5f, 0f));
+
+        await ClientShoot(gun, aim);
+        var drawn = await ClientBeams();
+        Assert.That(drawn, Is.GreaterThan(0), "the client drew no beam of its own");
+
+        await RunTicks(10);
+        Assert.That(await ClientBeams(), Is.EqualTo(drawn), "the shooter was sent the server's beam as well");
     }
 
     [Test]

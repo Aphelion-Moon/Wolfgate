@@ -154,7 +154,7 @@ public abstract partial class SharedGunSystem : EntitySystem
         if (_netManager.IsClient && Timing.IsFirstTimePredicted)
             return;
 
-        ShootRequested(msg.Gun, msg.Coordinates, msg.Target, msg.Shot, args.SenderSession);
+        ShootRequested(msg.Gun, msg.Coordinates, msg.Target, msg.Shot, args.SenderSession, msg.Predicted);
     }
 
     private void OnStopShootRequest(RequestStopShootEvent ev, EntitySessionEventArgs args)
@@ -530,6 +530,7 @@ public abstract partial class SharedGunSystem : EntitySystem
             Gun = gunUid,
             Shooter = user,
             Target = target,
+            Predicted = IsPredictedHitscan(gunUid), // WOLFGATE
         };
         RaiseLocalEvent(uid, ref hitscanEv);
     }

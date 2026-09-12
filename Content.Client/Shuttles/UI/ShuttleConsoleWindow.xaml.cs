@@ -35,6 +35,7 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
 
         // Mode switching
         NavModeButton.OnPressed += NavPressed;
+        ShipModeButton.OnPressed += ShipPressed; // WOLFGATE
         MapModeButton.OnPressed += MapPressed;
         DockModeButton.OnPressed += DockPressed;
 
@@ -42,6 +43,7 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         var group = new ButtonGroup();
 
         NavModeButton.Group = group;
+        ShipModeButton.Group = group; // WOLFGATE
         MapModeButton.Group = group;
         DockModeButton.Group = group;
 
@@ -85,6 +87,7 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         };
 
         NfInitialize(); // Frontier Initialization for the ShuttleConsoleWindow
+        WfInitialize(); // WOLFGATE
     }
 
     private void ClearModes(ShuttleConsoleMode mode)
@@ -92,6 +95,12 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         if (mode != ShuttleConsoleMode.Nav)
         {
             NavContainer.Visible = false;
+        }
+
+        // WOLFGATE
+        if (mode != ShuttleConsoleMode.Ship)
+        {
+            WfSetShipMode(false);
         }
 
         if (mode != ShuttleConsoleMode.Map)
@@ -111,6 +120,12 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         SwitchMode(ShuttleConsoleMode.Nav);
     }
 
+    // WOLFGATE
+    private void ShipPressed(BaseButton.ButtonEventArgs obj)
+    {
+        SwitchMode(ShuttleConsoleMode.Ship);
+    }
+
     private void MapPressed(BaseButton.ButtonEventArgs obj)
     {
         SwitchMode(ShuttleConsoleMode.Map);
@@ -127,6 +142,10 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         {
             case ShuttleConsoleMode.Nav:
                 NavContainer.Visible = true;
+                break;
+            // WOLFGATE
+            case ShuttleConsoleMode.Ship:
+                WfSetShipMode(true);
                 break;
             case ShuttleConsoleMode.Map:
                 MapContainer.Visible = true;
@@ -153,6 +172,7 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
     public enum ShuttleConsoleMode : byte
     {
         Nav,
+        Ship, // WOLFGATE
         Map,
         Dock,
     }
@@ -164,6 +184,9 @@ public sealed partial class ShuttleConsoleWindow : FancyWindow,
         NavContainer.SetConsole(owner);
         MapContainer.SetShuttle(coordinates?.EntityId);
         MapContainer.SetConsole(owner);
+        // WOLFGATE
+        ShipContainer.SetShuttle(coordinates?.EntityId);
+        ShipContainer.SetConsole(owner);
 
         NavContainer.UpdateState(cState.NavState);
         MapContainer.UpdateState(cState.MapState);

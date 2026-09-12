@@ -1,4 +1,4 @@
-﻿[color=#99ff99]Monolith Sector is a Medium Roleplay server. Try to immerse yourself into your character. This includes doing your job as a station or ship crew member and delegating tasks that are outside of that description, or striking out upon space as a Captain of your ship. This does not imply you’re forced to play the whole round; Monolith Station is designed with pop-in-and-out gameplay in mind, where some players will come and go but their bank account remains persistent across server restarts.[/color]
+﻿[color=#99ff99]Wolfgate is a Medium Roleplay server, and a derivative of Monolith. Try to immerse yourself into your character. This includes doing your job as a station or ship crew member and delegating tasks that are outside of that description, or striking out upon space as a Captain of your ship. This does not imply you’re forced to play the whole round; Wolfgate is designed with pop-in-and-out gameplay in mind, where some players will come and go but their bank account remains persistent across server restarts.[/color]
 
 [color=#99ff99]You can access more information about the game using the Guidebook (NUMPAD 0).[/color]
 
@@ -11,7 +11,7 @@
 [color=#a4885c][head=3]0.2. Staff is not obligated to cover player losses, deaths or delays.[/head][/color]
 	• This includes but is not limited to ship deeds, money, respawns or revivals. Any action taken will depend on the circumstances at hand.
 
-[color=#a4885c][head=4]The core rules of [bold]Monolith[/bold] are as follows.[/head][/color]
+[color=#a4885c][head=4]The core rules of [bold]Wolfgate[/bold] are as follows.[/head][/color]
 [color=#a4885c]These are not the full extent of the rules, and further information can be found in the guidebook.[/color]
 
 [color=#a4885c][head=3]1. Use common sense.[/head][/color]
@@ -36,7 +36,7 @@
 	• This includes [color=yellow]roleplay[/color], [color=yellow]OOC chat[/color], [color=yellow]ahelp[/color], and [color=yellow]staff messages[/color].
 	• [color=red][bold]All communication on the server—both in-character (IC) and out-of-character (OOC) must be in English.[/bold][/color]
 
-[color=#a4885c][head=4]The ruleplay rules of [bold]Monolith[/bold] are as follows.[/head][/color]
+[color=#a4885c][head=4]The ruleplay rules of [bold]Wolfgate[/bold] are as follows.[/head][/color]
 [color=#a4885c]These are not the full extent of the rules, and further information can be found in the guidebook.[/color]
 
 	• [color=#a4885c][head=2]RP.1. Do not break character.[/head][/color]
@@ -48,7 +48,7 @@
 	• [color=#a4885c][head=2]RP.7. Follow safezone rules at all time.[/head][/color]
 	• [color=#a4885c][head=2]RP.8. Do not abandon your role as a faction member.[/head][/color]
 
-[color=#a4885c][head=4]The conflict rules of [bold]Monolith[/bold] are as follows.[/head][/color]
+[color=#a4885c][head=4]The conflict rules of [bold]Wolfgate[/bold] are as follows.[/head][/color]
 [color=#a4885c]These are not the full extent of the rules, and further information can be found in the guidebook.[/color]
 
 	• [color=#a4885c][head=2]C.1. Avoid random deathmatch (RDM) as a civilian.[/head][/color]

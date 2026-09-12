@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Client._WF.UserInterface.WindowPopout;
 using Content.Client.ContextMenu.UI;
 using Content.Client.Examine;
 using Content.Client.Stylesheets;
@@ -278,6 +279,12 @@ public sealed partial class StyleWolfgate
             Element<TextureButton>().Class(FancyWindow.StyleClassWindowHelpButton).Pseudo(ContainerButton.StylePseudoClassHover)
                 .Prop(Control.StylePropertyModulateSelf, Accent),
             Element<TextureButton>().Class(FancyWindow.StyleClassWindowHelpButton).Pseudo(ContainerButton.StylePseudoClassPressed)
+                .Prop(Control.StylePropertyModulateSelf, AccentDim),
+            Element<TextureButton>().Class(WolfgatePopoutButton.StyleClassWindowPopoutButton)
+                .Prop(Control.StylePropertyModulateSelf, EdgeLight),
+            Element<TextureButton>().Class(WolfgatePopoutButton.StyleClassWindowPopoutButton).Pseudo(TextureButton.StylePseudoClassHover)
+                .Prop(Control.StylePropertyModulateSelf, Accent),
+            Element<TextureButton>().Class(WolfgatePopoutButton.StyleClassWindowPopoutButton).Pseudo(TextureButton.StylePseudoClassPressed)
                 .Prop(Control.StylePropertyModulateSelf, AccentDim),
             Element<PanelContainer>().Class(StyleBase.ClassLowDivider)
                 .Prop(PanelContainer.StylePropertyPanel, lowDivider),

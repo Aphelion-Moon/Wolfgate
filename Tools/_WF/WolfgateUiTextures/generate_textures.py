@@ -6,7 +6,7 @@ Palettes mirror Content.Client/_WF/Stylesheets/WolfgateSkin.cs; keep the two in 
 """
 import os
 import shutil
-from PIL import Image
+from PIL import Image, ImageDraw
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 DEFAULT = os.path.join(ROOT, "Resources", "Textures", "Interface", "Default")
@@ -327,6 +327,36 @@ def attributions():
         f.write("\n".join(lines))
 
 
+def window_icons():
+    """White title bar icons for the window pop-out button, tinted by the stylesheet, so one set serves every skin.
+    Drawn 4x and downsampled to match the 22px stock close cross."""
+    out = os.path.join(ROOT, "Resources", "Textures", "_WF", "Interface", "Window")
+    os.makedirs(out, exist_ok=True)
+    s, w = 4, 8
+
+    def icon(arrow, head):
+        im = Image.new("RGBA", (22 * s, 22 * s), CLEAR)
+        d = ImageDraw.Draw(im)
+        # Box with the top-right corner open for the arrow
+        for line in (((3, 7), (10, 7)), ((3, 7), (3, 19)), ((3, 19), (15, 19)), ((15, 12), (15, 19))):
+            d.line([(x * s, y * s) for x, y in line], fill=WHITE, width=w)
+        for line in (arrow, *head):
+            d.line([(x * s, y * s) for x, y in line], fill=WHITE, width=w)
+        return im.resize((22, 22), Image.LANCZOS)
+
+    icon(((9, 13), (19, 3)), (((12, 3), (19, 3)), ((19, 3), (19, 10)))).save(os.path.join(out, "popout.png"))
+    icon(((19, 3), (9, 13)), (((9, 6), (9, 13)), ((9, 13), (16, 13)))).save(os.path.join(out, "dock.png"))
+    with open(os.path.join(out, "attributions.yml"), "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join([
+            '- files: ["popout.png", "dock.png"]',
+            '  license: "CC-BY-SA-3.0"',
+            '  copyright: "Generated for Wolfgate by Tools/_WF/WolfgateUiTextures/generate_textures.py"',
+            '  source: "https://github.com/Aphelion-Moon/Wolfgate"',
+            "",
+        ]))
+    print("Window icons written to %s" % out)
+
+
 def main():
     global P, OUT, STYLE, written
     for skin, palette in SKINS.items():
@@ -340,6 +370,7 @@ def main():
         recolour_storage()
         attributions()
         print("%s textures written to %s (%d files)" % (skin, OUT, len(written)))
+    window_icons()
 
 
 if __name__ == "__main__":

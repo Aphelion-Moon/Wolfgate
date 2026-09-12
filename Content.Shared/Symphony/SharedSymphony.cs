@@ -12,9 +12,10 @@ public static class SharedSymphony
     /// Version 2 added /symphony/roles, the catalogue of whitelisted jobs, ghost roles and companies, and
     /// /symphony/roles/refresh, which makes the game re-read a player's rows for them. Version 3 added
     /// symphony_test_merges in /status: what a test merge build carries, from the stamp the workflow wrote. Version 4 added
-    /// /symphony/hub, the hub switch: whether the server advertises itself, read and set while it runs.
+    /// /symphony/hub, the hub switch: whether the server advertises itself, read and set while it runs. Version 5 added
+    /// /symphony/players: who is connected, with character, job, state and ping, which /admin/info does not carry.
     /// </summary>
-    public const int ModuleVersion = 4;
+    public const int ModuleVersion = 5;
 
     /// <summary>
     /// Key of the one-time Discord link URL in a whitelist refusal's structured properties.

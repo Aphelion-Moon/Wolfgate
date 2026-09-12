@@ -42,6 +42,10 @@ public sealed partial class GunSystem
         public Vector2 GunVelocity;
     }
 
+    /// <summary>
+    /// Sets up one call to Shoot: always the recoil state, and the spawn state too when this client is the shooter
+    /// and can predict what the server is about to fire.
+    /// </summary>
     private PredictedVolley BeginVolley(EntityUid gunUid, GunComponent gun, EntityCoordinates fromCoordinates, EntityCoordinates toCoordinates, EntityUid? user, int count)
     {
         var fromMap = TransformSystem.ToMapCoordinates(fromCoordinates);
@@ -191,6 +195,9 @@ public sealed partial class GunSystem
         return true;
     }
 
+    /// <summary>
+    /// Whether the server will fire this entity as a projectile, which is what takes up a slot.
+    /// </summary>
     private bool IsProjectileShot(EntityUid uid)
     {
         return !HasComp<HitscanAmmoComponent>(uid) && HasComp<ProjectileComponent>(uid);

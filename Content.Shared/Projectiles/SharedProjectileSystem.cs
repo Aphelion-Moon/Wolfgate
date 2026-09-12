@@ -194,8 +194,9 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         var impactFilter = Robust.Shared.Player.Filter.Pvs(coordinates, entityMan: EntityManager);
         var damageFilter = Robust.Shared.Player.Filter.Pvs(coordinates, entityMan: EntityManager);
 
-        // WOLFGATE: skip these for a shooter whose own predicted copy already played them. A hit their client never
-        // claimed (Hit is set when a report is accepted) still shows them the impact and the flash.
+        // WOLFGATE: skip these for a shooter whose own predicted copy already played them. Hit means the shooter's
+        // client reported this projectile as having hit something, which it only does after playing the impact and
+        // the flash locally, so a projectile they never claimed still shows them both.
         if (_guns.GunPrediction &&
             CompOrNull<PredictedProjectileServerComponent>(projectile) is { Shooter: { } predictedShooter } predictedServer &&
             (predicted || predictedServer.Hit))

@@ -65,13 +65,17 @@ namespace Content.Shared.Humanoid.Markings
         // WOLFGATE - colour links, ported from HardLight/Floof.
         /// <summary>
         /// Per-sprite colours with <see cref="ColorLinks"/> applied: a linked sprite takes the colour of the sprite
-        /// it follows. Returns a copy and leaves the input alone.
+        /// it follows. Returns a copy and leaves the input alone. With links, the copy has one colour per sprite.
         /// </summary>
         public List<Color> ResolveLinkedColors(IReadOnlyList<Color> colors)
         {
             var resolved = new List<Color>(colors);
             if (ColorLinks is not { Count: > 0 })
                 return resolved;
+
+            // WOLFGATE - pad first, so a list saved before the marking gained linked sprites never leaves them white.
+            while (resolved.Count < Sprites.Count)
+                resolved.Add(Color.White);
 
             var byState = new Dictionary<string, Color>();
             for (var i = 0; i < Sprites.Count && i < resolved.Count; i++)

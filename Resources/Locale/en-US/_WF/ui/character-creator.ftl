@@ -46,9 +46,6 @@ wf-bodypart-Hair = Hair
 wf-bodypart-FacialHair = Facial Hair
 
 # WOLFGATE: body parts added by the HardLight port.
-wf-bodypart-Genital = Genitals
-wf-bodypart-Penis = Genitals (Front)
-wf-bodypart-Breasts = Chest (Breasts)
 wf-bodypart-UndergarmentTop = Underwear (Top)
 wf-bodypart-UndergarmentBottom = Underwear (Bottom)
 wf-bodypart-TailBehind = Tail (Behind)

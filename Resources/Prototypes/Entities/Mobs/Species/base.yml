@@ -13,6 +13,7 @@
   - type: Sprite
     layers:
     - map: [ "enum.HumanoidVisualLayers.TailBehind" ] # WOLFGATE - split tail layers ported from HardLight/Floof
+    - map: [ "enum.GenitalVisualLayers.Behind" ] # WOLFGATE - anatomy anchor
     - map: [ "enum.HumanoidVisualLayers.Chest" ]
     - map: [ "enum.HumanoidVisualLayers.Head" ]
     - map: [ "enum.HumanoidVisualLayers.Snout" ]
@@ -32,10 +33,12 @@
     - map: ["enum.HumanoidVisualLayers.LHand"]
     - map: ["enum.HumanoidVisualLayers.RHand"]
     - map: [ "gloves" ]
+    - map: [ "enum.GenitalVisualLayers.Under" ] # WOLFGATE - anatomy anchor, directly after gloves: exposed anatomy draws over the arms, hands and gloves but under shoes, belts, bags, hair, neckwear, outer clothing and tails
     - map: [ "shoes" ]
     - map: [ "ears" ]
     - map: [ "id" ] # Mono - move from between belt and back
     - map: [ "outerClothing" ] # mono - i hate you upstream
+    - map: [ "enum.GenitalVisualLayers.Over" ] # WOLFGATE - anatomy anchor, directly after outerClothing: the show-through-clothing set, still under the neck slots, hair and tails
     - map: [ "eyes" ]
     - map: [ "belt" ]
     - map: [ "back" ]
@@ -345,6 +348,7 @@
     # TODO BODY Turn these into individual body parts?
     layers:
     - map: [ "enum.HumanoidVisualLayers.TailBehind" ] # WOLFGATE - split tail layers ported from HardLight/Floof
+    - map: [ "enum.GenitalVisualLayers.Behind" ] # WOLFGATE - anatomy anchor
     - map: [ "enum.HumanoidVisualLayers.Chest" ]
     - map: [ "enum.HumanoidVisualLayers.Head" ]
     - map: [ "enum.HumanoidVisualLayers.Snout" ]
@@ -370,9 +374,11 @@
       state: body-overlay-2
       visible: false
     - map: [ "gloves" ]
+    - map: [ "enum.GenitalVisualLayers.Under" ] # WOLFGATE - anatomy anchor, directly after gloves: exposed anatomy draws over the arms, hands and gloves but under shoes, belts, bags, hair, neckwear, outer clothing and tails
     - map: [ "shoes" ]
     - map: [ "ears" ]
     - map: [ "outerClothing" ] # mono - i hate you upstream
+    - map: [ "enum.GenitalVisualLayers.Over" ] # WOLFGATE - anatomy anchor, directly after outerClothing: the show-through-clothing set, still under the neck slots, hair and tails
     - map: [ "eyes" ]
     - map: [ "belt" ]
     - map: [ "id" ]

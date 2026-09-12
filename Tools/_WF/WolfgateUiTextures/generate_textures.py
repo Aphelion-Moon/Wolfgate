@@ -3,10 +3,12 @@
 Run from the repository root:  python Tools/_WF/WolfgateUiTextures/generate_textures.py
 Requires Pillow. Slot and storage icons are recoloured copies of the stock Default theme.
 Palettes mirror Content.Client/_WF/Stylesheets/WolfgateSkin.cs; keep the two in sync.
+The Anatomy top-bar icon is white and tinted by the menu button, so one copy under
+Resources/Textures/_WF/Interface serves every skin.
 """
 import os
 import shutil
-from PIL import Image
+from PIL import Image, ImageDraw
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 DEFAULT = os.path.join(ROOT, "Resources", "Textures", "Interface", "Default")
@@ -384,6 +386,61 @@ def attributions():
         f.write("\n".join(lines))
 
 
+def anatomy_icon():
+    """Neutral outline figure for the Anatomy top-bar button: ring head, hollow torso, plain limbs.
+
+    Drawn white at 4x and downsampled to 64px like the stock svg.192dpi icons. The menu button tints it,
+    so one copy serves every skin. Writes the texture, its filtering sidecar and the folder's attributions.yml.
+    """
+    size, scale = 64, 4
+    big = size * scale
+
+    def u(v):
+        return int(round(v * scale))
+
+    mask = Image.new("L", (big, big), 0)
+    draw = ImageDraw.Draw(mask)
+
+    def capsule(x0, y0, x1, y1, width):
+        draw.line((u(x0), u(y0), u(x1), u(y1)), fill=255, width=u(width))
+        r = u(width) / 2
+        for x, y in ((x0, y0), (x1, y1)):
+            draw.ellipse((u(x) - r, u(y) - r, u(x) + r, u(y) + r), fill=255)
+
+    # Standing figure with a 4px pen: ring head and outlined torso, then limbs that stay clear of both holes
+    draw.ellipse((u(25), u(3), u(39), u(17)), fill=255)
+    draw.ellipse((u(29), u(7), u(35), u(13)), fill=0)
+    draw.rounded_rectangle((u(23), u(20), u(41), u(40)), radius=u(5), fill=255)
+    draw.rounded_rectangle((u(27), u(24), u(37), u(36)), radius=u(2), fill=0)
+    capsule(22, 23, 17, 40, 5)
+    capsule(42, 23, 47, 40, 5)
+    capsule(28, 40, 26, 59, 6)
+    capsule(36, 40, 38, 59, 6)
+
+    resample = getattr(Image, "Resampling", Image).LANCZOS
+    alpha = mask.resize((size, size), resample)
+
+    im = Image.new("RGBA", (size, size), (255, 255, 255, 0))
+    im.putalpha(alpha)
+
+    out_dir = os.path.join(ROOT, "Resources", "Textures", "_WF", "Interface")
+    os.makedirs(out_dir, exist_ok=True)
+    path = os.path.join(out_dir, "anatomy.svg.192dpi.png")
+    im.save(path)
+    with open(path + ".yml", "w", encoding="utf-8", newline="\n") as f:
+        f.write("sample:\n  filter: true\n")
+    lines = [
+        '- files: ["anatomy.svg.192dpi.png"]',
+        '  license: "CC-BY-SA-3.0"',
+        '  copyright: "Generated for Wolfgate by Tools/_WF/WolfgateUiTextures/generate_textures.py"',
+        '  source: "https://github.com/Aphelion-Moon/Wolfgate"',
+        "",
+    ]
+    with open(os.path.join(out_dir, "attributions.yml"), "w", encoding="utf-8", newline="\n") as f:
+        f.write("\n".join(lines))
+    print("Anatomy icon written to %s" % path)
+
+
 def main():
     global P, OUT, STYLE, written
     for skin, palette in SKINS.items():
@@ -398,6 +455,7 @@ def main():
         recolour_storage()
         attributions()
         print("%s textures written to %s (%d files)" % (skin, OUT, len(written)))
+    anatomy_icon()
 
 
 if __name__ == "__main__":

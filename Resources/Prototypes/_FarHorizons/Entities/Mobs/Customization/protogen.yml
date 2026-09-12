@@ -606,11 +606,17 @@
   bodyPart: Tail
   markingCategory: Overlay
   speciesRestriction: [ProtoAvali]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    wings_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    wings_BEHIND: wings_FRONT
   sprites:
-  - sprite: _FarHorizons/Mobs/Customization/proto-avali/led_shapes_body.rsi
-    state: wings
+  - sprite: _WF/Mobs/Customization/TailSplit/_FarHorizons/Mobs/Customization/proto-avali/led_shapes_body.rsi # WOLFGATE - split art, anatomy zone only
+    state: wings_FRONT
 
 #region ARACHNID
+  - sprite: _WF/Mobs/Customization/TailSplit/_FarHorizons/Mobs/Customization/proto-avali/led_shapes_body.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: wings_BEHIND
 
 - type: marking
   id: ProtoArachnidVisor

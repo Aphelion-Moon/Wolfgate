@@ -5,8 +5,18 @@
   bodyPart: Tail
   markingCategory: Chest
   speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, Canine]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    body_dragonwings_BEHIND: TailBehind
+    body_dragonwings_membrane_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    body_dragonwings_BEHIND: body_dragonwings_FRONT
+    body_dragonwings_membrane_BEHIND: body_dragonwings_membrane_FRONT
   sprites:
-  - sprite: _RMC14/Mobs/Customization/reptilian.rsi
-    state: body_dragonwings
-  - sprite: _RMC14/Mobs/Customization/reptilian.rsi
-    state: body_dragonwings_membrane
+  - sprite: _WF/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE - split art
+    state: body_dragonwings_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE - split art
+    state: body_dragonwings_membrane_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE - south frame on TailBehind
+    state: body_dragonwings_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/_RMC14/Mobs/Customization/reptilian.rsi # WOLFGATE - south frame on TailBehind
+    state: body_dragonwings_membrane_BEHIND

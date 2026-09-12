@@ -101,7 +101,8 @@ public sealed class WolfgateMarkingIcon : Control
         return preferred;
     }
 
-    private static bool AnyVisible(IReadOnlyList<SpriteSpecifier> sprites, Direction direction)
+    /// <summary>Whether any of the sprites draws something in the given direction.</summary>
+    public static bool AnyVisible(IReadOnlyList<SpriteSpecifier> sprites, Direction direction)
     {
         foreach (var sprite in sprites)
         {

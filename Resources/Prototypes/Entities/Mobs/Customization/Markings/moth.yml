@@ -178,226 +178,396 @@
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    default_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    default_BEHIND: default_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: default
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: default_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: default_BEHIND
 
 - type: marking
   id: MothWingsCharred
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    charred_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    charred_BEHIND: charred_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: charred
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: charred_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: charred_BEHIND
 
 - type: marking
   id: MothWingsDbushy
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    dbushy_primary_BEHIND: TailBehind
+    dbushy_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    dbushy_primary_BEHIND: dbushy_primary_FRONT
+    dbushy_secondary_BEHIND: dbushy_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: dbushy_primary
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: dbushy_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: dbushy_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: dbushy_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: dbushy_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: dbushy_secondary_BEHIND
 
 - type: marking
   id: MothWingsDeathhead
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    deathhead_primary_BEHIND: TailBehind
+    deathhead_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    deathhead_primary_BEHIND: deathhead_primary_FRONT
+    deathhead_secondary_BEHIND: deathhead_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: deathhead_primary
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: deathhead_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: deathhead_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: deathhead_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: deathhead_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: deathhead_secondary_BEHIND
 
 - type: marking
   id: MothWingsFan
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    fan_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    fan_BEHIND: fan_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: fan
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: fan_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: fan_BEHIND
 
 - type: marking
   id: MothWingsDfan
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    dfan_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    dfan_BEHIND: dfan_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: dfan
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: dfan_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: dfan_BEHIND
 
 - type: marking
   id: MothWingsFeathery
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    feathery_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    feathery_BEHIND: feathery_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: feathery
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: feathery_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: feathery_BEHIND
 
 - type: marking
   id: MothWingsFirewatch
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    firewatch_primary_BEHIND: TailBehind
+    firewatch_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    firewatch_primary_BEHIND: firewatch_primary_FRONT
+    firewatch_secondary_BEHIND: firewatch_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: firewatch_primary
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: firewatch_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: firewatch_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: firewatch_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: firewatch_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: firewatch_secondary_BEHIND
 
 - type: marking
   id: MothWingsGothic
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    gothic_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    gothic_BEHIND: gothic_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: gothic
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: gothic_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: gothic_BEHIND
 
 - type: marking
   id: MothWingsJungle
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    jungle_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    jungle_BEHIND: jungle_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: jungle
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: jungle_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: jungle_BEHIND
 
 - type: marking
   id: MothWingsLadybug
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    ladybug_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    ladybug_BEHIND: ladybug_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: ladybug
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: ladybug_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: ladybug_BEHIND
 
 - type: marking
   id: MothWingsMaple
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    maple_primary_BEHIND: TailBehind
+    maple_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    maple_primary_BEHIND: maple_primary_FRONT
+    maple_secondary_BEHIND: maple_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: maple_primary
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: maple_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: maple_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: maple_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: maple_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: maple_secondary_BEHIND
 
 - type: marking
   id: MothWingsMoffra
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    moffra_primary_BEHIND: TailBehind
+    moffra_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    moffra_primary_BEHIND: moffra_primary_FRONT
+    moffra_secondary_BEHIND: moffra_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: moffra_primary
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: moffra_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: moffra_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: moffra_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: moffra_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: moffra_secondary_BEHIND
 
 - type: marking
   id: MothWingsOakworm
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    oakworm_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    oakworm_BEHIND: oakworm_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: oakworm
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: oakworm_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: oakworm_BEHIND
 
 - type: marking
   id: MothWingsPlasmafire
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    plasmafire_primary_BEHIND: TailBehind
+    plasmafire_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    plasmafire_primary_BEHIND: plasmafire_primary_FRONT
+    plasmafire_secondary_BEHIND: plasmafire_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: plasmafire_primary
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: plasmafire_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: plasmafire_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: plasmafire_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: plasmafire_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: plasmafire_secondary_BEHIND
 
 - type: marking
   id: MothWingsPointy
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    pointy_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    pointy_BEHIND: pointy_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: pointy
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: pointy_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: pointy_BEHIND
 
 - type: marking
   id: MothWingsRoyal
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    royal_primary_BEHIND: TailBehind
+    royal_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    royal_primary_BEHIND: royal_primary_FRONT
+    royal_secondary_BEHIND: royal_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: royal_primary
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: royal_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: royal_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: royal_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: royal_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: royal_secondary_BEHIND
 
 - type: marking
   id: MothWingsStellar
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    stellar_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    stellar_BEHIND: stellar_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: stellar
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: stellar_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: stellar_BEHIND
 
 - type: marking
   id: MothWingsStriped
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    striped_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    striped_BEHIND: striped_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: striped
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: striped_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: striped_BEHIND
 
 - type: marking
   id: MothWingsSwirly
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    swirly_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    swirly_BEHIND: swirly_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: swirly
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: swirly_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: swirly_BEHIND
 
 - type: marking
   id: MothWingsWhitefly
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    whitefly_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    whitefly_BEHIND: whitefly_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: whitefly
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: whitefly_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: whitefly_BEHIND
 
 - type: marking
   id: MothWingsWitchwing
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    witchwing_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    witchwing_BEHIND: witchwing_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: witchwing
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: witchwing_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: witchwing_BEHIND
 
 - type: marking
   id: MothWingsUnderwing
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    underwing_primary_BEHIND: TailBehind
+    underwing_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    underwing_primary_BEHIND: underwing_primary_FRONT
+    underwing_secondary_BEHIND: underwing_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: underwing_primary
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: underwing_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: underwing_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: underwing_secondary_FRONT
 
 # Body markings:
 # Charred
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: underwing_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: underwing_secondary_BEHIND
 - type: marking
   id: MothChestCharred
   bodyPart: Chest

@@ -59,6 +59,7 @@ public sealed class WolfgateMarkingPicker : BoxContainer
     private readonly Dictionary<HumanoidVisualLayers, Button> _partButtons = new();
     private readonly HashSet<MarkingCategories> _ignoreCategories = new();
     private readonly List<MarkingCategories> _allCategories = Enum.GetValues<MarkingCategories>().ToList();
+    private IReadOnlySet<string> _hiddenMarkings = new HashSet<string>();
 
     private MarkingSet _current = new();
     private HumanoidVisualLayers _part = HumanoidVisualLayers.Chest;
@@ -106,6 +107,20 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         set
         {
             _ignoreSpecies = value;
+            Populate(_search.Text);
+        }
+    }
+
+    /// <summary>Marking ids never offered as tiles, e.g. the adult-only markings while the character is below the adult age.</summary>
+    public IReadOnlySet<string> HiddenMarkings
+    {
+        get => _hiddenMarkings;
+        set
+        {
+            if (_hiddenMarkings.SetEquals(value))
+                return;
+
+            _hiddenMarkings = value;
             Populate(_search.Text);
         }
     }
@@ -304,10 +319,12 @@ public sealed class WolfgateMarkingPicker : BoxContainer
             : _markingManager.MarkingsByCategoryAndSpeciesAndSex(category, _species, _sex);
     }
 
-    /// <summary>Every marking the species can use, from every category that is not ignored.</summary>
+    /// <summary>Every marking the species can use, from every category that is not ignored, minus the hidden ones.</summary>
     private IEnumerable<MarkingPrototype> ValidMarkings()
     {
-        return _allCategories.Where(c => !_ignoreCategories.Contains(c)).SelectMany(c => GetMarkings(c).Values);
+        return _allCategories.Where(c => !_ignoreCategories.Contains(c))
+            .SelectMany(c => GetMarkings(c).Values)
+            .Where(m => !_hiddenMarkings.Contains(m.ID));
     }
 
     private IEnumerable<MarkingPrototype> PartMarkings(HumanoidVisualLayers part)
@@ -420,16 +437,28 @@ public sealed class WolfgateMarkingPicker : BoxContainer
     private void Add(MarkingPrototype proto)
     {
         var category = proto.MarkingCategory;
-        if (_current.PointsLeft(category) == 0 && !Forced && !SwapSingle(category))
+
+        // A full category whose whole budget is one marking (an undergarment top or bottom, a tail) swaps that
+        // marking for the new one in place, as the hair slot picker does, instead of refusing the pick.
+        var replaceAt = -1;
+        if (_current.PointsLeft(category) == 0 && !Forced)
         {
-            Populate(_search.Text);
-            return;
+            replaceAt = SingleSlotIndex(category);
+            if (replaceAt < 0)
+            {
+                Populate(_search.Text);
+                return;
+            }
         }
 
+        Marking? replaced = replaceAt >= 0 ? _current.Markings[category][replaceAt] : null;
         var marking = proto.AsMarking();
 
-        // Hair lives outside this set, so clone it in for the default colouring rules.
+        // Hair lives outside this set, so clone it in for the default colouring rules. The marking being replaced
+        // is left out, as if it had been removed first.
         var withHair = new MarkingSet(_current);
+        if (replaced != null)
+            withHair.Remove(category, replaceAt);
         if (HairMarking != null)
             withHair.AddBack(MarkingCategories.Hair, HairMarking);
         if (FacialHairMarking != null)
@@ -437,8 +466,12 @@ public sealed class WolfgateMarkingPicker : BoxContainer
 
         if (!_markingManager.MustMatchSkin(_species, proto.BodyPart, out _, _prototypeManager))
         {
+            var colors = MarkingColoring.GetMarkingLayerColors(proto, CurrentSkinColor, CurrentEyeColor, withHair);
+            if (replaced != null)
+                KeepColors(proto, replaced, colors);
+
             // Linked sprites take their parent's colour, so the stored colours match what is drawn.
-            var colors = proto.ResolveLinkedColors(MarkingColoring.GetMarkingLayerColors(proto, CurrentSkinColor, CurrentEyeColor, withHair));
+            colors = proto.ResolveLinkedColors(colors);
             for (var i = 0; i < colors.Count; i++)
                 marking.SetColor(i, colors[i]);
         }
@@ -449,7 +482,11 @@ public sealed class WolfgateMarkingPicker : BoxContainer
         }
 
         marking.Forced = Forced;
-        _current.AddBack(category, marking);
+        // Replace keeps the points as they are: both markings count against the same single point.
+        if (replaced != null)
+            _current.Replace(category, replaceAt, marking);
+        else
+            _current.AddBack(category, marking);
 
         Populate(_search.Text);
         PopulateUsed();
@@ -457,20 +494,44 @@ public sealed class WolfgateMarkingPicker : BoxContainer
     }
 
     /// <summary>
-    /// In a category that only ever holds one marking, clicking another tile replaces the current one instead of
-    /// doing nothing until it is removed by hand. Returns false when the category is not such a single slot.
+    /// Index of the only marking counted in a full category whose whole budget is one marking, or -1 when the
+    /// category is not such a single slot. Forced markings cost no points, so they are skipped.
     /// </summary>
-    private bool SwapSingle(MarkingCategories category)
+    private int SingleSlotIndex(MarkingCategories category)
     {
-        if (!_current.TryGetCategory(category, out var applied))
-            return false;
+        if (_current.PointsLeft(category) != 0 || !_current.Markings.TryGetValue(category, out var applied))
+            return -1;
 
-        var counted = applied.Where(m => !m.Forced).ToList();
-        if (counted.Count != 1 || _current.PointsLeft(category) + counted.Count != 1)
-            return false;
+        var index = -1;
+        for (var i = 0; i < applied.Count; i++)
+        {
+            if (applied[i].Forced)
+                continue;
 
-        _current.Remove(category, counted[0].MarkingId);
-        return true;
+            if (index >= 0)
+                return -1;
+
+            index = i;
+        }
+
+        return index;
+    }
+
+    /// <summary>
+    /// A swapped-in marking keeps the colours of the one it replaces, sprite by sprite, as a new hairstyle keeps the
+    /// hair colour. Markings with forced colouring keep their own colours.
+    /// </summary>
+    private void KeepColors(MarkingPrototype proto, Marking replaced, List<Color> colors)
+    {
+        if (proto.ForcedColoring
+            || !_markingManager.TryGetMarking(replaced, out var replacedProto)
+            || replacedProto.ForcedColoring)
+        {
+            return;
+        }
+
+        for (var i = 0; i < colors.Count && i < replaced.MarkingColors.Count; i++)
+            colors[i] = replaced.MarkingColors[i];
     }
 
     private void Remove(MarkingPrototype proto)
@@ -666,18 +727,6 @@ public sealed class WolfgateMarkingPicker : BoxContainer
 
     private static string LayerName(string markingId, string state)
     {
-        return Loc.TryGetString($"marking-{markingId}-{state}", out var name) ? name : Humanize(state);
-    }
-
-    /// <summary>"belly_pregnant-1" becomes "Belly Pregnant 1", so an untranslated layer still reads as words.</summary>
-    private static string Humanize(string state)
-    {
-        // Concatenating a char onto a string compiles to a span concat, which the content sandbox rejects,
-        // so both halves stay strings.
-        var separators = new[] { '_', '-', ' ' };
-        var words = state.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-        return words.Length == 0
-            ? state
-            : string.Join(" ", words.Select(w => w[..1].ToUpperInvariant() + w[1..]));
+        return WolfgateMarkingNames.LayerName(markingId, state);
     }
 }

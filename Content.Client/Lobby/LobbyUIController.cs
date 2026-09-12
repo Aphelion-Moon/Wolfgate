@@ -316,6 +316,19 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
 
         _savePanel.SaveButton.OnPressed += _ =>
         {
+            // WOLFGATE - the editor's anatomy confirmation guards this save too; Cancel returns to the editor unsaved.
+            if (_profileEditor != null && _profileEditor.AnatomyClearedOnSave())
+            {
+                _savePanel.Close();
+                _profileEditor.OpenAnatomySaveConfirm(() =>
+                {
+                    SaveProfile();
+                    CloseProfileEditor();
+                });
+                return;
+            }
+            // End WOLFGATE
+
             SaveProfile();
 
             _savePanel.Close();

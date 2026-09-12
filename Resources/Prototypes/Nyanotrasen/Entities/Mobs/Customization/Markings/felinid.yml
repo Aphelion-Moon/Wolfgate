@@ -98,57 +98,97 @@
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Felinid, Tajaran, Human, ProtoFeline] # Goobstation - Tajaran
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    basic_tail_tip_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    basic_tail_tip_BEHIND: basic_tail_tip_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
-    state: basic_tail_tip
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - split art
+    state: basic_tail_tip_FRONT
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_even
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_odd
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - south frame on TailBehind
+    state: basic_tail_tip_BEHIND
 
 - type: marking
   id: FelinidTailBasicWithBow
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Felinid, Tajaran, Human, ProtoFeline] # Goobstation - Tajaran
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    basic_tail_tip_BEHIND: TailBehind
+    basic_bow_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    basic_tail_tip_BEHIND: basic_tail_tip_FRONT
+    basic_bow_BEHIND: basic_bow_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
-    state: basic_tail_tip
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - split art
+    state: basic_tail_tip_FRONT
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_even
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_odd
-  - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
-    state: basic_bow
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - split art
+    state: basic_bow_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - south frame on TailBehind
+    state: basic_tail_tip_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - south frame on TailBehind
+    state: basic_bow_BEHIND
 
 - type: marking
   id: FelinidTailBasicWithBell
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Felinid, Tajaran, Human, ProtoFeline] # Goobstation - Tajaran
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    basic_tail_tip_BEHIND: TailBehind
+    basic_bell_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    basic_tail_tip_BEHIND: basic_tail_tip_FRONT
+    basic_bell_BEHIND: basic_bell_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
-    state: basic_tail_tip
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - split art
+    state: basic_tail_tip_FRONT
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_even
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_odd
-  - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
-    state: basic_bell
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - split art
+    state: basic_bell_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - south frame on TailBehind
+    state: basic_tail_tip_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - south frame on TailBehind
+    state: basic_bell_BEHIND
 
 - type: marking
   id: FelinidTailBasicWithBowAndBell
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Felinid, Tajaran, Human, ProtoFeline] # Goobstation - Tajaran
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    basic_tail_tip_BEHIND: TailBehind
+    basic_bow_BEHIND: TailBehind
+    basic_bell_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    basic_tail_tip_BEHIND: basic_tail_tip_FRONT
+    basic_bow_BEHIND: basic_bow_FRONT
+    basic_bell_BEHIND: basic_bell_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
-    state: basic_tail_tip
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - split art
+    state: basic_tail_tip_FRONT
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_even
   - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
     state: basic_tail_stripes_odd
-  - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
-    state: basic_bow
-  - sprite: Nyanotrasen/Mobs/Customization/felinid_tails.rsi
-    state: basic_bell
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - split art
+    state: basic_bow_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - split art
+    state: basic_bell_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - south frame on TailBehind
+    state: basic_tail_tip_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - south frame on TailBehind
+    state: basic_bow_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/felinid_tails.rsi # WOLFGATE - south frame on TailBehind
+    state: basic_bell_BEHIND

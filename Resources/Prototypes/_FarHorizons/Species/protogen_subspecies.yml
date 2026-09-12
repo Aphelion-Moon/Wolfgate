@@ -293,6 +293,8 @@
     Chest: MobThavenTorso
     HeadTop: MobHumanoidAnyMarking
     HeadSide: MobHumanoidAnyMarking
+    UndergarmentTop: MobHumanoidAnyMarking # Wolfgate: as MobThavenSprites, so undergarment markings draw
+    UndergarmentBottom: MobHumanoidAnyMarking # Wolfgate
     Tail: MobHumanoidAnyMarking
     LArm: MobThavenLArm
     RArm: MobThavenRArm

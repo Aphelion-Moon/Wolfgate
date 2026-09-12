@@ -451,82 +451,140 @@
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [ Synth ]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    factory_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    factory_BEHIND: factory_FRONT
   sprites:
-  - sprite: _HL/Mobs/Customization/Synth/tail.rsi
-    state: factory
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - split art
+    state: factory_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - south frame on TailBehind
+    state: factory_BEHIND
 
 - type: marking
   id: SynthTailComposite
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [ Synth ]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    factory_composite_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    factory_composite_BEHIND: factory_composite_FRONT
   sprites:
-  - sprite: _HL/Mobs/Customization/Synth/tail.rsi
-    state: factory_composite
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - split art
+    state: factory_composite_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - south frame on TailBehind
+    state: factory_composite_BEHIND
 
 - type: marking
   id: SynthTailCore
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [ Synth ]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    core_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    core_BEHIND: core_FRONT
   sprites:
-  - sprite: _HL/Mobs/Customization/Synth/Orchids/tail.rsi
-    state: core
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/Orchids/tail.rsi # WOLFGATE - split art
+    state: core_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/Orchids/tail.rsi # WOLFGATE - south frame on TailBehind
+    state: core_BEHIND
 
 - type: marking
   id: SynthTailLarge
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [ Synth ]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    large_BEHIND: TailBehind
+    large_composite_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    large_BEHIND: large_FRONT
+    large_composite_BEHIND: large_composite_FRONT
   sprites:
-  - sprite: _HL/Mobs/Customization/Synth/tail.rsi
-    state: large
-  - sprite: _HL/Mobs/Customization/Synth/tail.rsi
-    state: large_composite
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - split art
+    state: large_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - split art
+    state: large_composite_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - south frame on TailBehind
+    state: large_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - south frame on TailBehind
+    state: large_composite_BEHIND
 
 - type: marking
   id: SynthTailXenoCurl
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [ Synth ]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    xeno_curl_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    xeno_curl_BEHIND: xeno_curl_FRONT
   sprites:
-  - sprite: _HL/Mobs/Customization/Synth/tail.rsi
-    state: xeno_curl
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - split art
+    state: xeno_curl_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - south frame on TailBehind
+    state: xeno_curl_BEHIND
 
 - type: marking
   id: SynthTailXenoLight
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [ Synth ]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    xeno_light_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    xeno_light_BEHIND: xeno_light_FRONT
   sprites:
-  - sprite: _HL/Mobs/Customization/Synth/tail.rsi
-    state: xeno_light
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - split art, anatomy zone only
+    state: xeno_light_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: xeno_light_BEHIND
 
 - type: marking
   id: SynthTailXenoSpike
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [ Synth ]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    xeno_spike_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    xeno_spike_BEHIND: xeno_spike_FRONT
   sprites:
-  - sprite: _HL/Mobs/Customization/Synth/tail.rsi
-    state: xeno_spike
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - split art
+    state: xeno_spike_FRONT
 
 # Wings
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - south frame on TailBehind
+    state: xeno_spike_BEHIND
 
 - type: marking
   id: SynthWingsDragon
   bodyPart: Tail
   markingCategory: Chest
   speciesRestriction: [Synth, Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Shadekin, Canine]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    dragon_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    dragon_BEHIND: dragon_FRONT
   sprites:
-  - sprite: _HL/Mobs/Customization/Synth/wings.rsi
-    state: dragon
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE - split art
+    state: dragon_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE - south frame on TailBehind
+    state: dragon_BEHIND
 
 - type: marking
   id: SynthWingsDragonLight
   bodyPart: Tail
   markingCategory: Chest
   speciesRestriction: [ Synth ]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    dragon_light_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    dragon_light_BEHIND: dragon_light_FRONT
   sprites:
-  - sprite: _HL/Mobs/Customization/Synth/wings.rsi
-    state: dragon_light
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE - split art
+    state: dragon_light_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/wings.rsi # WOLFGATE - south frame on TailBehind
+    state: dragon_light_BEHIND

@@ -5,11 +5,21 @@
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, Canine]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_fox_secondary_BEHIND: TailBehind
+    tail_fox_primary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_fox_secondary_BEHIND: tail_fox_secondary_FRONT
+    tail_fox_primary_BEHIND: tail_fox_primary_FRONT
   sprites:
-  - sprite: _Floof/Mobs/Customization/skyrattails.rsi
-    state: tail_fox_secondary
-  - sprite: _Floof/Mobs/Customization/skyrattails.rsi
-    state: tail_fox_primary
+  - sprite: _WF/Mobs/Customization/TailSplit/_Floof/Mobs/Customization/skyrattails.rsi # WOLFGATE - split art
+    state: tail_fox_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_Floof/Mobs/Customization/skyrattails.rsi # WOLFGATE - split art
+    state: tail_fox_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_Floof/Mobs/Customization/skyrattails.rsi # WOLFGATE - south frame on TailBehind
+    state: tail_fox_secondary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/_Floof/Mobs/Customization/skyrattails.rsi # WOLFGATE - south frame on TailBehind
+    state: tail_fox_primary_BEHIND
 
 - type: marking
   id: Tail9sune
@@ -1023,12 +1033,12 @@
   speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, Canine]
   layering:
     m_tail_shark_BEHIND_primary: TailBehind
-    m_tail_shark_FRONT_primary: TailOversuit
+    m_tail_shark_FRONT_primary_FRONT: TailOversuit # WOLFGATE - renamed by the south split
   colorLinks:
-    m_tail_shark_BEHIND_primary: m_tail_shark_FRONT_primary
+    m_tail_shark_BEHIND_primary: m_tail_shark_FRONT_primary_FRONT # WOLFGATE - renamed by the south split
   sprites:
-  - sprite: _Floof/Mobs/Customization/skyrattails.rsi
-    state: m_tail_shark_FRONT_primary
+  - sprite: _WF/Mobs/Customization/TailSplit/_Floof/Mobs/Customization/skyrattails.rsi # WOLFGATE - split art
+    state: m_tail_shark_FRONT_primary_FRONT
   - sprite: _Floof/Mobs/Customization/skyrattails.rsi
     state: m_tail_shark_BEHIND_primary
 
@@ -1039,12 +1049,12 @@
   speciesRestriction: [Skrell, Thaven, Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Tajaran, Canine]
   layering:
     m_tail_sharknofin_BEHIND_primary: TailBehind
-    m_tail_sharknofin_FRONT_primary: TailOversuit
+    m_tail_sharknofin_FRONT_primary_FRONT: TailOversuit # WOLFGATE - renamed by the south split
   colorLinks:
-    m_tail_sharknofin_BEHIND_primary: m_tail_sharknofin_FRONT_primary
+    m_tail_sharknofin_BEHIND_primary: m_tail_sharknofin_FRONT_primary_FRONT # WOLFGATE - renamed by the south split
   sprites:
-  - sprite: _Floof/Mobs/Customization/skyrattails.rsi
-    state: m_tail_sharknofin_FRONT_primary
+  - sprite: _WF/Mobs/Customization/TailSplit/_Floof/Mobs/Customization/skyrattails.rsi # WOLFGATE - split art
+    state: m_tail_sharknofin_FRONT_primary_FRONT
   - sprite: _Floof/Mobs/Customization/skyrattails.rsi
     state: m_tail_sharknofin_BEHIND_primary
 

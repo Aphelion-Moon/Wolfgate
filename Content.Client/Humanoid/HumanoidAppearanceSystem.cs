@@ -1,6 +1,6 @@
 using System.Numerics;
-using Content.Client._Common.Consent; // WOLFGATE
-using Content.Shared._Common.Consent; // WOLFGATE
+using Content.Client._WF.Genitals; // WOLFGATE
+using Content.Shared._WF.Genitals; // WOLFGATE
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Humanoid.Prototypes;
@@ -16,10 +16,7 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
 {
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private MarkingManager _markingManager = default!;
-    [Dependency] private readonly IClientConsentManager _consentManager = default!; // WOLFGATE
-
-    // WOLFGATE - genital markings only render for viewers who have opted in.
-    private static readonly ProtoId<ConsentTogglePrototype> GenitalMarkingsConsent = "GenitalMarkings";
+    [Dependency] private GenitalsVisualizerSystem _genitalsVisuals = default!; // WOLFGATE - anatomy undergarment hiding
 
     public override void Initialize()
     {
@@ -30,15 +27,27 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
 
     private void OnHandleState(EntityUid uid, HumanoidAppearanceComponent component, ref AfterAutoHandleStateEvent args)
     {
-        UpdateSprite(component, Comp<SpriteComponent>(uid));
+        UpdateSprite(uid, component, Comp<SpriteComponent>(uid)); // WOLFGATE - entity id threaded through (Component.Owner is obsolete)
     }
 
-    private void UpdateSprite(HumanoidAppearanceComponent component, SpriteComponent sprite)
+    private void UpdateSprite(EntityUid uid, HumanoidAppearanceComponent component, SpriteComponent sprite) // WOLFGATE - entity id for the anatomy hooks
     {
         UpdateLayers(component, sprite);
-        ApplyMarkingSet(component, sprite);
+        ApplyMarkingSet(uid, component, sprite); // WOLFGATE
 
         sprite[sprite.LayerMapReserveBlank(HumanoidVisualLayers.Eyes)].Color = component.EyeColor;
+
+        // WOLFGATE - anatomy visuals follow marking rebuilds (GenitalsVisualizerSystem).
+        RaiseLocalEvent(uid, new HumanoidMarkingsAppliedEvent());
+    }
+
+    /// <summary>
+    /// WOLFGATE - re-runs the sprite and marking rebuild, e.g. when the undergarments a viewer sees as removed change.
+    /// </summary>
+    public void RefreshMarkings(EntityUid uid)
+    {
+        if (TryComp<HumanoidAppearanceComponent>(uid, out var humanoid) && TryComp<SpriteComponent>(uid, out var sprite))
+            UpdateSprite(uid, humanoid, sprite);
     }
 
     private static bool IsHidden(HumanoidAppearanceComponent humanoid, HumanoidVisualLayers layer)
@@ -217,10 +226,13 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
         var height = profile.Appearance.Height <= 0.005f ? 1.0f : profile.Appearance.Height;
         sprite.Scale = new Vector2(width, height);
 
-        UpdateSprite(humanoid, Comp<SpriteComponent>(uid));
+        UpdateSprite(uid, humanoid, Comp<SpriteComponent>(uid)); // WOLFGATE
+
+        // WOLFGATE - lets GenitalPreviewSystem fill the doll's anatomy from the profile.
+        RaiseLocalEvent(uid, new GenitalPreviewProfileLoadedEvent(profile));
     }
 
-    private void ApplyMarkingSet(HumanoidAppearanceComponent humanoid, SpriteComponent sprite)
+    private void ApplyMarkingSet(EntityUid uid, HumanoidAppearanceComponent humanoid, SpriteComponent sprite) // WOLFGATE - entity id for the anatomy hooks
     {
         // I am lazy and I CBF resolving the previous mess, so I'm just going to nuke the markings.
         // Really, markings should probably be a separate component altogether.
@@ -231,7 +243,7 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
             foreach (var marking in markingList)
             {
                 if (_markingManager.TryGetMarking(marking, out var markingPrototype))
-                    ApplyMarking(markingPrototype, marking.MarkingColors, marking.Visible, humanoid, sprite);
+                    ApplyMarking(uid, markingPrototype, marking.MarkingColors, marking.Visible, humanoid, sprite); // WOLFGATE
             }
         }
 
@@ -283,7 +295,8 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
             spriteComp.RemoveLayer(index);
         }
     }
-    private void ApplyMarking(MarkingPrototype markingPrototype,
+    private void ApplyMarking(EntityUid uid, // WOLFGATE - entity id for the anatomy undergarment check
+        MarkingPrototype markingPrototype,
         IReadOnlyList<Color>? colors,
         bool visible,
         HumanoidAppearanceComponent humanoid,
@@ -298,15 +311,9 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
         visible &= humanoid.BaseLayers.TryGetValue(markingPrototype.BodyPart, out var setting)
            && setting.AllowsMarkings;
 
-        // WOLFGATE - ported from HardLight: hide genital markings unless this client consented.
-        if (markingPrototype.MarkingCategory == MarkingCategories.Genital
-            && (!_consentManager.HasLoaded
-                || !_consentManager.GetConsentSettings().Toggles.TryGetValue(GenitalMarkingsConsent, out var consentVal)
-                || consentVal != "on"))
-        {
+        // WOLFGATE - anatomy: a removed undergarment is not drawn for viewers who pass the anatomy gate.
+        if (_genitalsVisuals.IsUndergarmentHidden(uid, markingPrototype.MarkingCategory))
             visible = false;
-        }
-        // End WOLFGATE
 
         // WOLFGATE - ported from HardLight/Floof: resolve per-sprite colours through colorLinks so a
         // multi-sprite marking (e.g. a tail split across two layers) is coloured as one unit.
@@ -445,7 +452,7 @@ public sealed partial class HumanoidAppearanceSystem : SharedHumanoidAppearanceS
             foreach (var marking in markingList)
             {
                 if (_markingManager.TryGetMarking(marking, out var markingPrototype) && markingPrototype.BodyPart == layer)
-                    ApplyMarking(markingPrototype, marking.MarkingColors, marking.Visible, ent, sprite);
+                    ApplyMarking(ent.Owner, markingPrototype, marking.MarkingColors, marking.Visible, ent, sprite); // WOLFGATE
             }
         }
     }

@@ -80,9 +80,7 @@
     UndergarmentBottom:
       points: 3
       required: false
-    Genital:
-      points: 35
-      required: false
+    # Wolfgate: Genital marking points removed with the legacy genital markings (replaced by organ-based anatomy).
 
 - type: humanoidBaseSprite
   id: MobSynthEyes

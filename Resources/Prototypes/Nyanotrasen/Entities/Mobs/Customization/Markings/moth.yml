@@ -341,9 +341,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    aspen_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    aspen_BEHIND: aspen_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: aspen
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: aspen_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: aspen_BEHIND
 
 - type: marking
   id: MothWingsClassicAtlas
@@ -356,9 +362,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    atlas_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    atlas_BEHIND: atlas_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: atlas
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: atlas_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: atlas_BEHIND
 
 - type: marking
   id: MothWingsClassicBrown
@@ -371,9 +383,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    brown_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    brown_BEHIND: brown_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: brown
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: brown_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: brown_BEHIND
 
 - type: marking
   id: MothWingsClassicDeathshead
@@ -386,9 +404,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    deathshead_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    deathshead_BEHIND: deathshead_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: deathshead
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: deathshead_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: deathshead_BEHIND
 
 - type: marking
   id: MothWingsClassicFeathery
@@ -401,9 +425,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    feathery_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    feathery_BEHIND: feathery_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: feathery
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: feathery_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: feathery_BEHIND
 
 - type: marking
   id: MothWingsClassicFirewatch
@@ -416,9 +446,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    firewatch_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    firewatch_BEHIND: firewatch_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: firewatch
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: firewatch_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: firewatch_BEHIND
 
 - type: marking
   id: MothWingsClassicGothic
@@ -431,9 +467,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    gothic_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    gothic_BEHIND: gothic_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: gothic
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: gothic_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: gothic_BEHIND
 
 - type: marking
   id: MothWingsClassicJungle
@@ -446,9 +488,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    jungle_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    jungle_BEHIND: jungle_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: jungle
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: jungle_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: jungle_BEHIND
 
 - type: marking
   id: MothWingsClassicLovers
@@ -461,9 +509,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    lovers_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    lovers_BEHIND: lovers_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: lovers
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: lovers_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: lovers_BEHIND
 
 - type: marking
   id: MothWingsClassicLuna
@@ -476,9 +530,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    luna_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    luna_BEHIND: luna_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: luna
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: luna_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: luna_BEHIND
 
 - type: marking
   id: MothWingsClassicMint
@@ -491,9 +551,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    mint_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    mint_BEHIND: mint_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: mint
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: mint_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: mint_BEHIND
 
 - type: marking
   id: MothWingsClassicMoffra
@@ -506,9 +572,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    moffra_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    moffra_BEHIND: moffra_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: moffra
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: moffra_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: moffra_BEHIND
 
 - type: marking
   id: MothWingsClassicMonarch
@@ -521,9 +593,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    monarch_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    monarch_BEHIND: monarch_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: monarch
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: monarch_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: monarch_BEHIND
 
 - type: marking
   id: MothWingsClassicMoonfly
@@ -536,9 +614,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    moonfly_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    moonfly_BEHIND: moonfly_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: moonfly
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: moonfly_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: moonfly_BEHIND
 
 - type: marking
   id: MothWingsClassicOakworm
@@ -551,9 +635,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    oakworm_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    oakworm_BEHIND: oakworm_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: oakworm
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: oakworm_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: oakworm_BEHIND
 
 - type: marking
   id: MothWingsClassicPlain
@@ -566,9 +656,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    plain_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    plain_BEHIND: plain_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: plain
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: plain_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: plain_BEHIND
 
 - type: marking
   id: MothWingsClassicPlasmafire
@@ -581,9 +677,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    plasmafire_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    plasmafire_BEHIND: plasmafire_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: plasmafire
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: plasmafire_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: plasmafire_BEHIND
 
 - type: marking
   id: MothWingsClassicPoison
@@ -596,9 +698,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    poison_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    poison_BEHIND: poison_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: poison
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: poison_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: poison_BEHIND
 
 - type: marking
   id: MothWingsClassicRagged
@@ -611,9 +719,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    ragged_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    ragged_BEHIND: ragged_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: ragged
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: ragged_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: ragged_BEHIND
 
 - type: marking
   id: MothWingsClassicReddish
@@ -626,9 +740,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    reddish_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    reddish_BEHIND: reddish_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: reddish
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: reddish_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: reddish_BEHIND
 
 - type: marking
   id: MothWingsClassicRosy
@@ -641,9 +761,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    rosy_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    rosy_BEHIND: rosy_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: rosy
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: rosy_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: rosy_BEHIND
 
 - type: marking
   id: MothWingsClassicRoyal
@@ -656,9 +782,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    royal_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    royal_BEHIND: royal_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: royal
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: royal_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: royal_BEHIND
 
 - type: marking
   id: MothWingsClassicSnow
@@ -671,9 +803,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    snow_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    snow_BEHIND: snow_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: snow
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: snow_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: snow_BEHIND
 
 - type: marking
   id: MothWingsClassicWhitefly
@@ -686,9 +824,15 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    whitefly_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    whitefly_BEHIND: whitefly_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: whitefly
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: whitefly_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: whitefly_BEHIND
 
 - type: marking
   id: MothWingsClassicWitchking
@@ -701,12 +845,18 @@
       type:
         !type:SimpleColoring
           color: "#FFFFFF"
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    witchking_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    witchking_BEHIND: witchking_FRONT
   sprites:
-  - sprite: Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi
-    state: witchking
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: witchking_FRONT
 
 # Body Markings
 # Deathshead
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: witchking_BEHIND
 - type: marking
   id: MothHeadClassicDeathshead
   bodyPart: Head

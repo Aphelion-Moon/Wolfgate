@@ -2,6 +2,7 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:humanoid="clr-namespace:Content.Client.Humanoid"
          xmlns:wfh="clr-namespace:Content.Client._WF.Humanoid"
+         xmlns:wfg="clr-namespace:Content.Client._WF.Genitals.UI"
          HorizontalExpand="True"
          SeparationOverride="0">
     <!-- WOLFGATE: creator rebuilt as cards with a preview column. Control names and tab order are unchanged
@@ -153,7 +154,14 @@
             <!-- Markings -->
             <BoxContainer Name="MarkingsTab" Orientation="Vertical" Margin="8">
                 <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
-                    <wfh:WolfgateMarkingPicker Name="Markings" IgnoreCategories="Hair,FacialHair" />
+                    <!-- WOLFGATE: Genital ignored, so leftover genital markings never show here; anatomy has its own tab. -->
+                    <wfh:WolfgateMarkingPicker Name="Markings" IgnoreCategories="Hair,FacialHair,Genital" />
+                </ScrollContainer>
+            </BoxContainer>
+            <!-- WOLFGATE: anatomy tab (xmlns:wfg), appended last so tabs 0-5 keep their indices -->
+            <BoxContainer Name="GenitalsTab" Orientation="Vertical" Margin="8">
+                <ScrollContainer VerticalExpand="True" HScrollEnabled="False">
+                    <wfg:WolfgateGenitalEditor Name="GenitalEditor" HorizontalExpand="True" />
                 </ScrollContainer>
             </BoxContainer>
         </TabContainer>

@@ -496,4 +496,9 @@ public enum LogType
     /// </summary>
     // WOLFGATE - ported from HardLight; the high id avoids clashing with upstream additions.
     Consent = 12489,
+
+    /// <summary>
+    /// Anatomy organs and settings.
+    /// </summary>
+    WFAnatomy = 12490, // WOLFGATE - anatomy organs and settings
 }

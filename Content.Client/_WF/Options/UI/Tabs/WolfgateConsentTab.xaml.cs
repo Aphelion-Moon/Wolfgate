@@ -24,6 +24,14 @@ public sealed partial class WolfgateConsentTab : Control
     [Dependency] private IConfigurationManager _configManager = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
 
+    /// <summary>Indent, in pixels, per Requires level.</summary>
+    private const float RequiresIndent = 24f;
+
+    /// <summary>Longest Requires chain followed; guards against cycles.</summary>
+    private const int MaxRequiresDepth = 8;
+
+    private static readonly Color DisabledModulate = Color.White.WithAlpha(0.5f);
+
     private readonly List<ConsentToggleControl> _toggles = new();
 
     public WolfgateConsentTab()
@@ -77,11 +85,68 @@ public sealed partial class WolfgateConsentTab : Control
 
         foreach (var toggle in wanted)
         {
-            var control = new ConsentToggleControl(toggle);
-            control.OnStateChange += _ => UnsavedChanges();
+            var control = new ConsentToggleControl(toggle)
+            {
+                // A toggle that needs another one sits indented under it.
+                Margin = new Thickness(RequiresIndent * RequiresDepth(toggle), 0, 0, 0),
+            };
+            control.OnStateChange += _ =>
+            {
+                UpdateRequirements();
+                UnsavedChanges();
+            };
             _toggles.Add(control);
             ConsentSettings.AddChild(control);
         }
+    }
+
+    /// <summary>Number of Requires links above a toggle; bounded so a cyclic chain cannot hang the tab.</summary>
+    private int RequiresDepth(ConsentTogglePrototype toggle)
+    {
+        var depth = 0;
+        while (depth < MaxRequiresDepth
+               && toggle.Requires is { } required
+               && _prototypeManager.TryIndex(required, out var next))
+        {
+            depth++;
+            toggle = next;
+        }
+
+        return depth;
+    }
+
+    /// <summary>Disables every toggle whose Requires chain is not all on in the unsaved state. Its own value is kept.</summary>
+    private void UpdateRequirements()
+    {
+        var states = new Dictionary<ProtoId<ConsentTogglePrototype>, string>();
+        foreach (var toggle in _toggles)
+            states[toggle.ConsentToggleProtoId] = toggle.State;
+
+        foreach (var toggle in _toggles)
+        {
+            var met = RequirementsMet(toggle.ConsentToggleProtoId, states);
+            toggle.ConsentToggleOnButton.Disabled = !met;
+            toggle.ConsentToggleOffButton.Disabled = !met;
+            toggle.Modulate = met ? Color.White : DisabledModulate;
+        }
+    }
+
+    /// <summary>Every toggle up the Requires chain is on. A required toggle missing from the tab counts as off.</summary>
+    private bool RequirementsMet(ProtoId<ConsentTogglePrototype> id, Dictionary<ProtoId<ConsentTogglePrototype>, string> states)
+    {
+        var current = id;
+        for (var i = 0; i < MaxRequiresDepth; i++)
+        {
+            if (!_prototypeManager.TryIndex(current, out var proto) || proto.Requires is not { } required)
+                return true;
+
+            if (!states.TryGetValue(required, out var state) || state != "on")
+                return false;
+
+            current = required;
+        }
+
+        return true;
     }
 
     private void LoadValues()
@@ -95,6 +160,7 @@ public sealed partial class WolfgateConsentTab : Control
             toggle.SetState(consent.Toggles.TryGetValue(toggle.ConsentToggleProtoId, out var state) ? state : "off");
         }
 
+        UpdateRequirements();
         SaveConsentSettings.Disabled = true;
         SaveLabel.Text = string.Empty;
     }

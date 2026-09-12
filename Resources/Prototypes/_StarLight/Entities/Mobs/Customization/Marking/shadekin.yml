@@ -483,18 +483,28 @@
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Shadekin, ProtoKin]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    shadekin_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    shadekin_BEHIND: shadekin_FRONT
   sprites:
-    - sprite: _Starlight/Mobs/Customization/shadekin/tails64x32.rsi
-      state: shadekin
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE - split art
+      state: shadekin_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE - south frame on TailBehind
+      state: shadekin_BEHIND
 
 - type: marking
   id: TailShadekinBig
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Shadekin, ProtoKin]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    shadekin_big_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    shadekin_big_BEHIND: shadekin_big_FRONT
   sprites:
-    - sprite: _Starlight/Mobs/Customization/shadekin/tails64x32.rsi
-      state: shadekin_big
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE - split art
+      state: shadekin_big_FRONT
 
 # - type: marking
 #   id: TailShadekinBigFluff
@@ -504,48 +514,82 @@
 #   sprites:
 #     - sprite: _Starlight/Mobs/Customization/shadekin/tails64x32.rsi
 #       state: shadekin_big_fluff
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE - south frame on TailBehind
+      state: shadekin_big_BEHIND
 
 - type: marking
   id: TailShadekinShorter
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Shadekin, ProtoKin]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    shadekin_shorter_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    shadekin_shorter_BEHIND: shadekin_shorter_FRONT
   sprites:
-    - sprite: _Starlight/Mobs/Customization/shadekin/tails32x32.rsi
-      state: shadekin_shorter
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - split art
+      state: shadekin_shorter_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - south frame on TailBehind
+      state: shadekin_shorter_BEHIND
 
 - type: marking
   id: TailShadekinShorterBrush
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Shadekin, ProtoKin]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    shadekin_shorter_BEHIND: TailBehind
+    shorter_brush_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    shadekin_shorter_BEHIND: shadekin_shorter_FRONT
+    shorter_brush_BEHIND: shorter_brush_FRONT
   sprites:
-    - sprite: _Starlight/Mobs/Customization/shadekin/tails32x32.rsi
-      state: shadekin_shorter
-    - sprite: _Starlight/Mobs/Customization/shadekin/tails32x32.rsi
-      state: shorter_brush
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - split art
+      state: shadekin_shorter_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - split art
+      state: shorter_brush_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - south frame on TailBehind
+      state: shadekin_shorter_BEHIND
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - south frame on TailBehind
+      state: shorter_brush_BEHIND
 
 - type: marking
   id: TailShadekinMedium
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Shadekin, ProtoKin]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    shadekin_medium_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    shadekin_medium_BEHIND: shadekin_medium_FRONT
   sprites:
-    - sprite: _Starlight/Mobs/Customization/shadekin/tails32x32.rsi
-      state: shadekin_medium
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - split art
+      state: shadekin_medium_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - south frame on TailBehind
+      state: shadekin_medium_BEHIND
 
 - type: marking
   id: TailShadekinMediumTwoColored
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Shadekin, ProtoKin]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    shadekin_medium_BEHIND: TailBehind
+    medium_twocolored_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    shadekin_medium_BEHIND: shadekin_medium_FRONT
+    medium_twocolored_BEHIND: medium_twocolored_FRONT
   sprites:
-    - sprite: _Starlight/Mobs/Customization/shadekin/tails32x32.rsi
-      state: shadekin_medium
-    - sprite: _Starlight/Mobs/Customization/shadekin/tails32x32.rsi
-      state: medium_twocolored
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - split art
+      state: shadekin_medium_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - split art
+      state: medium_twocolored_FRONT
 
 # Overlays
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - south frame on TailBehind
+      state: shadekin_medium_BEHIND
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - south frame on TailBehind
+      state: medium_twocolored_BEHIND
 
 - type: marking
   id: BodyShadekinArrow

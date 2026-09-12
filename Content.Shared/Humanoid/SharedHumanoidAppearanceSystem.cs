@@ -484,7 +484,7 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
             _appearance.SetData(uid, ScaleVisuals.Scale, new Vector2(profile.Appearance.Width, profile.Appearance.Height), appearance);
         }
 
-        RaiseLocalEvent(uid, new ProfileLoadFinishedEvent()); // Shitmed Change
+        RaiseLocalEvent(uid, new ProfileLoadFinishedEvent { Profile = profile }); // Shitmed Change, WOLFGATE - pass profile
         Dirty(uid, humanoid);
     }
 

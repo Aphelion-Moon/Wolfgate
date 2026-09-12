@@ -73,9 +73,7 @@
       required: true
       defaultMarkings: [ FelionoidTailAnimated ]
     # Hardlight Add:
-    Genital:
-      points: 35
-      required: false
+    # Wolfgate: Genital marking points removed with the legacy genital markings (replaced by organ-based anatomy).
     UndergarmentTop:
       points: 3
       required: false

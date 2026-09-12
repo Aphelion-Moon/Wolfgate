@@ -7,10 +7,12 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Content.Server._Mono.Company;
+using Content.Server._WF.Genitals; // WOLFGATE
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Shared._Common.Consent; // WOLFGATE
 using Content.Shared._Mono.Company;
+using Content.Shared._WF.Genitals; // WOLFGATE
 using Content.Shared.Administration.Logs;
 using Content.Shared.Database;
 using Content.Shared.Ghost.Roles;
@@ -66,7 +68,7 @@ namespace Content.Server.Database
             var profiles = new Dictionary<int, ICharacterProfile>(maxSlot);
             foreach (var profile in prefs.Profiles)
             {
-                profiles[profile.Slot] = ConvertProfiles(profile);
+                profiles[profile.Slot] = ConvertProfiles(profile, _opsLog); // WOLFGATE - anatomy read problems go to the ops log
             }
 
             return new PlayerPreferences(profiles, prefs.SelectedCharacterSlot, Color.FromHex(prefs.AdminOOCColor));
@@ -188,7 +190,7 @@ namespace Content.Server.Database
             prefs.SelectedCharacterSlot = newSlot;
         }
 
-        private static HumanoidCharacterProfile ConvertProfiles(Profile profile)
+        private static HumanoidCharacterProfile ConvertProfiles(Profile profile, ISawmill? log = null) // WOLFGATE - log
         {
             var jobs = profile.Jobs.ToDictionary(j => new ProtoId<JobPrototype>(j.JobName), j => (JobPriority) j.Priority);
             var antags = profile.Antags.Select(a => new ProtoId<AntagPrototype>(a.AntagName));
@@ -254,6 +256,10 @@ namespace Content.Server.Database
             var height = profile.Height <= 0.005f ? 1.0f : profile.Height;
             var width = profile.Width <= 0.005f ? 1.0f : profile.Width;
 
+            // WOLFGATE - anatomy JSON; an empty column means the profile is not migrated yet.
+            var genitals = GenitalProfileJson.Deserialize(profile.Genitals, log ?? Logger.GetSawmill("db.genitals"), profile.Id)
+                           ?? GenitalProfile.Unmigrated;
+
             return new HumanoidCharacterProfile(
                 profile.CharacterName,
                 profile.FlavorText,
@@ -281,11 +287,13 @@ namespace Content.Server.Database
                 traits.ToHashSet(),
                 loadouts,
                 company,
-                profile.CustomSpeciesName ?? string.Empty); // WOLFGATE
+                profile.CustomSpeciesName ?? string.Empty, // WOLFGATE
+                genitals); // WOLFGATE
         }
 
         private static Profile ConvertProfiles(HumanoidCharacterProfile humanoid, int slot, Profile? profile = null)
         {
+            var existingRow = profile != null; // WOLFGATE
             profile ??= new Profile();
             var appearance = (HumanoidCharacterAppearance) humanoid.CharacterAppearance;
             List<string> markingStrings = new();
@@ -316,6 +324,10 @@ namespace Content.Server.Database
             profile.PreferenceUnavailable = (DbPreferenceUnavailableMode) humanoid.PreferenceUnavailable;
             profile.Company = humanoid.Company;
             profile.CustomSpeciesName = humanoid.CustomSpeciesName; // WOLFGATE
+
+            // WOLFGATE - anatomy JSON; an unreadable column is kept as it is until the player edits anatomy.
+            if (!(existingRow && humanoid.Genitals.LoadFailed))
+                profile.Genitals = GenitalProfileJson.Serialize(humanoid.Genitals);
 
             profile.Jobs.Clear();
             profile.Jobs.AddRange(

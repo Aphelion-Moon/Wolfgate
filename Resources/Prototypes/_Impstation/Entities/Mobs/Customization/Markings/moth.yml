@@ -121,9 +121,15 @@
   markingCategory: Tail
   speciesRestriction: [Moth, ProtoMoth]
   followSkinColor: false
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    wings_backstabbed_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    wings_backstabbed_BEHIND: wings_backstabbed_FRONT
   sprites:
-  - sprite: _Impstation/Mobs/Customization/moth.rsi
-    state: wings_backstabbed
+  - sprite: _WF/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/moth.rsi # WOLFGATE - split art, anatomy zone only
+    state: wings_backstabbed_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_Impstation/Mobs/Customization/moth.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: wings_backstabbed_BEHIND
 
 - type: marking
   id: ChestChimeraFemaleMoth

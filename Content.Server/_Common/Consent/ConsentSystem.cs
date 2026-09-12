@@ -60,7 +60,8 @@ public sealed class ConsentSystem : SharedConsentSystem
             return;
         }
 
-        consentComp.ConsentSettings = _consentManager.GetPlayerConsentSettings(userId);
+        // WOLFGATE - go through UpdateConsent so clients see the toggles and listeners get events on (re-)entry.
+        UpdateConsent((args.Container.Owner, consentComp), _consentManager.GetPlayerConsentSettings(userId));
     }
 
     private void OnMindRemoved(Entity<ConsentComponent> ent, ref MindRemovedMessage args)
@@ -71,6 +72,17 @@ public sealed class ConsentSystem : SharedConsentSystem
 
     private void OnConsentUpdated(ICommonSession session, PlayerConsentSettings consentSettings)
     {
+        // WOLFGATE - a visiting mind (returnable ghost, shipyard preview) still owns its body; keep that body's toggles
+        // current, or it returns to a body that still holds the old ones.
+        if (_mindSystem.TryGetMind(session, out _, out var mind)
+            && mind.OwnedEntity is { } owned
+            && owned != session.AttachedEntity
+            && TryComp<ConsentComponent>(owned, out var ownedConsent))
+        {
+            UpdateConsent((owned, ownedConsent), consentSettings);
+        }
+        // End WOLFGATE
+
         if (session.AttachedEntity is not EntityUid uid)
         {
             // Player isn't in the game, so there's no ConsentComponent to update.

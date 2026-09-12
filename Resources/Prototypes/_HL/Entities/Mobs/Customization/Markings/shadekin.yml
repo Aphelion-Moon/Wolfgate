@@ -66,40 +66,68 @@
   bodyPart: Tail
   markingCategory: Overlay
   speciesRestriction: [Shadekin]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    default_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    default_BEHIND: default_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: default
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: default_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: default_BEHIND
 
 - type: marking
   id: ShadekinMothWingsFan
   bodyPart: Tail
   markingCategory: Overlay
   speciesRestriction: [Shadekin]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    fan_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    fan_BEHIND: fan_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: fan
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: fan_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: fan_BEHIND
 
 - type: marking
   id: ShadekinMothWingsFeathery
   bodyPart: Tail
   markingCategory: Overlay
   speciesRestriction: [Shadekin]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    feathery_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    feathery_BEHIND: feathery_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: feathery
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: feathery_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: feathery_BEHIND
 
 - type: marking
   id: ShadekinMothWingsPlasmafire
   bodyPart: Tail
   markingCategory: Overlay
   speciesRestriction: [Shadekin]
+  layering: # WOLFGATE - the anatomy zone of the south frame draws behind the body, so the tail never covers anatomy
+    plasmafire_primary_BEHIND: TailBehind
+    plasmafire_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    plasmafire_primary_BEHIND: plasmafire_primary_FRONT
+    plasmafire_secondary_BEHIND: plasmafire_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: plasmafire_primary
-  - sprite: Mobs/Customization/Moth/moth_wings.rsi
-    state: plasmafire_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: plasmafire_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
+    state: plasmafire_secondary_FRONT
 
 # Shadekin eyes
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: plasmafire_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: plasmafire_secondary_BEHIND
 - type: marking
   id: ShadekinEyeR
   bodyPart: Eyes
@@ -209,41 +237,81 @@
   bodyPart: Tail
   markingCategory: Overlay
   speciesRestriction: [Shadekin]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    harvest_primary_BEHIND: TailBehind
+    harvest_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    harvest_primary_BEHIND: harvest_primary_FRONT
+    harvest_secondary_BEHIND: harvest_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Arachnid/appendages.rsi
-    state: harvest_primary
-  - sprite: Mobs/Customization/Arachnid/appendages.rsi
-    state: harvest_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - split art
+    state: harvest_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - split art
+    state: harvest_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - south frame on TailBehind
+    state: harvest_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - south frame on TailBehind
+    state: harvest_secondary_BEHIND
 
 - type: marking
   id: ShadekinArachnidAppendagesShort
   bodyPart: Tail
   markingCategory: Overlay
   speciesRestriction: [Shadekin]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    short_primary_BEHIND: TailBehind
+    short_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    short_primary_BEHIND: short_primary_FRONT
+    short_secondary_BEHIND: short_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Arachnid/appendages.rsi
-    state: short_primary
-  - sprite: Mobs/Customization/Arachnid/appendages.rsi
-    state: short_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - split art
+    state: short_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - split art
+    state: short_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - south frame on TailBehind
+    state: short_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - south frame on TailBehind
+    state: short_secondary_BEHIND
 
 - type: marking
   id: ShadekinArachnidAppendagesZigZag
   bodyPart: Tail
   markingCategory: Overlay
   speciesRestriction: [Shadekin]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    zigzag_primary_BEHIND: TailBehind
+    zigzag_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    zigzag_primary_BEHIND: zigzag_primary_FRONT
+    zigzag_secondary_BEHIND: zigzag_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Arachnid/appendages.rsi
-    state: zigzag_primary
-  - sprite: Mobs/Customization/Arachnid/appendages.rsi
-    state: zigzag_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - split art
+    state: zigzag_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - split art
+    state: zigzag_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - south frame on TailBehind
+    state: zigzag_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - south frame on TailBehind
+    state: zigzag_secondary_BEHIND
 
 - type: marking
   id: ShadekinArachnidAppendagesStingers
   bodyPart: Tail
   markingCategory: Overlay
   speciesRestriction: [Shadekin]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    stingers_primary_BEHIND: TailBehind
+    stingers_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    stingers_primary_BEHIND: stingers_primary_FRONT
+    stingers_secondary_BEHIND: stingers_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/Arachnid/appendages.rsi
-    state: stingers_primary
-  - sprite: Mobs/Customization/Arachnid/appendages.rsi
-    state: stingers_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - split art
+    state: stingers_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - split art
+    state: stingers_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - south frame on TailBehind
+    state: stingers_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - south frame on TailBehind
+    state: stingers_secondary_BEHIND

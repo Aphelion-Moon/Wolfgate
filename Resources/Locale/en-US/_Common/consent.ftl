@@ -16,8 +16,9 @@ consent-examine-verb = Consent Info
 consent-examine-not-set = This player has no consent preferences set.
 
 # Consent toggles
-consent-GenitalMarkings = See Genital Markings
-    .desc = Turn this on to allow showing/hiding genital markings in-game.
+# Wolfgate: GenitalMarkings is the adult content master switch.
+consent-GenitalMarkings = Adult content
+    .desc = Show anatomy content, such as anatomy options, sprites and descriptions. Others can only remove your undergarments or perform anatomy surgery on you if you also turn on those toggles. Off by default.
 
 # Wolfgate: consent moved into a Game Options tab.
 ui-options-tab-consent = Consent

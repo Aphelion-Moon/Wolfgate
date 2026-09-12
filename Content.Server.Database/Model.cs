@@ -493,6 +493,9 @@ namespace Content.Server.Database
         // WOLFGATE - player-set species name override, empty when unused.
         [Column("custom_species_name")] public string CustomSpeciesName { get; set; } = "";
 
+        // WOLFGATE - creator anatomy as versioned JSON; empty until the profile is migrated or saved.
+        [Column("genitals")] public string Genitals { get; set; } = "";
+
         public int PreferenceId { get; set; }
         public Preference Preference { get; set; } = null!;
 

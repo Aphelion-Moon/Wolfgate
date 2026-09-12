@@ -14,11 +14,21 @@
       fallbackTypes:
       - !type:SimpleColoring
         color: "#fffafa"
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    kitsune_primary_BEHIND: TailBehind
+    kitsune_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    kitsune_primary_BEHIND: kitsune_primary_FRONT
+    kitsune_secondary_BEHIND: kitsune_secondary_FRONT
   sprites:
-  - sprite: _DV/Mobs/Customization/kitsune/tails.rsi
-    state: kitsune_primary
-  - sprite: _DV/Mobs/Customization/kitsune/tails.rsi
-    state: kitsune_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - split art
+    state: kitsune_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - split art
+    state: kitsune_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - south frame on TailBehind
+    state: kitsune_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - south frame on TailBehind
+    state: kitsune_secondary_BEHIND
 
 - type: marking
   id: KitsuneTailsNine
@@ -32,11 +42,21 @@
       fallbackTypes:
       - !type:SimpleColoring
         color: "#fffafa"
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    foxninetailstone1_BEHIND: TailBehind
+    foxninetailstone2_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    foxninetailstone1_BEHIND: foxninetailstone1_FRONT
+    foxninetailstone2_BEHIND: foxninetailstone2_FRONT
   sprites:
-  - sprite: _DV/Mobs/Customization/kitsune/tails.rsi
-    state: foxninetailstone1
-  - sprite: _DV/Mobs/Customization/kitsune/tails.rsi
-    state: foxninetailstone2
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - split art
+    state: foxninetailstone1_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - split art
+    state: foxninetailstone2_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - south frame on TailBehind
+    state: foxninetailstone1_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - south frame on TailBehind
+    state: foxninetailstone2_BEHIND
 
 - type: marking
   id: KitsuneTailsThree
@@ -50,11 +70,21 @@
       fallbackTypes:
       - !type:SimpleColoring
         color: "#fffafa"
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    foxthreetailstone1_BEHIND: TailBehind
+    foxthreetailstone2_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    foxthreetailstone1_BEHIND: foxthreetailstone1_FRONT
+    foxthreetailstone2_BEHIND: foxthreetailstone2_FRONT
   sprites:
-  - sprite: _DV/Mobs/Customization/kitsune/tails.rsi
-    state: foxthreetailstone1
-  - sprite: _DV/Mobs/Customization/kitsune/tails.rsi
-    state: foxthreetailstone2
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - split art
+    state: foxthreetailstone1_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - split art
+    state: foxthreetailstone2_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - south frame on TailBehind
+    state: foxthreetailstone1_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - south frame on TailBehind
+    state: foxthreetailstone2_BEHIND
 
 - type: marking
   id: KitsuneTailsTwo
@@ -68,13 +98,23 @@
       fallbackTypes:
       - !type:SimpleColoring
         color: "#fffafa"
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    foxtwotailstone1_BEHIND: TailBehind
+    foxtwotailstone2_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    foxtwotailstone1_BEHIND: foxtwotailstone1_FRONT
+    foxtwotailstone2_BEHIND: foxtwotailstone2_FRONT
   sprites:
-  - sprite: _DV/Mobs/Customization/kitsune/tails.rsi
-    state: foxtwotailstone1
-  - sprite: _DV/Mobs/Customization/kitsune/tails.rsi
-    state: foxtwotailstone2
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - split art
+    state: foxtwotailstone1_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - split art
+    state: foxtwotailstone2_FRONT
 
 # Ear Markings
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - south frame on TailBehind
+    state: foxtwotailstone1_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - south frame on TailBehind
+    state: foxtwotailstone2_BEHIND
 
 - type: marking
   id: KitsuneEarsDefault

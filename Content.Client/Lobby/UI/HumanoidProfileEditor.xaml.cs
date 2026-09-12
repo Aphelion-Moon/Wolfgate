@@ -2,7 +2,10 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using Content.Client.Humanoid;
+using Content.Client._WF.Genitals; // WOLFGATE
+using Content.Client._WF.Genitals.UI; // WOLFGATE
 using Content.Client._WF.Humanoid; // WOLFGATE
+using Content.Shared._WF.Genitals; // WOLFGATE
 using Content.Client.Lobby.UI.Loadouts;
 using Content.Client.Lobby.UI.Roles;
 using Content.Client.Message;
@@ -58,6 +61,7 @@ namespace Content.Client.Lobby.UI
         private readonly CompanyManager _companyManager; // Mono
 
         private WolfgateDescriptionWindow? _descriptionWindow; // WOLFGATE
+        private AnatomySaveConfirmWindow? _anatomySaveConfirm; // WOLFGATE
 
         // One at a time.
         private LoadoutWindow? _loadoutWindow;
@@ -165,6 +169,14 @@ namespace Content.Client.Lobby.UI
 
             SaveButton.OnPressed += args =>
             {
+                // WOLFGATE - EnsureValid clears the anatomy of a character that cannot have it, so ask before saving.
+                if (AnatomyClearedOnSave())
+                {
+                    OpenAnatomySaveConfirm(() => Save?.Invoke());
+                    return;
+                }
+
+                GenitalEditor.ResetPreview(); // WOLFGATE - the lobby preview is rebuilt as worn
                 Save?.Invoke();
             };
 
@@ -537,6 +549,19 @@ namespace Content.Client.Lobby.UI
             Markings.OnMarkingRankChange += OnMarkingChange;
 
             #endregion Markings
+
+            // WOLFGATE - anatomy tab, found by position so a tab added or moved upstream cannot shift it.
+            TabContainer.SetTabTitle(GenitalsTab.GetPositionInParent(), Loc.GetString("wf-genitals-tab"));
+            GenitalEditor.OnProfileChanged += genitals =>
+            {
+                Profile = Profile?.WithGenitals(genitals);
+                SetDirty();
+                ReloadProfilePreview();
+            };
+            GenitalEditor.OnPreviewSettingsChanged += ReloadProfilePreview;
+            GenitalEditor.OnPreviewModeChanged += ReloadPreview; // only As worn dresses the doll, so it respawns
+            GenitalEditor.OnOpenMarkingsRequested += () => TabContainer.CurrentTab = MarkingsTab.GetPositionInParent();
+            // End WOLFGATE
 
             RefreshFlavorText();
 
@@ -1158,7 +1183,9 @@ namespace Content.Client.Lobby.UI
             if (Profile == null || !_prototypeManager.HasIndex(Profile.Species))
                 return;
 
-            PreviewDummy = _controller.LoadProfileEntity(Profile, JobOverride, ShowClothes.Pressed);
+            // WOLFGATE - the doll wears job clothes only in the As worn anatomy preview.
+            var jobClothes = _entManager.System<GenitalPreviewSystem>().DollWearsClothes(ShowClothes.Pressed);
+            PreviewDummy = _controller.LoadProfileEntity(Profile, JobOverride, jobClothes);
             SpriteView.SetEntity(PreviewDummy);
             _entManager.System<MetaDataSystem>().SetEntityName(PreviewDummy, Profile.Name);
 
@@ -1185,6 +1212,8 @@ namespace Content.Client.Lobby.UI
             CharacterSlot = slot;
             IsDirty = false;
             JobOverride = null;
+            GenitalEditor.ResetPreview(); // WOLFGATE - every load (open, save, close) starts the preview as worn
+            _anatomySaveConfirm?.Close(); // WOLFGATE - an open confirmation describes the previous profile
 
             UpdateNameEdit();
             UpdateFlavorTextEdit();
@@ -1198,6 +1227,9 @@ namespace Content.Client.Lobby.UI
             UpdateEyePickers();
             UpdateSaveButton();
             UpdateMarkings();
+            UpdateGenitalEditor(); // WOLFGATE
+            if (Profile != null) // WOLFGATE
+                GenitalEditor.SetProfile(Profile.Genitals); // WOLFGATE
             UpdateHairPickers();
             UpdateCMarkingsHair();
             UpdateCMarkingsFacialHair();
@@ -1541,6 +1573,7 @@ namespace Content.Client.Lobby.UI
                 return;
 
             Profile = Profile.WithCharacterAppearance(Profile.Appearance.WithMarkings(markings.GetForwardEnumerator().ToList()));
+            UpdateGenitalEditor(); // WOLFGATE - undergarment and pregnancy notices
             ReloadProfilePreview();
         }
 
@@ -1641,6 +1674,7 @@ namespace Content.Client.Lobby.UI
                 }
             }
 
+            UpdateGenitalEditor(); // WOLFGATE - tile colours follow the skin
             ReloadProfilePreview();
         }
 
@@ -1652,6 +1686,8 @@ namespace Content.Client.Lobby.UI
 
             _loadoutWindow?.Dispose();
             _loadoutWindow = null;
+            _anatomySaveConfirm?.Close(); // WOLFGATE
+            _anatomySaveConfirm = null; // WOLFGATE
         }
 
         protected override void EnteredTree()
@@ -1665,11 +1701,13 @@ namespace Content.Client.Lobby.UI
             base.ExitedTree();
             _entManager.DeleteEntity(PreviewDummy);
             PreviewDummy = EntityUid.Invalid;
+            _anatomySaveConfirm?.Close(); // WOLFGATE - the editor left the lobby, so there is nothing left to save
         }
 
         private void SetAge(int newAge)
         {
             Profile = Profile?.WithAge(newAge);
+            UpdateGenitalEditor(); // WOLFGATE - context only; the anatomy survives typing through a minor age
             ReloadPreview();
         }
 
@@ -1692,6 +1730,7 @@ namespace Content.Client.Lobby.UI
 
             UpdateGenderControls();
             Markings.SetSex(newSex);
+            UpdateGenitalEditor(); // WOLFGATE
             ReloadPreview();
         }
 
@@ -1720,6 +1759,7 @@ namespace Content.Client.Lobby.UI
             RefreshTraits(); // Frontier
             UpdateSexControls(); // update sex for new species
             UpdateSpeciesGuidebookIcon();
+            UpdateGenitalEditor(); // WOLFGATE - context only; browsing an excluded species keeps the anatomy
             ReloadPreview();
         }
 
@@ -2017,6 +2057,44 @@ namespace Content.Client.Lobby.UI
             );
         }
 
+        /// <summary>
+        /// WOLFGATE - passes the character context to the anatomy tab and hides adult-only markings below the adult age.
+        /// Never rewrites Profile.Genitals: the tab shows its gates instead of clearing anything while the player types.
+        /// </summary>
+        private void UpdateGenitalEditor()
+        {
+            if (Profile == null)
+                return;
+
+            GenitalEditor.SetContext(Profile.Species, Profile.Sex, Profile.Age, Profile.Appearance.SkinColor,
+                Profile.Appearance.Markings);
+            Markings.HiddenMarkings = WolfgateGenitalEditor.HiddenMarkingsFor(Profile.Species, Profile.Age, _prototypeManager);
+        }
+
+        /// <summary>WOLFGATE - the profile has anatomy that EnsureValid will clear because of its age.</summary>
+        /// <remarks>Checked by every save of the edited profile: the Save button and the lobby's unsaved-changes panel.</remarks>
+        public bool AnatomyClearedOnSave()
+        {
+            return Profile != null
+                   && !Profile.Genitals.IsEmpty
+                   && !GenitalProfileValidator.IsAdultClamped(Profile.Age, Profile.Species, _prototypeManager);
+        }
+
+        /// <summary>WOLFGATE - asks before a save that removes the anatomy settings; <paramref name="save"/> runs only after Save.</summary>
+        public void OpenAnatomySaveConfirm(Action save)
+        {
+            _anatomySaveConfirm ??= new AnatomySaveConfirmWindow();
+            _anatomySaveConfirm.Ask(() =>
+            {
+                // Any profile change closes the window, so only a closed editor can leave nothing to save.
+                if (Profile == null)
+                    return;
+
+                GenitalEditor.ResetPreview();
+                save();
+            });
+        }
+
         private void UpdateGenderControls()
         {
             if (Profile == null)
@@ -2180,6 +2258,7 @@ namespace Content.Client.Lobby.UI
             HairStylePicker.PreviewDirection = SpriteView.OverrideDirection.Value;
             FacialHairPicker.PreviewDirection = SpriteView.OverrideDirection.Value;
             Markings.PreviewDirection = SpriteView.OverrideDirection.Value;
+            GenitalEditor.PreviewDirection = SpriteView.OverrideDirection.Value; // WOLFGATE
         }
 
         private void RandomizeEverything()

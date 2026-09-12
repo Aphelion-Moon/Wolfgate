@@ -141,47 +141,81 @@
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Reptilian, ProtoReptile]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_smooth_primary_BEHIND: TailBehind
+    tail_smooth_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_smooth_primary_BEHIND: tail_smooth_primary_FRONT
+    tail_smooth_secondary_BEHIND: tail_smooth_secondary_FRONT
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: tail_smooth_primary
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: tail_smooth_secondary
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+    state: tail_smooth_primary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+    state: tail_smooth_secondary_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+    state: tail_smooth_primary_BEHIND
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+    state: tail_smooth_secondary_BEHIND
 
 - type: marking
   id: LizardTailLarge
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Reptilian, ProtoReptile]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_large_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_large_BEHIND: tail_large_FRONT
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: tail_large
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+    state: tail_large_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+    state: tail_large_BEHIND
 
 - type: marking
   id: LizardTailSpikes
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Reptilian, ProtoReptile]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_spikes_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_spikes_BEHIND: tail_spikes_FRONT
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: tail_spikes
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+    state: tail_spikes_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+    state: tail_spikes_BEHIND
 
 - type: marking
   id: LizardTailLTiger
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Reptilian, ProtoReptile]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_ltiger_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_ltiger_BEHIND: tail_ltiger_FRONT
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: tail_ltiger
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+    state: tail_ltiger_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+    state: tail_ltiger_BEHIND
 
 - type: marking
   id: LizardTailDTiger
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Reptilian, ProtoReptile]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_dtiger_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_dtiger_BEHIND: tail_dtiger_FRONT
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: tail_dtiger
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+    state: tail_dtiger_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+    state: tail_dtiger_BEHIND
 
 - type: marking
   id: LizardSnoutRound
@@ -363,40 +397,68 @@
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: []
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_smooth_wagging_primary_BEHIND: TailBehind
+    tail_smooth_wagging_secondary_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_smooth_wagging_primary_BEHIND: tail_smooth_wagging_primary_FRONT
+    tail_smooth_wagging_secondary_BEHIND: tail_smooth_wagging_secondary_FRONT
   sprites:
-    - sprite: Mobs/Customization/reptilian_parts.rsi
-      state: tail_smooth_wagging_primary
-    - sprite: Mobs/Customization/reptilian_parts.rsi
-      state: tail_smooth_wagging_secondary
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+      state: tail_smooth_wagging_primary_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+      state: tail_smooth_wagging_secondary_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+      state: tail_smooth_wagging_primary_BEHIND
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+      state: tail_smooth_wagging_secondary_BEHIND
 
 - type: marking
   id: LizardTailSpikesAnimated
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: []
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_spikes_wagging_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_spikes_wagging_BEHIND: tail_spikes_wagging_FRONT
   sprites:
-    - sprite: Mobs/Customization/reptilian_parts.rsi
-      state: tail_spikes_wagging
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+      state: tail_spikes_wagging_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+      state: tail_spikes_wagging_BEHIND
 
 - type: marking
   id: LizardTailLTigerAnimated
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: []
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_ltiger_wagging_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_ltiger_wagging_BEHIND: tail_ltiger_wagging_FRONT
   sprites:
-    - sprite: Mobs/Customization/reptilian_parts.rsi
-      state: tail_ltiger_wagging
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+      state: tail_ltiger_wagging_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+      state: tail_ltiger_wagging_BEHIND
 
 - type: marking
   id: LizardTailDTigerAnimated
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: []
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_dtiger_wagging_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_dtiger_wagging_BEHIND: tail_dtiger_wagging_FRONT
   sprites:
-    - sprite: Mobs/Customization/reptilian_parts.rsi
-      state: tail_dtiger_wagging
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+      state: tail_dtiger_wagging_FRONT
 
 # Wolfgate: ported from HardLight
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+      state: tail_dtiger_wagging_BEHIND
 - type: marking
   id: LizardFloofNeckfull
   bodyPart: HeadSide
@@ -412,9 +474,15 @@
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoReptile, Canine]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_aquatic_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_aquatic_BEHIND: tail_aquatic_FRONT
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: tail_aquatic
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+    state: tail_aquatic_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+    state: tail_aquatic_BEHIND
 
 - type: marking
   id: LizardChestFin
@@ -432,15 +500,27 @@
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: []
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_large_wagging_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_large_wagging_BEHIND: tail_large_wagging_FRONT
   sprites:
-  - sprite: Mobs/Customization/reptilian_parts.rsi
-    state: tail_large_wagging
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+    state: tail_large_wagging_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+    state: tail_large_wagging_BEHIND
 
 - type: marking
   id: LizardTailAquaticAnimated
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, ProtoReptile, Canine]
+  layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
+    tail_aquatic_wagging_BEHIND: TailBehind
+  colorLinks: # WOLFGATE - both halves of a tail share one colour
+    tail_aquatic_wagging_BEHIND: tail_aquatic_wagging_FRONT
   sprites:
-    - sprite: Mobs/Customization/reptilian_parts.rsi
-      state: tail_aquatic_wagging
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
+      state: tail_aquatic_wagging_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
+      state: tail_aquatic_wagging_BEHIND

@@ -25,7 +25,7 @@ public sealed partial class WolfgateConsentTab : Control
     [Dependency] private IPrototypeManager _prototypeManager = default!;
 
     /// <summary>Indent, in pixels, per Requires level.</summary>
-    private const float RequiresIndent = 24f;
+    private const float RequiresIndent = 14f;
 
     /// <summary>Longest Requires chain followed; guards against cycles.</summary>
     private const int MaxRequiresDepth = 8;

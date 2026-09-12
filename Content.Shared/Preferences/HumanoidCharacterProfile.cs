@@ -34,7 +34,7 @@ namespace Content.Shared.Preferences
 
         public const int MaxNameLength = 32;
         public const int MaxLoadoutNameLength = 32;
-        public const int MaxDescLength = 512;
+        public const int MaxDescLength = 4096; // WOLFGATE: was 512
 
         public const int DefaultBalance = 75000;
 
@@ -656,15 +656,11 @@ namespace Content.Shared.Preferences
                 name = GetName(Species, gender);
             }
 
-            string flavortext;
-            if (FlavorText.Length > MaxDescLength)
-            {
-                flavortext = FormattedMessage.RemoveMarkupOrThrow(FlavorText)[..MaxDescLength];
-            }
-            else
-            {
-                flavortext = FormattedMessage.RemoveMarkupOrThrow(FlavorText);
-            }
+            // WOLFGATE: permissive, because RemoveMarkupOrThrow threw on text like "[]" and the save handler is
+            // async void, so the character silently failed to save. Stray tags are stripped instead.
+            var flavortext = FormattedMessage.RemoveMarkupPermissive(FlavorText);
+            if (flavortext.Length > MaxDescLength)
+                flavortext = flavortext[..MaxDescLength];
 
             // Frontier
             //make sure theres no funny bank stuff going on

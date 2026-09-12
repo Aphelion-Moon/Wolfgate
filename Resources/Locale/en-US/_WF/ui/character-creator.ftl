@@ -62,3 +62,10 @@ wf-markings-clear-warning = Remove every marking on this character? Parts the sp
 
 # WOLFGATE: species name override.
 wf-creator-custom-species-label = Species name:
+
+# Description box: live length and the two things that change the text when it is saved.
+wf-creator-description-counter = { $count } / { $max }
+wf-creator-description-brackets = Square brackets will be removed
+wf-creator-description-brackets-tooltip = The characters [ and ] mark formatting tags in game text, so a description cannot contain them. Anything written with them is stripped out when the character is saved.
+wf-creator-description-too-long = Too long, the end will be cut
+wf-creator-description-too-long-tooltip = A description can hold { $max } characters. Anything past that is cut off when the character is saved.

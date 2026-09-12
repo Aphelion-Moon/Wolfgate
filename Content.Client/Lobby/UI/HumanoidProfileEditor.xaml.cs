@@ -215,6 +215,7 @@ namespace Content.Client.Lobby.UI
             // WOLFGATE: description box under the preview, plus a full-size editor for longer text.
             DescriptionEdit.Placeholder = new Rope.Leaf(Loc.GetString("flavor-text-placeholder"));
             DescriptionEdit.OnTextChanged += _ => OnFlavorTextChange(Rope.Collapse(DescriptionEdit.TextRope).Trim());
+            DescriptionEdit.OnTextChanged += _ => UpdateDescriptionStatus(Rope.Collapse(DescriptionEdit.TextRope)); // WOLFGATE
             DescriptionExpand.OnPressed += _ => OpenDescriptionWindow();
 
             #endregion Sex
@@ -1567,6 +1568,40 @@ namespace Content.Client.Lobby.UI
             SetDirty();
         }
 
+        /// <summary>
+        /// WOLFGATE: live character count, plus a warning when the text holds square brackets (stripped as formatting
+        /// tags when saved) or runs past the limit (cut when saved).
+        /// </summary>
+        private void UpdateDescriptionStatus(string content)
+        {
+            var max = HumanoidCharacterProfile.MaxDescLength;
+            DescriptionCounter.Text = Loc.GetString("wf-creator-description-counter",
+                ("count", content.Length), ("max", max));
+            SetDangerClass(DescriptionCounter, content.Length > max);
+
+            var brackets = content.Contains('[') || content.Contains(']');
+            var tooLong = content.Length > max;
+            DescriptionWarning.Visible = brackets || tooLong;
+            if (!DescriptionWarning.Visible)
+                return;
+
+            DescriptionWarning.Text = Loc.GetString(tooLong
+                ? "wf-creator-description-too-long"
+                : "wf-creator-description-brackets");
+            DescriptionWarning.ToolTip = Loc.GetString(tooLong
+                ? "wf-creator-description-too-long-tooltip"
+                : "wf-creator-description-brackets-tooltip", ("max", max));
+        }
+
+        /// <summary>WOLFGATE: toggles the Danger style class without disturbing the control's other classes.</summary>
+        private static void SetDangerClass(Control control, bool danger)
+        {
+            if (danger)
+                control.StyleClasses.Add("Danger");
+            else
+                control.StyleClasses.Remove("Danger");
+        }
+
         private void OnMarkingChange(MarkingSet markings)
         {
             if (Profile is null)
@@ -1882,6 +1917,7 @@ namespace Content.Client.Lobby.UI
             if (DescriptionBox.Visible)
             {
                 DescriptionEdit.TextRope = new Rope.Leaf(Profile?.FlavorText ?? "");
+                UpdateDescriptionStatus(Profile?.FlavorText ?? ""); // WOLFGATE
             }
         }
 

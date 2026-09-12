@@ -6,7 +6,8 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.Popups;
 using Content.Shared.Power.Components; // WOLFGATE - battery moved to shared here
 using Content.Server.Power.EntitySystems;
-using Content.Shared.Power; // WOLFGATE
+using Content.Shared.Power; // WOLFGATE
+using Content.Shared.Rejuvenate; // WOLFGATE
 using Robust.Server.Audio;
 using Robust.Shared.Audio;
 using Robust.Shared.Containers;
@@ -33,6 +34,7 @@ public sealed partial class SynthBatteryPowerSystem : EntitySystem
     {
         SubscribeLocalEvent<BatteryComponent, ChargeChangedEvent>(OnBatteryChargeChanged);
         SubscribeLocalEvent<SynthBatteryComponent, BeingGibbedEvent>(OnBeingGibbed);
+        SubscribeLocalEvent<SynthBatteryComponent, RejuvenateEvent>(OnRejuvenate); // WOLFGATE
     }
 
     public override void Update(float frameTime)
@@ -157,6 +159,19 @@ public sealed partial class SynthBatteryPowerSystem : EntitySystem
             return;
 
         _audio.PlayPvs(sound, ent);
+    }
+
+    /// <summary>
+    /// WOLFGATE: a synth's charge lives on a cell inside its battery organ slot, and RejuvenateEvent only reaches the
+    /// mob, so rejuvenating left the synth on an empty battery. Fill the cell too; the charge change clears the
+    /// unpowered state and refreshes the alert through OnBatteryChargeChanged.
+    /// </summary>
+    private void OnRejuvenate(Entity<SynthBatteryComponent> ent, ref RejuvenateEvent args)
+    {
+        if (!_synthBattery.TryGetBattery(ent.Owner, out var battery, ent.Comp))
+            return;
+
+        _battery.SetCharge(battery.Value.Owner, battery.Value.Comp.MaxCharge, battery.Value.Comp);
     }
 
     public void SetUnpowered(Entity<SynthBatteryComponent> ent, bool unpowered)

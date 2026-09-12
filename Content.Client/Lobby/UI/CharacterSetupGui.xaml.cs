@@ -30,6 +30,9 @@ namespace Content.Client.Lobby.UI
         private readonly Button _createNewCharacterButton;
 
         public event Action<int>? SelectCharacter;
+
+        /// <summary>WOLFGATE: raised instead of creating straight away, so unsaved edits can be confirmed first.</summary>
+        public event Action? NewCharacter;
         public event Action<int>? DeleteCharacter;
 
         public CharacterSetupGui(HumanoidProfileEditor profileEditor)
@@ -47,8 +50,7 @@ namespace Content.Client.Lobby.UI
 
             _createNewCharacterButton.OnPressed += args =>
             {
-                _preferencesManager.CreateCharacter(HumanoidCharacterProfile.Random());
-                ReloadCharacterPickers();
+                NewCharacter?.Invoke(); // WOLFGATE: was CreateCharacter + ReloadCharacterPickers here
                 args.Event.Handle();
             };
 

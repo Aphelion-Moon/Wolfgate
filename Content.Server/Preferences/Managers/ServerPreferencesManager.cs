@@ -85,9 +85,21 @@ namespace Content.Server.Preferences.Managers
 
             // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (message.Profile == null)
+            {
                 _sawmill.Error($"User {userId} sent a {nameof(MsgUpdateCharacter)} with a null profile in slot {message.Slot}.");
-            else
+                return;
+            }
+
+            // WOLFGATE: this handler is async void, so an exception here used to vanish and the client was never told
+            // its character had not saved. Log it with the slot instead.
+            try
+            {
                 await SetProfile(userId, message.Slot, message.Profile, false);
+            }
+            catch (Exception e)
+            {
+                _sawmill.Error($"Failed to save character for user {userId} in slot {message.Slot}: {e}");
+            }
         }
 
         public async Task SetProfile(NetUserId userId, int slot, ICharacterProfile profile,

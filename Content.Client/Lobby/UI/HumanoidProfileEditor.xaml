@@ -194,6 +194,12 @@
                         <TextEdit Name="DescriptionEdit" HorizontalExpand="True" />
                     </ScrollContainer>
                 </PanelContainer>
+                <!-- WOLFGATE: live length and the square bracket note, so neither surprises the player at save time. -->
+                <BoxContainer Orientation="Horizontal" HorizontalExpand="True">
+                    <Label Name="DescriptionWarning" StyleClasses="Danger" VAlign="Center" Visible="False" />
+                    <Control HorizontalExpand="True" />
+                    <Label Name="DescriptionCounter" StyleClasses="CreatorFieldLabel" VAlign="Center" />
+                </BoxContainer>
             </BoxContainer>
             <Control VerticalExpand="True" />
             <Button Name="SaveButton" Text="{Loc 'humanoid-profile-editor-save-button'}" StyleClasses="CreatorPrimary" />

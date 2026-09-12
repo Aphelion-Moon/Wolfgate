@@ -577,6 +577,18 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
     {
         EntityUid dummyEnt;
 
+        // WOLFGATE: a character saved on a build that has a species this one does not must not throw. The picker list
+        // is built in one loop that ends with the create-character button, so one bad profile used to hide every
+        // character after it and the button with them.
+        if (humanoid != null && !_prototypeManager.HasIndex<SpeciesPrototype>(humanoid.Species))
+        {
+            _logManager.GetSawmill("lobby").Warning(
+                $"Character \"{humanoid.Name}\" uses unknown species {humanoid.Species}; previewing it as {SharedHumanoidAppearanceSystem.DefaultSpecies}.");
+
+            humanoid = humanoid.WithSpecies(SharedHumanoidAppearanceSystem.DefaultSpecies);
+        }
+        // End WOLFGATE
+
         EntProtoId? previewEntity = null;
         if (humanoid != null && jobClothes)
         {

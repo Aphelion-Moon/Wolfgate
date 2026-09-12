@@ -215,6 +215,9 @@
       params:
         maxDistance: 5
       path: /Audio/Machines/buzz-two.ogg
+  # WOLFGATE: drain APCs and loose power cells to recharge.
+  - type: BatteryDrinker
+    drinkSpeed: 2
   - type: SynthShock
     batteryChargeMultiplier: 10.8
     cellularDamageMultiplier: 0.2

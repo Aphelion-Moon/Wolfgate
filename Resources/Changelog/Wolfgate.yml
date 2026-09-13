@@ -107,3 +107,58 @@ Entries:
   id: 100012
   time: '2026-09-13T02:35:02.0000000+00:00'
   url: https://github.com/VanguardControl/Wolfgate/pull/18
+- author: Gandalf2k15
+  changes:
+    - type: Add
+      message: >-
+        Added Avali, Canine, Felionoid, Shadekin, Skrell, Synth and Thaven as
+        playable species.
+    - type: Add
+      message: Added 14 Protogen subspecies.
+    - type: Add
+      message: Added a large set of new markings, hair and tails for the new species.
+    - type: Add
+      message: Added a custom species name field to the character creator.
+    - type: Add
+      message: >-
+        Added an Anatomy tab to the character creator and an in-game anatomy
+        panel, both behind the consent opt-in.
+    - type: Add
+      message: >-
+        Added a consent toggle that controls whether others can remove your
+        undergarments.
+    - type: Add
+      message: Synths and IPCs can recharge by draining APCs and charged power cells.
+    - type: Add
+      message: Rodentia can crawl under objects.
+    - type: Tweak
+      message: >-
+        Character descriptions can now be 4096 characters long and show how many
+        characters are left.
+    - type: Tweak
+      message: >-
+        Switching or creating a character now asks whether to save unsaved
+        changes.
+    - type: Tweak
+      message: >-
+        The consent menu now shows toggles on the left and your notes on the
+        right.
+    - type: Tweak
+      message: Tails now draw behind the body where they overlap the groin.
+    - type: Fix
+      message: >-
+        Characters with text in square brackets in their description can now be
+        saved.
+    - type: Fix
+      message: Rejuvenating a synth now refills its battery.
+    - type: Fix
+      message: >-
+        The character list no longer breaks when a saved character uses a
+        species that isn't available.
+    - type: Fix
+      message: Fixed viewing another player's consent notes causing an error.
+    - type: Fix
+      message: Fixed many markings not showing up for their species.
+  id: 100013
+  time: '2026-09-13T02:49:48.0000000+00:00'
+  url: https://github.com/VanguardControl/Wolfgate/pull/26

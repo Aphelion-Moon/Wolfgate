@@ -9,7 +9,7 @@ using static Content.IntegrationTests.Tests._WF.Genitals.GenitalTestHelpers;
 
 namespace Content.IntegrationTests.Tests._WF.Genitals;
 
-/// <summary>T3 (client): every genital shape and sheath state resolves to art that exists; step mapping helpers.</summary>
+/// <summary>Every genital shape and sheath state resolves to art that exists; step mapping helpers.</summary>
 [TestFixture]
 [TestOf(typeof(GenitalSpriteResolver))]
 public sealed class GenitalShapeArtTest
@@ -158,7 +158,7 @@ public sealed class GenitalShapeArtTest
             Assert.That(GenitalSpriteResolver.ResolveStep(new[] { 4, 5, 6 }, 3), Is.EqualTo(4));
             Assert.That(GenitalSpriteResolver.ResolveStep(System.Array.Empty<int>(), 2), Is.EqualTo(2));
 
-            // Length to sprite step (table 3.3) and the migration inverse.
+            // Length to sprite step and the migration inverse.
             foreach (var (cm, step) in lengths)
             {
                 Assert.That(GenitalStateBuilder.LengthToStep(cm, settings), Is.EqualTo(step), $"{cm} cm");

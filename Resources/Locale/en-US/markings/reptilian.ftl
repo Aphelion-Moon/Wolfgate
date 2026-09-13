@@ -120,5 +120,3 @@ marking-LizardTailAquatic = Lizard Tail (Aquatic)
 marking-LizardTailAquatic-tail_aquatic = Lizard Tail (Aquatic)
 
 # Wolfgate: ported from HardLight
-marking-LizardHornsDemonic-horns_demonic_l = Left Horn
-marking-LizardHornsDemonic-horns_demonic_r = Right Horn

@@ -19,7 +19,7 @@ using static Content.IntegrationTests.Tests._WF.Genitals.GenitalTestHelpers;
 namespace Content.IntegrationTests.Tests._WF.Genitals;
 
 /// <summary>
-/// S11b: moving every tail marking's south frame onto TailBehind must not break the rest of the tail features. Saved
+/// Moving every tail marking's south frame onto TailBehind must not break the rest of the tail features. Saved
 /// colours still pad onto the added halves, the wagging swap keeps the sprite structure and the colours, and clothing
 /// that hides the Tail layer hides the BEHIND half as well as the FRONT one.
 /// </summary>

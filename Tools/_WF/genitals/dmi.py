@@ -1,9 +1,7 @@
 """Minimal DMI / RSI reader. DMI: PNG + zTXt 'Description' metadata. Frames are
 laid out row-major; order inside a state is frame-major with directions inner."""
-import json, os, re
+import json, os
 from PIL import Image
-
-DIR_NAMES = ["S", "N", "E", "W", "SE", "SW", "NE", "NW"]
 
 def read_dmi_meta(path):
     im = Image.open(path)
@@ -81,7 +79,3 @@ def load_rsi_state(rsi_dir, state):
             idx += 1
     return res  # [frame][dir]
 
-def bbox_info(img):
-    bb = img.getbbox()
-    px = sum(1 for p in img.getdata() if p[3] > 0)
-    return bb, px

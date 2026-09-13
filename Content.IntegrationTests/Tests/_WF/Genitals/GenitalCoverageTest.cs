@@ -41,7 +41,7 @@ public sealed class GenitalCoverageTest
     slots: [outerClothing]
 ";
 
-    /// <summary>Every row of the 7.3 truth table for a groin organ, with each "any" expanded to both values.</summary>
+    /// <summary>Every row of the exposure truth table for a groin organ, with each "any" expanded to both values.</summary>
     [Test]
     public async Task ExposureTruthTableTest()
     {
@@ -356,7 +356,7 @@ public sealed class GenitalCoverageTest
         await pair.CleanReturnAsync();
     }
 
-    /// <summary>One row of the 7.3 truth table for a groin organ.</summary>
+    /// <summary>One row of the exposure truth table for a groin organ.</summary>
     private readonly record struct Row(
         GenitalVisibility Visibility,
         GenitalRevealMode Mode,
@@ -365,7 +365,7 @@ public sealed class GenitalCoverageTest
         bool Exposed,
         GenitalLayerSet Layer);
 
-    /// <summary>The 7.3 truth table with every "any" expanded to both values.</summary>
+    /// <summary>The exposure truth table with every "any" expanded to both values.</summary>
     private static IEnumerable<Row> TruthTable()
     {
         var bools = new[] { false, true };

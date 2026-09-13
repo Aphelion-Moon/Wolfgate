@@ -613,10 +613,10 @@
   sprites:
   - sprite: _WF/Mobs/Customization/TailSplit/_FarHorizons/Mobs/Customization/proto-avali/led_shapes_body.rsi # WOLFGATE - split art, anatomy zone only
     state: wings_FRONT
-
-#region ARACHNID
   - sprite: _WF/Mobs/Customization/TailSplit/_FarHorizons/Mobs/Customization/proto-avali/led_shapes_body.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
     state: wings_BEHIND
+
+#region ARACHNID
 
 - type: marking
   id: ProtoArachnidVisor

@@ -852,11 +852,11 @@
   sprites:
   - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
     state: witchking_FRONT
+  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
+    state: witchking_BEHIND
 
 # Body Markings
 # Deathshead
-  - sprite: _WF/Mobs/Customization/TailSplit/Nyanotrasen/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
-    state: witchking_BEHIND
 - type: marking
   id: MothHeadClassicDeathshead
   bodyPart: Head

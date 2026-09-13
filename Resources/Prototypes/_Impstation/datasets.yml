@@ -312,7 +312,7 @@
   - bow
   - box
   - brake
-  - brake
+  - break
   - branch
   - breathe
   - bruise
@@ -883,7 +883,7 @@
   - yell
   - zip
   - zoom
-    - adorable
+  - adorable
   - adventurous
   - aggressive
   - alert
@@ -1009,7 +1009,8 @@
   - combative
   - condemned
   - confused
-  - crazy,flipped-out
+  - crazy
+  - flipped-out
   - creepy
   - cruel
   - dangerous

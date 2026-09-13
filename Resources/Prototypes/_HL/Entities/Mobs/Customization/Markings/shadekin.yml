@@ -122,12 +122,12 @@
     state: plasmafire_primary_FRONT
   - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
     state: plasmafire_secondary_FRONT
-
-# Shadekin eyes
   - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
     state: plasmafire_primary_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
     state: plasmafire_secondary_BEHIND
+
+# Shadekin eyes
 - type: marking
   id: ShadekinEyeR
   bodyPart: Eyes

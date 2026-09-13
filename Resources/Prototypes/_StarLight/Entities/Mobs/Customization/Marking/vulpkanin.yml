@@ -121,7 +121,7 @@
   id: FoxTailAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: []
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, ProtoVulp, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Canine]
   layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
     tail_fox_waggin_BEHIND: TailBehind
     tail_fox_inner_waggin_BEHIND: TailBehind
@@ -142,7 +142,7 @@
   id: WolfTailAnimated
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: []
+  speciesRestriction: [Skrell, Thaven,Dwarf, Diona, Human, SlimePerson, Felinid, Oni, Harpy, Reptilian, Vulpkanin, ProtoVulp, Rodentia, Goblin, Sheleg, IPC, Feroxi, Moth, Arachnid, Kitsune, Chitinid, Canine]
   layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
     tail_wolf_waggin_BEHIND: TailBehind
     tail_wolf_inner_waggin_BEHIND: TailBehind

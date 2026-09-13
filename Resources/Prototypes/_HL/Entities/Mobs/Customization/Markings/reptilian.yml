@@ -89,14 +89,14 @@
       state: naga_rattlesnake_secondary_FRONT
     - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE - split art, anatomy zone only
       state: naga_rattlesnake_tertiary_FRONT
-
-# Xeno Spines
     - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
       state: naga_rattlesnake_primary_BEHIND
     - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
       state: naga_rattlesnake_secondary_BEHIND
     - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Reptilian/naga.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
       state: naga_rattlesnake_tertiary_BEHIND
+
+# Xeno Spines
 
 - type: marking
   id: XenoSpineGorjira

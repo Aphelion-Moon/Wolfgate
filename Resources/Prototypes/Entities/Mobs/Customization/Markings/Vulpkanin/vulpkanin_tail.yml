@@ -53,7 +53,7 @@
   id: VulpTailVulp
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [ Vulpkanin Canine]
+  speciesRestriction: [Vulpkanin, Canine]
   layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
     vulp_BEHIND: TailBehind
     vulp-tip_BEHIND: TailBehind
@@ -74,7 +74,7 @@
   id: VulpTailVulpFade
   bodyPart: Tail
   markingCategory: Tail
-  speciesRestriction: [ Vulpkanin Canine]
+  speciesRestriction: [Vulpkanin, Canine]
   layering: # WOLFGATE - the south frame draws behind the body, so the tail never covers anatomy
     vulp_BEHIND: TailBehind
     vulp-fade_BEHIND: TailBehind

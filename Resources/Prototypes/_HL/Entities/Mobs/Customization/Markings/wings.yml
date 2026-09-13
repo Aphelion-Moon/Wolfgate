@@ -406,8 +406,6 @@
     m_wings_harpybat_top_front_secondary_BEHIND: m_wings_harpybat_top_front_secondary_FRONT
     m_wings_harpybat_top_front_tertiary_BEHIND: m_wings_harpybat_top_front_tertiary_FRONT
   sprites:
-  - sprite: _Bubber/wings.rsi
-    state: m_wings_harpybat_top_front
   - sprite: _WF/Mobs/Customization/TailSplit/_Bubber/wings.rsi # WOLFGATE - split art, anatomy zone only
     state: m_wings_harpybat_top_front_primary_FRONT
   - sprite: _WF/Mobs/Customization/TailSplit/_Bubber/wings.rsi # WOLFGATE - split art, anatomy zone only

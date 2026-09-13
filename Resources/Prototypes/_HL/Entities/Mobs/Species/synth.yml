@@ -164,10 +164,8 @@
   - type: IntrinsicRadioTransmitter
     channels:
     - Trinary
-    - Trinary
   - type: ActiveRadio
     channels:
-    - Trinary
     - Trinary
   - type: Bloodstream
     bloodReagent: SynthBlood

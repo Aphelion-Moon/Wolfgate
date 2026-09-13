@@ -4,18 +4,6 @@
   name: "felionoid body part"
   abstract: true
   components:
-#  - type: Damageable
-#    damageContainer: Biological
-#  - type: BodyPart
-#  - type: ContainerContainer
-#    containers:
-#      bodypart: !type:Container
-#        ents: []
-#  - type: StaticPrice
-#    price: 100
-#  - type: Tag
-#    tags:
-#      - Trash
   - type: Extractable
     juiceSolution:
       reagents:
@@ -35,8 +23,6 @@
     - type: Icon
       sprite: _Starlight/Mobs/Species/Felionoid/parts.rsi
       state: "torso"
-#    - type: BodyPart
-#      partType: Torso
     - type: Extractable
       juiceSolution:
         reagents:
@@ -56,14 +42,6 @@
     - type: Icon
       sprite: _Starlight/Mobs/Species/Felionoid/parts.rsi
       state: "head"
-#    - type: BodyPart
-#      partType: Head
-#      vital: true
-#    - type: Input
-#      context: "ghost"
-#    - type: Tag
-#      tags:
-#        - Head
     - type: Extractable
       juiceSolution:
         reagents:
@@ -83,9 +61,6 @@
     - type: Icon
       sprite: _Starlight/Mobs/Species/Felionoid/parts.rsi
       state: "l_arm"
-#    - type: BodyPart
-#      partType: Arm
-#      symmetry: Left
 
 - type: entity
   id: RightArmFelionoid
@@ -98,9 +73,6 @@
     - type: Icon
       sprite: _Starlight/Mobs/Species/Felionoid/parts.rsi
       state: "r_arm"
-#    - type: BodyPart
-#      partType: Arm
-#      symmetry: Right
 
 - type: entity
   id: LeftHandFelionoid
@@ -113,9 +85,6 @@
     - type: Icon
       sprite: _Starlight/Mobs/Species/Felionoid/parts.rsi
       state: "l_hand"
-#    - type: BodyPart
-#      partType: Hand
-#      symmetry: Left
 
 - type: entity
   id: RightHandFelionoid
@@ -128,9 +97,6 @@
     - type: Icon
       sprite: _Starlight/Mobs/Species/Felionoid/parts.rsi
       state: "r_hand"
-#    - type: BodyPart
-#      partType: Hand
-#      symmetry: Right
 
 - type: entity
   id: LeftLegFelionoid
@@ -143,12 +109,8 @@
     - type: Icon
       sprite: _Starlight/Mobs/Species/Felionoid/parts.rsi
       state: "l_leg"
-#    - type: BodyPart
-#      partType: Leg
-#      symmetry: Left
     - type: MovementBodyPart
       sprintSpeed : 5.625
-#      maxDensity: 55
     - type: MovementBodyPartHinderedByShoes
       hinderModifier: 0.08
 
@@ -163,12 +125,8 @@
     - type: Icon
       sprite: _Starlight/Mobs/Species/Felionoid/parts.rsi
       state: "r_leg"
-#    - type: BodyPart
-#      partType: Leg
-#      symmetry: Right
     - type: MovementBodyPart
       sprintSpeed : 5.625
-#      maxDensity: 55
     - type: MovementBodyPartHinderedByShoes
       hinderModifier: 0.08
 
@@ -183,9 +141,6 @@
     - type: Icon
       sprite: _Starlight/Mobs/Species/Felionoid/parts.rsi
       state: "l_foot"
-#    - type: BodyPart
-#      partType: Foot
-#      symmetry: Left
 
 - type: entity
   id: RightFootFelionoid
@@ -198,6 +153,3 @@
     - type: Icon
       sprite: _Starlight/Mobs/Species/Felionoid/parts.rsi
       state: "r_foot"
-#    - type: BodyPart
-#      partType: Foot
-#      symmetry: Right

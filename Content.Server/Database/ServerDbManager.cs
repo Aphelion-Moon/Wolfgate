@@ -348,9 +348,8 @@ namespace Content.Server.Database
         // WOLFGATE - consent system ported from HardLight
         #region Consent Settings
 
-        Task SavePlayerConsentSettingsAsync(NetUserId userId, PlayerConsentSettings consentSettings);
+        Task<int> SavePlayerConsentSettingsAsync(NetUserId userId, PlayerConsentSettings consentSettings);
         Task<ConsentSettings> GetPlayerConsentSettingsAsync(NetUserId userId);
-        Task<ConsentFreetextReadReceipt?> GetPlayerConsentReadReceipt(NetUserId readerUserId, int consentSettingsId);
         Task<ConsentFreetextReadReceipt> UpdatePlayerConsentReadReceipt(NetUserId readerUserId, int readConsentSettingsId);
 
         #endregion
@@ -1246,7 +1245,7 @@ namespace Content.Server.Database
         // WOLFGATE - consent system ported from HardLight
         #region Consent Settings
 
-        public Task SavePlayerConsentSettingsAsync(NetUserId userId, PlayerConsentSettings consentSettings)
+        public Task<int> SavePlayerConsentSettingsAsync(NetUserId userId, PlayerConsentSettings consentSettings)
         {
             DbWriteOpsMetric.Inc();
             return RunDbCommand(() => _db.SavePlayerConsentSettingsAsync(userId, consentSettings));
@@ -1256,12 +1255,6 @@ namespace Content.Server.Database
         {
             DbReadOpsMetric.Inc();
             return RunDbCommand(() => _db.GetPlayerConsentSettingsAsync(userId));
-        }
-
-        public Task<ConsentFreetextReadReceipt?> GetPlayerConsentReadReceipt(NetUserId readerUserId, int consentSettingsId)
-        {
-            DbReadOpsMetric.Inc();
-            return RunDbCommand(() => _db.GetPlayerConsentReadReceipt(readerUserId, consentSettingsId));
         }
 
         public Task<ConsentFreetextReadReceipt> UpdatePlayerConsentReadReceipt(NetUserId readerUserId, int readConsentSettingsId)

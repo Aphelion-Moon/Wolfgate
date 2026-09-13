@@ -19,7 +19,7 @@ public sealed class WolfgateSpeciesCard : ContainerButton
     private const float Padding = 12f;
     private const int Gap = 8;
 
-    /// <summary>Raised when the info button is clicked, with the species id.</summary>
+    /// <summary>Raised when the info button is clicked.</summary>
     public Action? OnInfoRequested;
 
     public WolfgateSpeciesCard(string species, string title, string facts, Control preview, bool hasGuide)

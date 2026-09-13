@@ -302,7 +302,7 @@
     state: u_sports
 
 - type: marking
-  id: RMCUndershirtStraplesUrban
+  id: RMCUndershirtStraplessUrban
   bodyPart: UndergarmentTop
   markingCategory: UndergarmentTop
   coloring:

@@ -107,12 +107,12 @@
     state: m_tail_leopard_primary_wag_FRONT
   - sprite: _WF/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi # WOLFGATE - split art
     state: m_tail_leopard_tertiary_wag_FRONT
-
-# Tajaran Ears
   - sprite: _WF/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi # WOLFGATE - south frame on TailBehind
     state: m_tail_leopard_primary_wag_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/_Goobstation/Mobs/Customization/Tajaran/leopard_tail.rsi # WOLFGATE - south frame on TailBehind
     state: m_tail_leopard_tertiary_wag_BEHIND
+
+# Tajaran Ears
 
 - type: marking
   id: TajaranEarsRetro

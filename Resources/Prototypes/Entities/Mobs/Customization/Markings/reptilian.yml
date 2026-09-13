@@ -455,10 +455,10 @@
   sprites:
     - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - split art
       state: tail_dtiger_wagging_FRONT
-
-# Wolfgate: ported from HardLight
     - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/reptilian_parts.rsi # WOLFGATE - south frame on TailBehind
       state: tail_dtiger_wagging_BEHIND
+
+# Wolfgate: ported from HardLight
 - type: marking
   id: LizardFloofNeckfull
   bodyPart: HeadSide

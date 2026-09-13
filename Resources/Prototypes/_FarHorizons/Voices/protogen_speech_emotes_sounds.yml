@@ -392,44 +392,6 @@
 
 - type: emoteSounds
   parent: ProtoHumanMSounds
-  id: ProtoCycloriteMSounds
-  sounds:
-    Scream:
-      collection: ProtoCycloriteScreams
-    Laugh:
-      collection: ProtoCycloriteLaugh
-    Sneeze:
-      collection: ProtoCycloriteCoughs
-    Cough:
-      collection: ProtoCycloriteCoughs
-    Crying:
-      collection: ProtoCycloriteScreams
-    Whistle:
-      collection: ProtoCycloriteWhistles
-    Yawn:
-      collection: ProtoCycloriteYawn
-
-- type: emoteSounds
-  parent: ProtoHumanFSounds
-  id: ProtoCycloriteFSounds
-  sounds:
-    Scream:
-      collection: ProtoCycloriteScreams
-    Laugh:
-      collection: ProtoCycloriteLaugh
-    Sneeze:
-      collection: ProtoCycloriteCoughs
-    Cough:
-      collection: ProtoCycloriteCoughs
-    Crying:
-      collection: ProtoCycloriteScreams
-    Whistle:
-      collection: ProtoCycloriteWhistles
-    Yawn:
-      collection: ProtoCycloriteYawn
-
-- type: emoteSounds
-  parent: ProtoHumanMSounds
   id: ProtoAvaliMSounds
   sounds:
     Scream:

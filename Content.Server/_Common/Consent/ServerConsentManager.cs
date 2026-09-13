@@ -58,7 +58,7 @@ public sealed class ServerConsentManager : IServerConsentManager
         if (message.Consent.Freetext != consentSettings.ConsentFreetext)
         {
             consentSettings.ConsentFreetext = message.Consent.Freetext;
-            consentSettings.ConsentFreetextUpdatedAt = DateTime.Now;
+            consentSettings.ConsentFreetextUpdatedAt = DateTime.UtcNow; // WOLFGATE: receipts are UTC; local time skewed the unread marker
         }
 
         // Log the change
@@ -70,7 +70,8 @@ public sealed class ServerConsentManager : IServerConsentManager
         // Persistence
         if (ShouldStoreInDb(message.MsgChannel.AuthType))
         {
-            await _db.SavePlayerConsentSettingsAsync(userId, message.Consent);
+            // WOLFGATE: keep the row id in the cache; read receipts reference it and it is 0 until the first save.
+            consentSettings.Id = await _db.SavePlayerConsentSettingsAsync(userId, message.Consent);
         }
 
         // Sent it back to the client.
@@ -125,7 +126,10 @@ public sealed class ServerConsentManager : IServerConsentManager
             _consent[targetUserId] = consentSettings;
         }
 
-        var readRecipe = await _db.UpdatePlayerConsentReadReceipt(readerUserId, consentSettings.Id);
+        // WOLFGATE: settings that were never saved have no row to reference, so that receipt stays in memory.
+        var readRecipe = consentSettings.Id == 0
+            ? new ConsentFreetextReadReceipt { ReaderUserId = readerUserId, ReadAt = DateTime.UtcNow }
+            : await _db.UpdatePlayerConsentReadReceipt(readerUserId, consentSettings.Id);
         consentSettings.ReadReceipts ??= new();
         consentSettings.ReadReceipts.RemoveAll(x => x.ReaderUserId == readerUserId);
         consentSettings.ReadReceipts.Add(readRecipe);

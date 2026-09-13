@@ -240,10 +240,10 @@
   sprites:
   - sprite: _WF/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi # WOLFGATE - split art
     state: tail_feathers_seer_FRONT
-
-# Ears
   - sprite: _WF/Mobs/Customization/TailSplit/_Obelisk/Mobs/Customization/hydrakin_parts.rsi # WOLFGATE - south frame on TailBehind
     state: tail_feathers_seer_BEHIND
+
+# Ears
 - type: marking
   id: HydrakinEarsDefault
   bodyPart: HeadTop

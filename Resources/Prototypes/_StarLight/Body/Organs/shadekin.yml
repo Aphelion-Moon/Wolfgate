@@ -14,7 +14,6 @@
     sprite: _Starlight/Mobs/Species/Shadekin/organs.rsi
     layers:
       - state: eyes
-  # Removed OrganVisualization component (unknown); visual handled elsewhere if needed.
 
 - type: entity
   id: OrganShadekinTongue

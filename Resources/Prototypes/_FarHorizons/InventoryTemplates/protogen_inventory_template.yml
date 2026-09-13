@@ -447,7 +447,7 @@
       slotFlags: POCKET
       slotGroup: MainHotbar
       stripTime: 3
-      uiWindowPos: 0,4
+      uiWindowPos: 0,3
       strippingWindowPos: 0,4
       dependsOn: jumpsuit
       displayName: Pocket 1
@@ -458,7 +458,7 @@
       slotFlags: POCKET
       slotGroup: MainHotbar
       stripTime: 3
-      uiWindowPos: 2,4
+      uiWindowPos: 2,3
       strippingWindowPos: 1,4
       dependsOn: jumpsuit
       displayName: Pocket 2

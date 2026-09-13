@@ -554,10 +554,10 @@
   sprites:
   - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - split art
     state: xeno_spike_FRONT
-
-# Wings
   - sprite: _WF/Mobs/Customization/TailSplit/_HL/Mobs/Customization/Synth/tail.rsi # WOLFGATE - south frame on TailBehind
     state: xeno_spike_BEHIND
+
+# Wings
 
 - type: marking
   id: SynthWingsDragon

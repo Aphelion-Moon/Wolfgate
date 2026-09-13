@@ -1955,7 +1955,7 @@ INSERT INTO player_round (players_id, rounds_id) VALUES ({players[player]}, {id}
             db.ConsentSettings.Remove(consentSettings);
         }
 
-        public async Task SavePlayerConsentSettingsAsync(NetUserId userId, PlayerConsentSettings? consentSettings)
+        public async Task<int> SavePlayerConsentSettingsAsync(NetUserId userId, PlayerConsentSettings? consentSettings)
         {
             await using var db = await GetDb();
 
@@ -1963,7 +1963,7 @@ INSERT INTO player_round (players_id, rounds_id) VALUES ({players[player]}, {id}
             {
                 await DeletePlayerConsentSettings(db.DbContext, userId);
                 await db.DbContext.SaveChangesAsync();
-                return;
+                return 0;
             }
 
             // Get current consent settings so we know if freetext needs updating and which toggles to add or remove
@@ -1984,8 +1984,7 @@ INSERT INTO player_round (players_id, rounds_id) VALUES ({players[player]}, {id}
 
                 db.DbContext.ConsentSettings.Add(currentConsentSettings);
             }
-            else if (currentConsentSettings.ConsentFreetext != consentSettings.Freetext
-                     || currentConsentSettings.ConsentFreetextUpdatedAt.Kind != DateTimeKind.Utc)
+            else if (currentConsentSettings.ConsentFreetext != consentSettings.Freetext)
             {
                 currentConsentSettings.ConsentFreetext = consentSettings.Freetext;
                 currentConsentSettings.ConsentFreetextUpdatedAt = DateTime.UtcNow;
@@ -2018,6 +2017,7 @@ INSERT INTO player_round (players_id, rounds_id) VALUES ({players[player]}, {id}
             }
 
             await db.DbContext.SaveChangesAsync();
+            return currentConsentSettings.Id;
         }
 
         public async Task<ConsentSettings> GetPlayerConsentSettingsAsync(NetUserId userId)
@@ -2031,14 +2031,6 @@ INSERT INTO player_round (players_id, rounds_id) VALUES ({players[player]}, {id}
                 .SingleOrDefaultAsync(c => c.UserId == userId);
 
             return consentSettings ?? new();
-        }
-
-        public async Task<ConsentFreetextReadReceipt?> GetPlayerConsentReadReceipt(NetUserId readerUserId, int consentSettingsId)
-        {
-            await using var db = await GetDb();
-
-            return await db.DbContext.ConsentFreetextReadReceipt
-                .SingleOrDefaultAsync(c => c.ReaderUserId == readerUserId && c.ReadConsentSettingsId == consentSettingsId);
         }
 
         public async Task<ConsentFreetextReadReceipt> UpdatePlayerConsentReadReceipt(NetUserId readerUserId, int readConsentSettingsId)

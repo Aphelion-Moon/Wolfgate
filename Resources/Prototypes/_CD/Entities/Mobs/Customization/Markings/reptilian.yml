@@ -79,12 +79,12 @@
     state: tail_snake_primary_FRONT
   - sprite: _WF/Mobs/Customization/TailSplit/_CD/Mobs/Customization/snaketaildual.rsi # WOLFGATE - split art
     state: tail_snake_secondary_FRONT
-
-# Animated Snake Tails
   - sprite: _WF/Mobs/Customization/TailSplit/_CD/Mobs/Customization/snaketaildual.rsi # WOLFGATE - south frame on TailBehind
     state: tail_snake_primary_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/_CD/Mobs/Customization/snaketaildual.rsi # WOLFGATE - south frame on TailBehind
     state: tail_snake_secondary_BEHIND
+
+# Animated Snake Tails
 
 - type: marking
   id: LizardTailSnakeAnimated

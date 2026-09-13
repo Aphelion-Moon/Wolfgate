@@ -25,7 +25,36 @@ public sealed partial class ThavenMoodUi : FancyWindow
 
     private void AddNewMood()
     {
-        MoodContainer.AddChild(new MoodContainer());
+        // WOLFGATE: add the row through SetMoods so its buttons are wired and a later rebuild keeps it.
+        SyncMoodsFromUi();
+        _moods.Add(new ThavenMood());
+        SetMoods(_moods);
+    }
+
+    /// <summary>
+    /// WOLFGATE: copies edited titles and text back onto the tracked moods, so rebuilding the list keeps them.
+    /// </summary>
+    private void SyncMoodsFromUi()
+    {
+        var index = 0;
+        foreach (var control in MoodContainer.Children)
+        {
+            if (control is not MoodContainer moodControl)
+                continue;
+
+            if (index >= _moods.Count)
+                break;
+
+            var mood = _moods[index++];
+            var title = moodControl.ThavenMoodTitle.Text ?? string.Empty;
+            var text = Rope.Collapse(moodControl.ThavenMoodContent.TextRope).Trim();
+
+            if (title != mood.GetLocName())
+                mood.MoodName = title;
+
+            if (text != mood.GetLocDesc())
+                mood.MoodDesc = text;
+        }
     }
 
     public List<ThavenMood> GetMoods()
@@ -62,6 +91,7 @@ public sealed partial class ThavenMoodUi : FancyWindow
         if (index <= 0)
             return;
 
+        SyncMoodsFromUi(); // WOLFGATE
         (_moods[index], _moods[index - 1]) = (_moods[index - 1], _moods[index]);
         SetMoods(_moods);
     }
@@ -71,12 +101,14 @@ public sealed partial class ThavenMoodUi : FancyWindow
         if (index >= _moods.Count - 1)
             return;
 
+        SyncMoodsFromUi(); // WOLFGATE
         (_moods[index], _moods[index + 1]) = (_moods[index + 1], _moods[index]);
         SetMoods(_moods);
     }
 
     private void Delete(int index)
     {
+        SyncMoodsFromUi(); // WOLFGATE
         _moods.RemoveAt(index);
 
         SetMoods(_moods);

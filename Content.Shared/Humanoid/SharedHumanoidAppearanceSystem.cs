@@ -556,10 +556,7 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
     }
 
     /// <summary>
-    /// Takes ID of the species prototype, returns UI-friendly name of the species.
-    /// </summary>
-    /// <summary>
-    /// WOLFGATE - as above, but a non-empty custom name replaces the species name outright.
+    /// WOLFGATE - as below, but a non-empty custom name replaces the species name outright.
     /// </summary>
     public string GetSpeciesRepresentation(string speciesId, string? customSpeciesName)
     {
@@ -568,6 +565,9 @@ public abstract partial class SharedHumanoidAppearanceSystem : EntitySystem
             : customSpeciesName;
     }
 
+    /// <summary>
+    /// Takes ID of the species prototype, returns UI-friendly name of the species.
+    /// </summary>
     public string GetSpeciesRepresentation(string speciesId)
     {
         if (_proto.TryIndex<SpeciesPrototype>(speciesId, out var species))

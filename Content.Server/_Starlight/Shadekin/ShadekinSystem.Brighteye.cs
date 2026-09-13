@@ -72,7 +72,6 @@ public sealed partial class ShadekinSystem : EntitySystem
     public void SetBrighteyes(EntityUid uid, HumanoidAppearanceComponent humanoid)
     {
         humanoid.EyeColor = EyeColor.MakeBrighteyeValid(humanoid.EyeColor);
-        humanoid.EyeGlowing = true;
         Dirty(uid, humanoid);
     }
 
@@ -84,7 +83,6 @@ public sealed partial class ShadekinSystem : EntitySystem
     public void SetBlackeyes(EntityUid uid, HumanoidAppearanceComponent humanoid)
     {
         humanoid.EyeColor = EyeColor.MakeShadekinValid(humanoid.EyeColor);
-        humanoid.EyeGlowing = false;
 
         Dirty(uid, humanoid);
     }

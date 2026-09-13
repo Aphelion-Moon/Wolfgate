@@ -401,7 +401,7 @@
       state: skrell_longfringetail_fringe_BEHIND
 
 - type: marking
-  id: TailSkrellFringeExtraLong
+  id: RMCTailSkrellFringeExtraLong
   bodyPart: Tail
   markingCategory: Tail
   speciesRestriction: [Skrell]

@@ -28,10 +28,10 @@
   sprites:
   - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/Avali/avali_parts.rsi # WOLFGATE - split art
     state: tail_avalibase_FRONT
-
-# Stripe one
   - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/Avali/avali_parts.rsi # WOLFGATE - south frame on TailBehind
     state: tail_avalibase_BEHIND
+
+# Stripe one
 
 - type: marking
   id: AvaliEarsStripeOne
@@ -156,14 +156,14 @@
     state: tail_avali_primary_FRONT
   - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/Avali/avali_stripes_one.rsi # WOLFGATE - split art
     state: tail_avali_secondary_FRONT
-
-# Trim one
   - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/Avali/avali_parts.rsi # WOLFGATE - south frame on TailBehind
     state: tail_avalibase_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/Avali/avali_stripes_one.rsi # WOLFGATE - south frame on TailBehind
     state: tail_avali_primary_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/Avali/avali_stripes_one.rsi # WOLFGATE - south frame on TailBehind
     state: tail_avali_secondary_BEHIND
+
+# Trim one
 
 - type: marking
   id: AvaliEarsTrimOne
@@ -292,14 +292,14 @@
     state: tail_avali_primary_FRONT
   - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/Avali/avali_trim_one.rsi # WOLFGATE - split art
     state: tail_avali_secondary_FRONT
-
-# Trim two
   - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/Avali/avali_parts.rsi # WOLFGATE - south frame on TailBehind
     state: tail_avalibase_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/Avali/avali_trim_one.rsi # WOLFGATE - south frame on TailBehind
     state: tail_avali_primary_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/Avali/avali_trim_one.rsi # WOLFGATE - south frame on TailBehind
     state: tail_avali_secondary_BEHIND
+
+# Trim two
 
 - type: marking
   id: AvaliEarsTrimTwo

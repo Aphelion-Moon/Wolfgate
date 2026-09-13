@@ -505,6 +505,8 @@
   sprites:
     - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE - split art
       state: shadekin_big_FRONT
+    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE - south frame on TailBehind
+      state: shadekin_big_BEHIND
 
 # - type: marking
 #   id: TailShadekinBigFluff
@@ -514,8 +516,6 @@
 #   sprites:
 #     - sprite: _Starlight/Mobs/Customization/shadekin/tails64x32.rsi
 #       state: shadekin_big_fluff
-    - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails64x32.rsi # WOLFGATE - south frame on TailBehind
-      state: shadekin_big_BEHIND
 
 - type: marking
   id: TailShadekinShorter
@@ -584,12 +584,12 @@
       state: shadekin_medium_FRONT
     - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - split art
       state: medium_twocolored_FRONT
-
-# Overlays
     - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - south frame on TailBehind
       state: shadekin_medium_BEHIND
     - sprite: _WF/Mobs/Customization/TailSplit/_Starlight/Mobs/Customization/shadekin/tails32x32.rsi # WOLFGATE - south frame on TailBehind
       state: medium_twocolored_BEHIND
+
+# Overlays
 
 - type: marking
   id: BodyShadekinArrow
@@ -640,7 +640,7 @@
   id: BodyShadekinInk
   bodyPart: Chest
   markingCategory: Chest
-  speciesRestriction: [ShaShadekindowkin]
+  speciesRestriction: [Shadekin, ProtoKin]
   sprites:
     - sprite: _Starlight/Mobs/Customization/shadekin/overlay.rsi
       state: body_ink

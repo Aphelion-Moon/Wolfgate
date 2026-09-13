@@ -87,8 +87,6 @@
       points: 3
       required: false
 
-# All humanoidBaseSprite definitions below remain unchanged
-
 - type: humanoidBaseSprite
   id: MobSkrellEyes
   baseSprite:

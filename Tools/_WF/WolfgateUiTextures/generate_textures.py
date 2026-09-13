@@ -6,6 +6,7 @@ Palettes mirror Content.Client/_WF/Stylesheets/WolfgateSkin.cs; keep the two in 
 The Anatomy top-bar icon is white and tinted by the menu button, so one copy under
 Resources/Textures/_WF/Interface serves every skin.
 """
+import math
 import os
 import shutil
 from PIL import Image, ImageDraw
@@ -163,8 +164,8 @@ def sex_icons():
         steps = 180
         for i in range(steps):
             a = 2 * 3.14159265 * i / steps
-            stamp(px, int(round(cx + r * __import__("math").cos(a))),
-                      int(round(cy + r * __import__("math").sin(a))))
+            stamp(px, int(round(cx + r * math.cos(a))),
+                      int(round(cy + r * math.sin(a))))
 
     def line(px, x0, y0, x1, y1):
         steps = max(abs(x1 - x0), abs(y1 - y0)) * 4 + 1

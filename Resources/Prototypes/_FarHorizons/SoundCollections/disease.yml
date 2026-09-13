@@ -31,12 +31,6 @@
   - /Audio/_FarHorizons/Voice/Proto/Arachnid/arachnid_cough.ogg
 
 - type: soundCollection
-  id: ProtoCycloriteCoughs
-  files:
-  - /Audio/_FarHorizons/Voice/Proto/Cyclorite/cough_1.ogg
-  - /Audio/_FarHorizons/Voice/Proto/Cyclorite/cough_2.ogg
-
-- type: soundCollection
   id: ProtoMothCoughs
   files:
   - /Audio/_FarHorizons/Voice/Proto/Moth/moth_cough.ogg
@@ -60,11 +54,6 @@
   id: ProtoArachnidYawn
   files:
   - /Audio/_FarHorizons/Voice/Proto/Arachnid/arachnid_yawn.ogg
-
-- type: soundCollection
-  id: ProtoCycloriteYawn
-  files:
-  - /Audio/_FarHorizons/Voice/Proto/Cyclorite/yawn.ogg
 
 - type: soundCollection
   id: ProtoMothYawn

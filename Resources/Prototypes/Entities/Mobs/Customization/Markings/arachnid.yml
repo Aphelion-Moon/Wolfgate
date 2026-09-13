@@ -202,12 +202,12 @@
     state: freaky_primary_FRONT
   - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - split art
     state: freaky_secondary_FRONT
-
-# Chest
   - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - south frame on TailBehind
     state: freaky_primary_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Arachnid/appendages.rsi # WOLFGATE - south frame on TailBehind
     state: freaky_secondary_BEHIND
+
+# Chest
 - type: marking
   id: ArachnidTorsoStripes
   bodyPart: Chest

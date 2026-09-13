@@ -16,11 +16,6 @@
     - /Audio/_FarHorizons/Voice/Proto/Avali/avali_laugh.ogg
 
 - type: soundCollection
-  id: ProtoCycloriteLaugh
-  files:
-    - /Audio/_FarHorizons/Voice/Proto/Cyclorite/laugh.ogg
-
-- type: soundCollection
   id: ProtoMothLaugh
   files:
     - /Audio/_FarHorizons/Voice/Proto/Moth/moth_laugh.ogg
@@ -264,7 +259,3 @@
   files:
     - /Audio/_FarHorizons/Voice/Proto/Resomi/resomi_whistle.ogg
 
-- type: soundCollection
-  id: ProtoCycloriteWhistles
-  files:
-    - /Audio/_FarHorizons/Voice/Proto/Cyclorite/whistle.ogg

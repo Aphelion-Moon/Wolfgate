@@ -109,12 +109,12 @@
     state: foxtwotailstone1_FRONT
   - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - split art
     state: foxtwotailstone2_FRONT
-
-# Ear Markings
   - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - south frame on TailBehind
     state: foxtwotailstone1_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/kitsune/tails.rsi # WOLFGATE - south frame on TailBehind
     state: foxtwotailstone2_BEHIND
+
+# Ear Markings
 
 - type: marking
   id: KitsuneEarsDefault

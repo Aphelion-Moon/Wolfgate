@@ -283,17 +283,6 @@
 
 - type: marking
   id: ThavenLegFinsSmallRight
-  bodyPart: LLeg
-  markingCategory: Legs
-  speciesRestriction: [ Thaven, ProtoThaven ]
-  forcedColoring: false
-  followSkinColor: true
-  sprites:
-  - sprite: _Impstation/Mobs/Customization/thaven/thaven.rsi
-    state: llegfins1
-
-- type: marking
-  id: ThavenLegFinsSmallLeft
   bodyPart: RLeg
   markingCategory: Legs
   speciesRestriction: [ Thaven, ProtoThaven ]
@@ -302,6 +291,17 @@
   sprites:
   - sprite: _Impstation/Mobs/Customization/thaven/thaven.rsi
     state: rlegfins1
+
+- type: marking
+  id: ThavenLegFinsSmallLeft
+  bodyPart: LLeg
+  markingCategory: Legs
+  speciesRestriction: [ Thaven, ProtoThaven ]
+  forcedColoring: false
+  followSkinColor: true
+  sprites:
+  - sprite: _Impstation/Mobs/Customization/thaven/thaven.rsi
+    state: llegfins1
 
 - type: marking
   id: ThavenBackFin

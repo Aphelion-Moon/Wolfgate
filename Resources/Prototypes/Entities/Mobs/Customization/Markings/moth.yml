@@ -561,13 +561,13 @@
     state: underwing_primary_FRONT
   - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - split art, anatomy zone only
     state: underwing_secondary_FRONT
-
-# Body markings:
-# Charred
   - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
     state: underwing_primary_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/Mobs/Customization/Moth/moth_wings.rsi # WOLFGATE - anatomy zone of the south frame on TailBehind
     state: underwing_secondary_BEHIND
+
+# Body markings:
+# Charred
 - type: marking
   id: MothChestCharred
   bodyPart: Chest

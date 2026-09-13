@@ -34,7 +34,7 @@ using static Content.IntegrationTests.Tests._WF.Genitals.GenitalTestHelpers;
 namespace Content.IntegrationTests.Tests._WF.Genitals;
 
 /// <summary>
-/// T6 (client): anatomy anchors in every humanoid sprite list, the species offsets, the keyed layers a creator doll gets,
+/// Anatomy anchors in every humanoid sprite list, the species offsets, the keyed layers a creator doll gets,
 /// and the rule that keeps tails off the anatomy - no tail marking draws a south-facing pixel inside the anatomy zone on a
 /// layer above it.
 /// </summary>

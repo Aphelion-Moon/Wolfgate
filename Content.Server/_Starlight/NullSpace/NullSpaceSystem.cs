@@ -1,6 +1,7 @@
 using Content.Shared.Eye;
 using Robust.Server.GameObjects;
 using Content.Server.Atmos.Components;
+using Content.Shared.Temperature;
 using Content.Shared.Temperature.Components;
 using Content.Shared.Stealth;
 using Content.Shared.Stealth.Components;
@@ -60,10 +61,15 @@ public sealed partial class NullSpaceSystem : SharedNullSpaceSystem
         SubscribeLocalEvent<NullSpaceComponent, VirtualItemDeletedEvent>(OnVirtualItemDeleted);
         SubscribeLocalEvent<NullSpaceComponent, NullSpaceShuntEvent>(NullSpaceShunt);
         SubscribeLocalEvent<NullSpaceComponent, GetVisMaskEvent>(OnGetVisMask);
+        SubscribeLocalEvent<TemperatureImmunityComponent, ModifyChangedTemperatureEvent>(OnModifyTemperature); // WOLFGATE
     }
 
     private void OnGetVisMask(Entity<NullSpaceComponent> uid, ref GetVisMaskEvent args) =>
         args.VisibilityMask |= (int)VisibilityFlags.NullSpace;
+
+    // WOLFGATE - NullSpace added this marker but nothing read it, so entities in NullSpace still changed temperature.
+    private void OnModifyTemperature(Entity<TemperatureImmunityComponent> ent, ref ModifyChangedTemperatureEvent args) =>
+        args.TemperatureDelta = 0;
 
     public void OnStartup(EntityUid uid, NullSpaceComponent component, MapInitEvent args)
     {

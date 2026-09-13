@@ -497,8 +497,6 @@
     state: feroxi-dorsal
   - sprite: _DV/Mobs/Customization/Feroxi/tail_markings.rsi
     state: feroxi-dorsal-tip
-
-# Body Markings
   - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Feroxi/tail_markings.rsi # WOLFGATE - south frame on TailBehind
     state: feroxi-tail_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Feroxi/tail_markings.rsi # WOLFGATE - south frame on TailBehind
@@ -509,6 +507,8 @@
     state: feroxi-tail-second-dorsal-tip_BEHIND
   - sprite: _WF/Mobs/Customization/TailSplit/_DV/Mobs/Customization/Feroxi/tail_markings.rsi # WOLFGATE - south frame on TailBehind
     state: feroxi-tail-under_BEHIND
+
+# Body Markings
 - type: marking
   id: FeroxiHeadStripesTiger
   bodyPart: Head

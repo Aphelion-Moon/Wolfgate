@@ -82,12 +82,12 @@
       state: snake_large_wagging_FRONT
     - sprite: _WF/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi # WOLFGATE - split art
       state: snake_large_wagging_overlay_FRONT
-
-# SPINE
     - sprite: _WF/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi # WOLFGATE - south frame on TailBehind
       state: snake_large_wagging_BEHIND
     - sprite: _WF/Mobs/Customization/TailSplit/_White/Mobs/Customization/reptilian_64x32.rsi # WOLFGATE - south frame on TailBehind
       state: snake_large_wagging_overlay_BEHIND
+
+# SPINE
 - type: marking
   id: LizardChestSpinesAquatic
   bodyPart: Chest

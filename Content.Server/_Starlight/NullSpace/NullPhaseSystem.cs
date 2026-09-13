@@ -245,10 +245,6 @@ public sealed class NullSpacePhaseSystem : EntitySystem
         var effect = SpawnAtPosition(effectproto, Transform(uid).Coordinates);
 
         var scaled = _scaleVisuals.GetSpriteScale(uid);
-        if (HasComp<AppearanceComponent>(uid)
-            && _appearance.TryGetData<Vector2>(uid, HumanoidVisuals.Scale, out var humanoidscaled))
-            scaled = humanoidscaled;
-
         _scaleVisuals.SetSpriteScale(effect, scaled);
         Transform(effect).LocalRotation = Transform(uid).LocalRotation;
     }

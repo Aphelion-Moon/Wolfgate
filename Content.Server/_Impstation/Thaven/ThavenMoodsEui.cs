@@ -4,7 +4,6 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later AND MIT
 
-using System.Linq;
 using Content.Server.Administration.Managers;
 using Content.Server.EUI;
 using Content.Shared.Administration;
@@ -21,7 +20,6 @@ public sealed class ThavenMoodsEui : BaseEui
     private readonly IAdminManager _adminManager;
 
     private List<ThavenMood> _moods = new();
-    private List<ThavenMood> _sharedMoods = new();
     private ISawmill _sawmill = default!;
     private EntityUid _target;
 
@@ -46,7 +44,6 @@ public sealed class ThavenMoodsEui : BaseEui
         var moods = _thavenMoodsSystem.GetActiveMoods(player, comp, false);
         _target = player;
         _moods = moods;
-        _sharedMoods = _thavenMoodsSystem.SharedMoods.ToList();
         StateDirty();
     }
 

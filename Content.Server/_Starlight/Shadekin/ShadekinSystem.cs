@@ -80,22 +80,12 @@ public sealed partial class ShadekinSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<ShadekinComponent, ComponentShutdown>((uid, _, _) => RemComp<BrighteyeComponent>(uid));
-        SubscribeLocalEvent<ShadekinComponent, EyeColorInitEvent>(OnEyeColorChange);
         SubscribeLocalEvent<ShadekinComponent, RefreshMovementSpeedModifiersEvent>(OnRefreshMovementSpeedModifiers);
         SubscribeLocalEvent<ShadekinComponent, NullSpaceShuntEvent>(NullSpaceShunt);
         SubscribeLocalEvent<ShadekinComponent, BeforeDamageChangedEvent>((uid, _, args) => args.Damage.DamageDict["Asphyxiation"] = 0);
 
         InitializeBrighteye();
         InitializeAbilities();
-    }
-
-    private void OnEyeColorChange(EntityUid uid, ShadekinComponent component, EyeColorInitEvent args)
-    {
-        if (!TryComp<HumanoidAppearanceComponent>(uid, out var humanoid))
-            return;
-
-        humanoid.EyeGlowing = false;
-        Dirty(uid, humanoid);
     }
 
     private void NullSpaceShunt(EntityUid uid, ShadekinComponent component, NullSpaceShuntEvent args)
@@ -122,7 +112,7 @@ public sealed partial class ShadekinSystem : EntitySystem
         var oppositeMapDiff = (-lightRot).RotateVec(mapDiff);
         var angle = oppositeMapDiff.ToWorldAngle();
 
-        if (angle == double.NaN && _transform.ContainsEntity(targetUid, lightUid) || _transform.ContainsEntity(lightUid, targetUid))
+        if ((double.IsNaN(angle.Theta) && _transform.ContainsEntity(targetUid, lightUid)) || _transform.ContainsEntity(lightUid, targetUid))
         {
             angle = 0f;
         }

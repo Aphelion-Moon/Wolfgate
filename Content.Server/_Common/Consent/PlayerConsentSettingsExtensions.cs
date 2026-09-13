@@ -6,7 +6,9 @@ using Content.Server.Database;
 using Robust.Shared.Prototypes;
 using System.Linq;
 
-public static class PlayerConsentSettinsExtensions
+namespace Content.Server._Common.Consent;
+
+public static class PlayerConsentSettingsExtensions
 {
     public static PlayerConsentSettings ToPlayerConsentSettings(this ConsentSettings dbConsentSettings)
     {

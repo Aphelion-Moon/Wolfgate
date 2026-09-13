@@ -71,10 +71,10 @@
   sprites:
   - sprite: _WF/Mobs/Customization/TailSplit/_CD/Mobs/Customization/Synthliz/tails.rsi # WOLFGATE - split art
     state: tail_synthliz_wagging_FRONT
-
-# snout
   - sprite: _WF/Mobs/Customization/TailSplit/_CD/Mobs/Customization/Synthliz/tails.rsi # WOLFGATE - south frame on TailBehind
     state: tail_synthliz_wagging_BEHIND
+
+# snout
 
 - type: marking
   id: LizardSnoutSynth

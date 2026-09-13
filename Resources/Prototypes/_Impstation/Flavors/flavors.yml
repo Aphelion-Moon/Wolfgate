@@ -3,3 +3,8 @@
   id: shimmeringblood
   flavorType: Complex
   description: flavor-complex-shimmeringblood
+
+- type: flavor
+  id: thavenflesh
+  flavorType: Complex
+  description: flavor-complex-thavenflesh

@@ -104,11 +104,6 @@ public abstract partial class SharedGunSystem
     }
 
     /// <summary>
-    /// Beyond roughly the client's PVS range it cannot see what stops a beam, so longer hitscans stay server-drawn.
-    /// </summary>
-    private const float PredictedHitscanRange = 25f;
-
-    /// <summary>
     /// Whether the shooter's client drew this shot's beams itself, so the server leaves them out of its own.
     /// The client's word decides it, which keeps the two sides from disagreeing over what is predictable.
     /// </summary>
@@ -118,18 +113,14 @@ public abstract partial class SharedGunSystem
     }
 
     /// <summary>
-    /// Only plain, short-ranged raycast-and-beam hitscans are predicted; the client can't mirror diffraction,
-    /// jumps, piercing or spawns.
+    /// Predicts the beams of any raycast hitscan, diffraction included. Range doesn't matter: the client has
+    /// everything the player can see, so a beam it overshoots only runs long off-screen. Jumps and reflections
+    /// follow from the server as their own beams.
     /// </summary>
     public bool CanPredictHitscan(EntityUid hitscan)
     {
-        return TryComp<HitscanBasicRaycastComponent>(hitscan, out var raycast)
-               && raycast.MaxDistance <= PredictedHitscanRange
-               && HasComp<HitscanBasicVisualsComponent>(hitscan)
-               && !HasComp<HitscanDiffractComponent>(hitscan)
-               && !HasComp<HitscanJumpComponent>(hitscan)
-               && !HasComp<HitscanMultiRaycastComponent>(hitscan)
-               && !HasComp<HitscanSpawnEntityComponent>(hitscan);
+        return (HasComp<HitscanBasicRaycastComponent>(hitscan) || HasComp<HitscanMultiRaycastComponent>(hitscan))
+               && HasComp<HitscanBasicVisualsComponent>(hitscan);
     }
 
     /// <summary>

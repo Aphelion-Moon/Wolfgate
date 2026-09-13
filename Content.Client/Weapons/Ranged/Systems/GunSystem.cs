@@ -327,7 +327,7 @@ public sealed partial class GunSystem : SharedGunSystem
                 case HitscanAmmoComponent:
                     Audio.PlayPredicted(gun.SoundGunshotModified, gunUid, user);
                     Recoil(user, direction, gun.CameraRecoilScalarModified);
-                    PredictHitscan(volley, ent); // WOLFGATE: draw the beam now rather than waiting for the server's
+                    PredictHitscan(volley, ent, volley.Direction); // WOLFGATE: draw the beam now rather than waiting for the server's
                     // WOLFGATE: the server fires the hitscan, so don't leak the client-side ammo
                     if (ent != null && IsClientSide(ent.Value))
                         QueueDel(ent.Value);

@@ -7,6 +7,7 @@ using Content.IntegrationTests.Tests.Interaction;
 using Content.Shared._RMC14.Weapons.Ranged.Prediction;
 using Content.Shared.CombatMode;
 using Content.Shared.Projectiles;
+using Content.Shared.Weapons.Hitscan.Components;
 using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Events;
 using Content.Shared.Weapons.Ranged.Systems;
@@ -102,6 +103,50 @@ public sealed class WFGunPredictionTest : InteractionTest
   - type: Battery
     maxCharge: 1000
     startingCharge: 1000
+
+- type: entity
+  id: WFPredTestPulseSniper
+  parent: WFPredTestLaser
+  components:
+  - type: HitscanBatteryAmmoProvider
+    proto: UllmanPulseHeavy
+
+- type: entity
+  id: WFPredTestHeavyLaser
+  parent: WFPredTestLaser
+  components:
+  - type: HitscanBatteryAmmoProvider
+    proto: RedHeavyLaser
+
+- type: entity
+  id: WFPredTestDiffractBeam
+  parent: RedLightLaser
+  components:
+  - type: HitscanDiffract
+    beamCount: 3
+    diffractedBeamPrototype: RedLightLaser
+
+- type: entity
+  id: WFPredTestDiffractLaser
+  parent: WFPredTestLaser
+  components:
+  - type: HitscanBatteryAmmoProvider
+    proto: WFPredTestDiffractBeam
+
+- type: entity
+  id: WFPredTestHitscanCartridge
+  components:
+  - type: CartridgeAmmo
+    proto: Magnum45
+    deleteOnSpawn: true
+
+- type: entity
+  id: WFPredTestHitscanRevolver
+  parent: WFPredTestGun
+  components:
+  - type: BallisticAmmoProvider
+    proto: WFPredTestHitscanCartridge
+    capacity: 10
 ";
 
     private sealed record ServerCopy(EntityUid Uid, int ClientId, EntityUid? ClientEnt, bool ShooterMatches, Vector2 Velocity);
@@ -303,10 +348,13 @@ public sealed class WFGunPredictionTest : InteractionTest
         return beams;
     }
 
-    [Test]
-    public async Task PredictedHitscanDrawsOneBeam()
+    [TestCase("WFPredTestLaser")]
+    [TestCase("WFPredTestPulseSniper")] // 360-tile beam
+    [TestCase("WFPredTestHeavyLaser")] // jumps between mobs
+    [TestCase("WFPredTestHitscanRevolver")] // hitscan cartridge that pierces
+    public async Task PredictedHitscanDrawsOneBeam(string gunId)
     {
-        var gun = SEntMan.GetNetEntity(await ArmPlayer("WFPredTestLaser"));
+        var gun = SEntMan.GetNetEntity(await ArmPlayer(gunId));
         var aim = new NetCoordinates(Player, new Vector2(5f, 0f));
 
         await ClientShoot(gun, aim);
@@ -315,6 +363,31 @@ public sealed class WFGunPredictionTest : InteractionTest
 
         await RunTicks(10);
         Assert.That(await ClientBeams(), Is.EqualTo(drawn), "the shooter was sent the server's beam as well");
+    }
+
+    [Test]
+    public async Task PredictedDiffractionDrawsOnceAndCleansUp()
+    {
+        await Server.WaitPost(() => SEntMan.SpawnEntity("PlasmaWindow", SEntMan.GetCoordinates(PlayerCoords).Offset(new Vector2(2f, 0f))));
+        var gun = SEntMan.GetNetEntity(await ArmPlayer("WFPredTestDiffractLaser"));
+        var aim = new NetCoordinates(Player, new Vector2(5f, 0f));
+
+        await ClientShoot(gun, aim);
+        var drawn = await ClientBeams();
+        Assert.That(drawn, Is.GreaterThan(3), "the client did not split the beam at the window");
+
+        await RunTicks(10);
+        Assert.That(await ClientBeams(), Is.EqualTo(drawn), "the shooter was sent the server's split beams as well");
+
+        var clientLeft = 0;
+        var serverLeft = 0;
+        await Client.WaitPost(() => clientLeft = CEntMan.Count<HitscanAmmoComponent>());
+        await Server.WaitPost(() => serverLeft = SEntMan.Count<HitscanAmmoComponent>());
+        Assert.Multiple(() =>
+        {
+            Assert.That(clientLeft, Is.Zero, "the client leaked hitscan entities");
+            Assert.That(serverLeft, Is.Zero, "the server leaked hitscan entities");
+        });
     }
 
     [Test]

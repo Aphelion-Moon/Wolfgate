@@ -179,8 +179,14 @@ public sealed partial class GunSystem
     /// </summary>
     private bool PredictProjectile(PredictedVolley volley, EntityUid uid, Vector2 direction)
     {
-        // The server fires hitscan or throws these, and neither takes a slot.
-        if (HasComp<HitscanAmmoComponent>(uid) || !TryComp<ProjectileComponent>(uid, out var projectile))
+        // Hitscan rounds are drawn and then cleaned up; neither they nor thrown items take a slot.
+        if (HasComp<HitscanAmmoComponent>(uid))
+        {
+            PredictHitscan(volley, uid, direction);
+            return false;
+        }
+
+        if (!TryComp<ProjectileComponent>(uid, out var projectile))
             return false;
 
         if (!CanPredictProjectile(uid, projectile))
@@ -203,12 +209,12 @@ public sealed partial class GunSystem
     /// <summary>
     /// Runs the shared hitscan trace locally, so the shooter sees the beam on the tick they fired it.
     /// </summary>
-    private void PredictHitscan(PredictedVolley volley, EntityUid? hitscan)
+    private void PredictHitscan(PredictedVolley volley, EntityUid? hitscan, Vector2 direction)
     {
         if (volley.Shot == null || hitscan == null || !CanPredictHitscan(hitscan.Value))
             return;
 
-        ShootHitscan(hitscan.Value, volley.From, volley.Direction, volley.Gun, volley.User, volley.GunComp.Target);
+        ShootHitscan(hitscan.Value, volley.From, direction, volley.Gun, volley.User, volley.GunComp.Target);
         DrewHitscan = true;
     }
 
